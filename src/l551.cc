@@ -7,7 +7,7 @@ using namespace std;
 namespace {
     bool checkRecord(string s) {
         int late = 0, absent = 0;
-        for (int i = 0; i < s.size(); ++i) {
+        for (size_t i = 0; i < s.size(); ++i) {
             if (s[i] == 'A') absent++;
             if (s[i] == 'L') late++;
             else late = 0;
