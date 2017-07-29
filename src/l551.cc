@@ -6,18 +6,22 @@ using namespace std;
 
 namespace {
     bool checkRecord(string s) {
-        int size = s.size();
         int late = 0, absent = 0;
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < s.size(); ++i) {
             char ch = s[i];
             if (ch == 'P') {
+                late = 0;
                 continue;
-            } else if (ch == 'L') {
+            }
+            if (ch == 'L') {
                 if (++late > 2) {
                     return false;
                 }
-            } else if (++absent > 1) {
-                return false;
+            } else {
+                late = 0;
+                if (++absent > 1) {
+                    return false;
+                }
             }
         }
         return true;
@@ -35,8 +39,11 @@ TEST(CheckRecordTest, Case1) {
 }
 
 TEST(CheckRecordTest, Case2) {
-    std::string record = "PPAAL";
+    std::string record = "PLLPLLALLL";
     ASSERT_FALSE(checkRecord(record));
+    
+    record = "PLLPLLALL";
+    ASSERT_TRUE(checkRecord(record));
 }
 
 TEST(CheckRecordTest, Case3) {
@@ -46,6 +53,11 @@ TEST(CheckRecordTest, Case3) {
 
 TEST(CheckRecordTest, Case4) {
     std::string record = "PPPPP";
+    ASSERT_TRUE(checkRecord(record));
+}
+
+TEST(CheckRecordTest, Case5) {
+    std::string record = "LALL";
     ASSERT_TRUE(checkRecord(record));
 }
 
