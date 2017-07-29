@@ -14,11 +14,11 @@ namespace {
 } // anonymous namespace
 
 TEST(ReverseBitsTest, Case0) {
-    ASSERT_EQ(0, reverseBits(0));
-    ASSERT_EQ(0xFFFFFFFF, reverseBits(0xFFFFFFFF));
-    ASSERT_EQ(0x80000000, reverseBits(0x01));
-    ASSERT_EQ(0x01, reverseBits(0x80000000));
-    ASSERT_EQ(964176192, reverseBits(43261596));
+    ASSERT_EQ(0U, reverseBits(0));
+    ASSERT_EQ(0xFFFFFFFFU, reverseBits(0xFFFFFFFF));
+    ASSERT_EQ(0x80000000U, reverseBits(0x01));
+    ASSERT_EQ(0x01U, reverseBits(0x80000000));
+    ASSERT_EQ(964176192U, reverseBits(43261596));
 }
 
 int main(int argc, char* argv[]) {
