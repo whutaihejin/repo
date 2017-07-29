@@ -8,21 +8,10 @@ namespace {
     bool checkRecord(string s) {
         int late = 0, absent = 0;
         for (int i = 0; i < s.size(); ++i) {
-            char ch = s[i];
-            if (ch == 'P') {
-                late = 0;
-                continue;
-            }
-            if (ch == 'L') {
-                if (++late > 2) {
-                    return false;
-                }
-            } else {
-                late = 0;
-                if (++absent > 1) {
-                    return false;
-                }
-            }
+            if (s[i] == 'A') absent++;
+            if (s[i] == 'L') late++;
+            else late = 0;
+            if (late > 2 || absent > 1) return false;
         }
         return true;
     }
