@@ -10,9 +10,7 @@ namespace {
         int head = 1, remain = n;
         int left = true;
         while (remain > 1) {
-            if (left) {
-                head += step;
-            } else if (remain % 2 == 1) {
+            if (left || remain % 2 == 1) {
                 head += step;
             }
             remain /= 2;
