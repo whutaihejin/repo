@@ -11,42 +11,23 @@ namespace {
     static int status_map[] = {0, 1, 0, 1, 0, 1};
   
     // detect live
-    inline int detectLive(vector<vector<int>>& board, int row, int column,  int x, int y) {
-       return (x >= 0 && x < row && y >= 0 && y < column && origin_map[board[x][y]] == 1 ) ? 1 : 0;
+    int liveNeighbors(vector<vector<int>>& board, int row, int column,  int x, int y) {
+        int live = 0;
+        for (int i = std::max(x - 1, 0); i <= std::min(x + 1, row - 1); ++i) {
+            for (int j = std::max(y - 1, 0); j <= std::min(y + 1, column - 1); ++j) {
+               live += origin_map[board[i][j]]; 
+            }
+        }
+        return live - origin_map[board[x][y]]; 
     }
     
     // main logic
     void gameOfLife(vector<vector<int>>& board) {
         int row = board.size(), column = board[0].size();
-        int x = 0, y = 0, live = 0;
+        int live = 0;
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < column; ++j) {
-                // 1. left-upper
-                live = 0, x = i - 1, y = j - 1;
-                live += detectLive(board, row, column, x, y);
-                // 2. upper
-                x = i - 1, y = j;
-                live += detectLive(board, row, column, x, y);
-                // 3. right-upper
-                x = i - 1, y = j + 1;
-                live += detectLive(board, row, column, x, y);
-                // 4. right
-                x = i, y = j + 1;
-                live += detectLive(board, row, column, x, y);
-                // 5. right-down
-                x = i + 1, y = j + 1;
-                live += detectLive(board, row, column, x, y);
-                // 6. down
-                x = i + 1, y = j;
-                live += detectLive(board, row, column, x, y);
-                // 7. left-down
-                x = i + 1, y = j - 1;
-                live += detectLive(board, row, column, x, y);
-                // 8. left
-                x = i, y = j - 1;
-                live += detectLive(board, row, column, x, y);
-
-                // logic of process
+                live = liveNeighbors(board, row, column, i, j);
                 if (board[i][j] == 0) {
                     board[i][j] = (live == 3 ? 3 : 2);
                 } else {
@@ -55,7 +36,6 @@ namespace {
                 }
             }
         }
-        
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < column; ++j) {
                 board[i][j] = status_map[board[i][j]];
