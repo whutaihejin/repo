@@ -6,7 +6,7 @@ using namespace std;
 #define COLUMN 4
 
 namespace {
-    // tranpose matrix
+    // transpose matrix
     bool Transpose(int (*graph)[COLUMN], int size) {
         if (size != COLUMN) return false;
         for (int i = 0; i < size; ++i) {
@@ -19,8 +19,8 @@ namespace {
         return true;
     }
     
-    // check graph eaual
-    bool Equal(int (*graph)[COLUMN], int (*epect)[COLUMN], int size) {
+    // check graph equal
+    bool Equal(int (*graph)[COLUMN], int (*expect)[COLUMN], int size) {
         if (size != COLUMN) return false;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < COLUMN; ++j) {
