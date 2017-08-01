@@ -3,8 +3,6 @@
 
 using namespace std;
 
-#define COLUMN 4
-
 namespace {
     // transpose adjacency matrix of graph
     bool Transpose(std::vector<std::vector<int>>& graph) {
@@ -25,7 +23,7 @@ namespace {
         copy.resize(graph.size());
         for (size_t i = 0; i < graph.size(); ++i) {
            for (size_t j = 0; j < graph[i].size(); ++j) {
-               copy[graph[i][j]].push_back(i + 1);
+               copy[graph[i][j] - 1].push_back(i + 1);
            }
         }
         graph = copy;
