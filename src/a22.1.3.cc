@@ -39,7 +39,6 @@ TEST(TransposeTest, Case0) {
         {1, 1, 0, 1},
         {0, 1, 0, 0}
     };
-    std::cout << g.size() << " -- " << g[0].size() << std::endl;
     int graph[4][4] = {
         {0, 1, 0, 0},
         {0, 0, 0, 0},
