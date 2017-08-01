@@ -9,8 +9,8 @@ namespace {
     // transpose matrix
     bool Transpose(std::vector<std::vector<int>>& graph) {
         if (graph.empty()) return true;
-        for (int i = 0; i < graph.size(); ++i) {
-            for (int j = i + 1; j < graph[0].size(); ++j) {
+        for (size_t i = 0; i < graph.size(); ++i) {
+            for (size_t j = i + 1; j < graph[0].size(); ++j) {
                 int val = graph[i][j];
                 graph[i][j] = graph[j][i];
                 graph[j][i] = val;
@@ -30,9 +30,9 @@ namespace {
         if (graph.size() != expect.size()) return false;
 
         // check equal 
-        for (int i = 0; i < graph.size(); ++i) {
+        for (size_t i = 0; i < graph.size(); ++i) {
             if (graph[i].size() != expect[i].size()) return false;
-            for (int j = 0; j < graph[i].size(); ++j) {
+            for (size_t j = 0; j < graph[i].size(); ++j) {
                 if (graph[i][j] != expect[i][j]) return false;
             }
         }
@@ -53,6 +53,33 @@ TEST(TransposeTest, Case0) {
         {1, 0, 1, 1},
         {0, 0, 0, 0},
         {0, 0, 1, 0}
+    };
+    Transpose(graph);
+    ASSERT_TRUE(Equal(graph, expect));
+}
+
+TEST(TransposeTest, Case1) {
+    std::vector<std::vector<int>> graph = {{}};
+    std::vector<std::vector<int>> expect = {{}};
+    Transpose(graph);
+    ASSERT_TRUE(Equal(graph, expect));
+}
+
+TEST(TransposeTest, Case2) {
+    std::vector<std::vector<int>> graph = {{1}};
+    std::vector<std::vector<int>> expect = {{1}};
+    Transpose(graph);
+    ASSERT_TRUE(Equal(graph, expect));
+}
+
+TEST(TransposeTest, Case3) {
+    std::vector<std::vector<int>> graph = {
+      {1, 2},
+      {3, 4}
+    };
+    std::vector<std::vector<int>> expect = {
+      {1, 3},
+      {2, 4}
     };
     Transpose(graph);
     ASSERT_TRUE(Equal(graph, expect));
