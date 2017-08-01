@@ -17,6 +17,7 @@ endif(TARGET_DEBUG_MODE)
 # work home & library home
 set(work_home ${CMAKE_CURRENT_SOURCE_DIR})
 set(library_home ${work_home}/third-party)
+set(include_list ${work_home}/src/lib)
 
 # googletest lib
 set(googletest_library ${library_home}/googletest-release-1.6.0)

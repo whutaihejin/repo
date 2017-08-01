@@ -6,7 +6,7 @@ using namespace std;
 #define COLUMN 4
 
 namespace {
-    // transpose matrix
+    // transpose adjacency matrix of graph
     bool Transpose(std::vector<std::vector<int>>& graph) {
         if (graph.empty()) return true;
         for (size_t i = 0; i < graph.size(); ++i) {
@@ -16,6 +16,19 @@ namespace {
                 graph[j][i] = val;
             }
         }
+        return true;
+    }
+    
+    // transpose adjacency list of graph
+    bool TransposeAdjacencyList(std::vector<std::vector<int>>& graph) {
+        std::vector<std::vector<int>> copy;
+        copy.resize(graph.size());
+        for (size_t i = 0; i < graph.size(); ++i) {
+           for (size_t j = 0; j < graph[i].size(); ++j) {
+               copy[graph[i][j]].push_back(i + 1);
+           }
+        }
+        graph = copy;
         return true;
     }
     
@@ -55,6 +68,23 @@ TEST(TransposeTest, Case0) {
         {0, 0, 1, 0}
     };
     Transpose(graph);
+    ASSERT_TRUE(Equal(graph, expect));
+}
+
+TEST(TransposeTest, Case00) {
+    std::vector<std::vector<int>> graph = {
+        {2},
+        {},
+        {1, 2, 4},
+        {2}
+    };
+    std::vector<std::vector<int>> expect = {
+        {3},
+        {1, 3, 4},
+        {},
+        {3}
+    };
+    TransposeAdjacencyList(graph);
     ASSERT_TRUE(Equal(graph, expect));
 }
 
