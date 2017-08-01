@@ -33,26 +33,20 @@ namespace {
 } // anonymous namespace
 
 TEST(TransposeTest, Case0) {
-    std::vector<std::vector<int>> g = {
+    std::vector<std::vector<int>> graph = {
         {0, 1, 0, 0},
         {0, 0, 0, 0},
         {1, 1, 0, 1},
         {0, 1, 0, 0}
     };
-    int graph[4][4] = {
-        {0, 1, 0, 0},
-        {0, 0, 0, 0},
-        {1, 1, 0, 1},
-        {0, 1, 0, 0}
-    };
-    int expect[4][4] = {
+    std::vector<std::vector<int>> expect = {
         {0, 0, 1, 0},
         {1, 0, 1, 1},
         {0, 0, 0, 0},
         {0, 0, 1, 0}
     };
-    Transpose(graph, COLUMN);
-    EXPECT_TRUE(Equal(graph, expect, COLUMN));
+    Transpose(graph);
+    ASSERT_TRUE(Equal(graph, expect));
 }
 
 int main(int argc, char* argv[]) {
