@@ -24,7 +24,7 @@ namespace {
         if (size != COLUMN) return false;
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < COLUMN; ++j) {
-                if (graph[i][j] != epect[i][j]) return false;
+                if (graph[i][j] != expect[i][j]) return false;
             }
         }
         return true;
@@ -33,6 +33,13 @@ namespace {
 } // anonymous namespace
 
 TEST(TransposeTest, Case0) {
+    std::vector<std::vector<int>> g = {
+        {0, 1, 0, 0},
+        {0, 0, 0, 0},
+        {1, 1, 0, 1},
+        {0, 1, 0, 0}
+    };
+    std::cout << g.size() << " -- " << g[0].size() << std::endl;
     int graph[4][4] = {
         {0, 1, 0, 0},
         {0, 0, 0, 0},
@@ -46,7 +53,7 @@ TEST(TransposeTest, Case0) {
         {0, 0, 1, 0}
     };
     Transpose(graph, COLUMN);
-    ASSERT_TRUE(Equal(graph, expect, COLUMN)); 
+    EXPECT_TRUE(Equal(graph, expect, COLUMN)); 
 }
 
 int main(int argc, char* argv[]) {
