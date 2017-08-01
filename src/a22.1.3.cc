@@ -52,7 +52,7 @@ TEST(TransposeTest, Case0) {
         {0, 0, 1, 0}
     };
     Transpose(graph, COLUMN);
-    EXPECT_TRUE(Equal(graph, expect, COLUMN)); 
+    EXPECT_TRUE(Equal(graph, expect, COLUMN));
 }
 
 int main(int argc, char* argv[]) {
