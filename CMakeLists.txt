@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 2.8)
 # project info
 project(leetcode)
 set(CMAKE_CXX_STANDARD 11)
@@ -36,7 +36,7 @@ foreach(origin_source ${source_list})
   get_filename_component(source ${origin_source} NAME)
   string(REGEX REPLACE "(.*).cc$" "\\1" target ${source})
   add_executable(${target} ${origin_source})
-  target_link_libraries(${target} googletest )
+  target_link_libraries(${target} googletest -pthread)
 endforeach()
 
 # for install the targets
