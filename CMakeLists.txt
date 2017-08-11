@@ -25,9 +25,17 @@ list(APPEND include_list ${googletest_library})
 list(APPEND include_list ${googletest_library}/include)
 file(GLOB_RECURSE googletest_source ${googletest_library}/src/*.cc)
 
+# google benchmark lib
+set(benchmark_library ${library_home}/google-benchmark-1.2.0)
+list(APPEND include_list ${benchmark_library}/include)
+file(GLOB_RECURSE benchmark_source ${benchmark_library}/src/*.cc)
+
 # build googletest static library
 include_directories(${include_list})
 add_library(googletest STATIC ${googletest_source})
+
+# build google benchmark static library
+add_library(benchmark STATIC ${benchmark_source})
 
 # build self leetcode library
 file(GLOB_RECURSE leetcode_source ${work_home}/src/lib/*.cc)
