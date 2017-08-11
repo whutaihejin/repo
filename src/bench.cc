@@ -36,7 +36,8 @@ static void twoSumBench(benchmark::State& state) {
         vector<int> index_list = twoSum(nums, 9);
     }
 }
-BENCHMARK(twoSumBench);
+BENCHMARK(twoSumBench)->Threads(2);;
+// ->Unit(benchmark::kMillisecond);
 
 int main(int argc, char* argv[]) {
     benchmark::Initialize(&argc, argv);
