@@ -11,7 +11,7 @@ if (TARGET_DEBUG_MODE)
   set(CMAKE_CXX_FLAGS_DEBUG "-W -Wall -O0 -ftest-coverage -fprofile-arcs")
 else(TARGET_DEBUG_MODE)
   set(CMAKE_BUILD_TYPE "Release")
-  set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+  set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O2")
 endif(TARGET_DEBUG_MODE)
 
 # work home & library home
