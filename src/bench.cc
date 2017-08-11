@@ -1,0 +1,18 @@
+#include <iostream>
+#include "benchmark/benchmark.h"
+
+using namespace std;
+
+// Define another benchmark
+static void BM_StringCopy(benchmark::State& state) {
+    std::string x = "hello";
+    while (state.KeepRunning()) {
+        std::string copy(x);
+    }
+}
+
+BENCHMARK(BM_StringCopy);
+int main(int argc, char* argv[]) {
+    benchmark::Initialize(&argc, argv);
+    benchmark::RunSpecifiedBenchmarks();
+}
