@@ -26,7 +26,7 @@ namespace {
 } // anonymous namespace
 
 // Define another benchmark
-static void BM_StringCopy(benchmark::State& state) {
+static void twoSumBench(benchmark::State& state) {
     vector<int> nums;
     nums.push_back(2);
     nums.push_back(7);
@@ -36,8 +36,8 @@ static void BM_StringCopy(benchmark::State& state) {
         vector<int> index_list = twoSum(nums, 9);
     }
 }
+BENCHMARK(twoSumBench);
 
-BENCHMARK(BM_StringCopy);
 int main(int argc, char* argv[]) {
     benchmark::Initialize(&argc, argv);
     benchmark::RunSpecifiedBenchmarks();
