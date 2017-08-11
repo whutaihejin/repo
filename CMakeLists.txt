@@ -53,7 +53,7 @@ foreach(origin_source ${source_list})
   get_filename_component(source ${origin_source} NAME)
   string(REGEX REPLACE "(.*).cc$" "\\1" target ${source})
   add_executable(${target} ${origin_source})
-  target_link_libraries(${target} -pthread googletest leetcode)
+  target_link_libraries(${target} -pthread googletest benchmark leetcode)
 endforeach()
 
 # for install the targets
