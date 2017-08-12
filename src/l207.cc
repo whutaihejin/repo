@@ -77,10 +77,8 @@ TEST(CanFinishTest, Case3) {
     prerequisites.push_back(std::make_pair(2, 3));
     ASSERT_TRUE(canFinish(4, prerequisites)); 
    
-    /*
     prerequisites.push_back(std::make_pair(3, 1));
     ASSERT_FALSE(canFinish(4, prerequisites)); 
-    */
 }
 
 int main(int argc, char* argv[]) {
