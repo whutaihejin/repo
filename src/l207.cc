@@ -28,8 +28,7 @@ namespace {
       std::vector<int>& adj = graph[vertex].adj;
       for (size_t i = 0; i < adj.size(); ++i) {
           Vertex& v = graph[adj[i]];
-          if (v.color == Vertex::GRAY) return false;
-          if (v.color == Vertex::WHITE && !DFS(graph, adj[i])) return false;
+          if (v.color == Vertex::GRAY || (v.color == Vertex::WHITE && !DFS(graph, adj[i]))) return false;
       }
       graph[vertex].color = Vertex::BLACK;
       return true;
