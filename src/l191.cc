@@ -5,12 +5,12 @@ using namespace std;
 
 namespace {
     int hammingWeight(uint32_t n) {
-        int weight = 0;
-        while (n != 0) {
-            weight ++;
-            n = n & (n - 1);
-        }
-        return weight;          
+        n = ((n & 0xaaaaaaaa) >> 1) + (n & 0x55555555);
+        n = ((n & 0xcccccccc) >> 2) + (n & 0x33333333);
+        n = ((n & 0xf0f0f0f0) >> 4) + (n & 0x0f0f0f0f);
+        n = ((n & 0xff00ff00) >> 8) + (n & 0x00ff00ff);
+        n = ((n & 0xffff0000) >> 16) + (n & 0x0000ffff);
+        return n;
     }
 } // anonymous namespace
 
