@@ -20,6 +20,7 @@ TEST(hammingWeightTest, Case0) {
     ASSERT_EQ(1, hammingWeight(2U)); 
     ASSERT_EQ(3, hammingWeight(11U)); 
     ASSERT_EQ(4, hammingWeight(0x0FU)); 
+    ASSERT_EQ(32, hammingWeight(0xFFFFFFFFU)); 
 }
 
 int main(int argc, char* argv[]) {
