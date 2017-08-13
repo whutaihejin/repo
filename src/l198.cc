@@ -4,12 +4,17 @@
 using namespace std;
 
 namespace {
-    int doRob(vector<int>& nums, size_t index) {
-        if (index >= nums.size()) return 0;
-        return nums[index] + std::max(doRob(nums, index + 2), doRob(nums, index + 3));
-    }
     int rob(vector<int>& nums) {
-        return std::max(doRob(nums, 0), doRob(nums, 1));
+        int value, max = 0;
+        int pre = 0, cur = 0, next = 0;
+        for (size_t i = 0; i < nums.size(); ++i) {
+            value = nums[i] + std::max(pre, cur);
+            max = std::max(max, value);
+            pre = cur;
+            cur = next;
+            next = value;
+        }
+        return max;
     }
 } // anonymous namespace
 
@@ -38,6 +43,29 @@ TEST(YourTest, Case1) {
     nums.push_back(1);
     nums.push_back(2);
     ASSERT_EQ(4, rob(nums)); 
+}
+
+TEST(YourTest, Case2) {
+    std::vector<int> nums;
+    nums.push_back(1);
+    nums.push_back(2);
+    nums.push_back(2);
+    nums.push_back(1);
+    ASSERT_EQ(3, rob(nums)); 
+}
+
+TEST(YourTest, Case3) {
+    std::vector<int> nums;
+    nums.push_back(2);
+    nums.push_back(1);
+    ASSERT_EQ(2, rob(nums)); 
+}
+
+TEST(YourTest, Case4) {
+    std::vector<int> nums;
+    nums.push_back(1);
+    nums.push_back(2);
+    ASSERT_EQ(2, rob(nums)); 
 }
 
 int main(int argc, char* argv[]) {
