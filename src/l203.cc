@@ -27,14 +27,11 @@ namespace {
     ListNode* removeElements(ListNode* head, int val) {
         ListNode dummy(0);
         dummy.next = head;
-        ListNode* pre = &dummy;
-        ListNode* cur = head;
-        while (cur != NULL) {
-            if (cur->val == val) {
-                pre->next = cur->next;
-                cur = pre->next;
+        ListNode* cur = &dummy;
+        while (cur->next != NULL) {
+            if (cur->next->val == val) {
+                cur->next = cur->next->next;
             } else {
-                pre = cur;
                 cur = cur->next;
             }
         }
