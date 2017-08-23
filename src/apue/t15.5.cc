@@ -15,7 +15,7 @@ int main() {
         printf("fork error\n"), exit(2);
     } else if (pid > 0) { // parent
         close(fd[0]);
-        write(fd[1], "hello world\n", 12);
+        write(fd[1], "hello pipe\n", 12);
     } else { // child
         close(fd[1]);
         int n = read(fd[0], line, MAXLINE);
