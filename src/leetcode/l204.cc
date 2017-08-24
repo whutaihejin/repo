@@ -8,18 +8,15 @@ namespace {
     int countPrimes(int n) {
         int count = 0;
         if (n <= 1) return count;
-        int* arr = new int[n];
-        for (int i = 2; i < n; ++i) {
-            arr[i] = true;
-        }
+        int* arr = new int[n]{0};
         for (int i = 2; i * i <  n; ++i) {
-            if (!arr[i]) continue;
+            if (arr[i] == 1) continue;
             for (int j = i * i; j < n; j += i) {
-                arr[j] = false;
+                arr[j] = 1;
             }
         }
         for (int i = 2; i <  n; ++i) {
-            if (arr[i]) count++;
+            if (arr[i] == 0) count++;
         }
         delete[] arr;
         return count;
