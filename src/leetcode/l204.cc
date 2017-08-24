@@ -5,20 +5,24 @@
 using namespace std;
 
 namespace {
-    bool isPrime(int n) {
-        if (n <= 3) return n > 1;
-        for (int i = 2; i <= sqrt(n); ++i) {
-            if (n % i == 0) return false;
-        }
-        return false;
-    }
-
     int countPrimes(int n) {
         int count = 0;
+        if (n <= 1) return count;
+        int* arr = new int[n];
         for (int i = 2; i < n; ++i) {
-            if (isPrime(i)) count++;
+            arr[i] = true;
         }
-        return count; 
+        for (int i = 2; i * i <  n; ++i) {
+            if (!arr[i]) continue;
+            for (int j = i * i; j < n; j += i) {
+                arr[j] = false;
+            }
+        }
+        for (int i = 2; i <  n; ++i) {
+            if (arr[i]) count++;
+        }
+        delete[] arr;
+        return count;
     }
 } // anonymous namespace
 
