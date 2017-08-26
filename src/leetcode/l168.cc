@@ -8,13 +8,9 @@ namespace {
     string convertToTitle(int n) {
         std::string title;
         for (int r; n > 0;) {
-            r = n % 26;
-            n /= 26;
-            if (r == 0) {
-                r = 26;
-                n -= 1;
-            }
-            title.push_back(r - 1 + 'A');
+            r = (n - 1) % 26;
+            n = (n - 1) / 26;
+            title.push_back(r + 'A');
         }
         std::reverse(title.begin(), title.end());
         return title;
