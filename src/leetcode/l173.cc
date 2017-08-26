@@ -1,63 +1,56 @@
 #include <iostream>
+#include <stack>
 
 #include <gtest/gtest.h>
 
 using namespace std;
 
-namespace {
-    
-    // Definition for binary tree
-    struct TreeNode {
-        int val;
-        TreeNode *left;
-        TreeNode *right;
-        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-    };
+// Definition for binary tree
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
 
-    class BSTIterator {
-    public:
-        BSTIterator(TreeNode *root) {
-            head_ = NULL;
-            Flat(head_, root);      
-        }
+class BSTIterator {
+public:
+    BSTIterator(TreeNode *root) {
+        pushAllLeft(root);
+    }
 
-        /** @return whether we have a next smallest number */
-        bool hasNext() {
-            return head_ != NULL;
-        }
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        return !stack_.empty(); 
+    }
 
-        /** @return the next smallest number */
-        int next() {
-            int val = head_->val;
-            head_ = head_->right;
-            return val;
-        }
+    /** @return the next smallest number */
+    int next() {
+        TreeNode* top = stack_.top();
+        stack_.pop();
+        pushAllLeft(top->right);
+        return top->val;
+    }
 
-        std::string toString() {
-            std::stringstream stream;
-            std::string sep = "";
-            while (hasNext()) {
-                stream << sep << next();    
-                sep = "->";
-            }
-            return stream.str();
+    std::string toString() {
+        std::stringstream stream;
+        std::string sep = "";
+        while (hasNext()) {
+            stream << sep << next();    
+            sep = "->";
         }
-    private:
-        TreeNode* head_;
-        
-        void Flat(TreeNode*& next, TreeNode* root) {
-            if (root == NULL) {
-                return;
-            }
-            Flat(next, root->right);
-            root->right = next;
-            if (next) next->left = root;
-            next = root;
-            Flat(next, root->left);
-        }
+        return stream.str();
+    }
+private:
+    std::stack<TreeNode*> stack_;
 
-    };
-} // anonymous namespace
+    void pushAllLeft(TreeNode* root) {
+        for (; root; root = root->left) {
+            stack_.push(root);
+        }
+    }
+
+};
 
 TEST(YourTest, Case0) {
     BSTIterator it(NULL);
@@ -113,7 +106,9 @@ TEST(YourTest, Case3) {
     root.right = &n2;
     
     BSTIterator it(&root);
-    while (it.hasNext()) std::cout << it.next() << std::endl;
+    std::string ret = it.toString();
+    std::cout << ret << std::endl;
+    ASSERT_EQ("1->2", ret); 
 }
 
 int main(int argc, char* argv[]) {
