@@ -1,45 +1,69 @@
 #include <iostream>
 #include "gtest/gtest.h"
 
+#include <string>
 #include <vector>
-#include <unordered_set>
+#include <stdint.h>
+#include <stdlib.h> // for abs
+#include <unordered_map>
 
 using namespace std;
 
 namespace {
-    string fraction(int x, int y) {
-        std::vector<int> vec;
-        std::unordered_set<int> unset;
-        std::unordered_set<int>::iterator it;
-        x *= 10;
-        int div = 0;
-        while (x != 0) {
-            while (x < y) {
-                x *= 10;
-                vec.push_back(0);
-            }
-            div = x / y;
-            if ((it = unset.find(div)) != unset.end()) break;
-            unset.insert(div);
-            vec.push_back(div);
-            x = x % y;
-        }
-        int size = x == 0 ? vec.size() : vec.size() + 2;
-        std::string ret(size, '0');
-        for (size_t i = 0, j = 0; i < vec.size(); ++i) {
-            if (x != 0 && vec[i] == div) ret[j++] = '(';
-            ret[j] += vec[i];
-        }
-        if (x != 0) ret[ret.size() - 1] = ')';
-        return ret;
-    }
     string fractionToDecimal(int numerator, int denominator) {
-        return "";
+        if (numerator == 0) return "0";
+        std::string ret;
+        int64_t x = numerator, y = denominator;
+        // determine the sign
+        if ((x > 0) ^ (y > 0)) ret.push_back('-');
+        x = abs(x), y = abs(y);
+        ret += std::to_string(x / y);
+        // in case no fractional part
+        if (x % y == 0) return ret;
+
+        ret.push_back('.');
+        std::unordered_map<int, int> map;
+        for (int64_t r = x % y; r; r %= y) {
+            if (map.count(r) == 1) {
+                ret.insert(map[r], 1, '(');
+                ret.push_back(')');
+                break;
+            }
+            map[r] = ret.size();
+            r *= 10;
+            ret.push_back(r / y + '0');
+        }
+        return ret;
+        
     }
 } // anonymous namespace
 
 TEST(fractionToDecimalTest, Case0) {
+    ASSERT_EQ("0", fractionToDecimal(0, -3)); 
+    ASSERT_EQ("0", fractionToDecimal(0, -1));
+    ASSERT_EQ("0", fractionToDecimal(0, 1));
+    ASSERT_EQ("0", fractionToDecimal(0, 3));
+    ASSERT_EQ("-0.(3)", fractionToDecimal(-1, 3));
+    ASSERT_EQ("0.(3)", fractionToDecimal(-1, -3));
+    ASSERT_EQ("-0.(3)", fractionToDecimal(1, -3));
+    ASSERT_EQ("0.(3)", fractionToDecimal(1, 3));
+    ASSERT_EQ("-2147483648", fractionToDecimal(-2147483648, 1));
+    ASSERT_EQ("2147483648", fractionToDecimal(-2147483648, -1));
+    ASSERT_EQ("0.(01)", fractionToDecimal(1, 99));
+    ASSERT_EQ("0.01", fractionToDecimal(1, 100));
+    /*ASSERT_EQ("(01)", fraction(1, 99)); 
     ASSERT_EQ("(3)", fraction(1, 3)); 
+    ASSERT_EQ("(6)", fraction(2, 3)); 
+    ASSERT_EQ("5", fraction(1, 2)); 
+    ASSERT_EQ("(142857)", fraction(1, 7)); 
+    ASSERT_EQ("01", fraction(1, 100)); 
+    ASSERT_EQ("", fraction(0, 100)); 
+    ASSERT_EQ("2", fractionToDecimal(2, 1)); 
+    ASSERT_EQ("0.5", fractionToDecimal(1, 2)); 
+    ASSERT_EQ("0.(6)", fractionToDecimal(2, 3)); 
+    ASSERT_EQ("0", fractionToDecimal(0, 2));
+    ASSERT_EQ("2147483648", fractionToDecimal(-2147483648, -1));
+    ASSERT_EQ("-2147483648", fractionToDecimal(-2147483648, 1));*/
 }
 
 int main(int argc, char* argv[]) {
