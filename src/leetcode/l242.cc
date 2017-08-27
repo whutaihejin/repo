@@ -6,15 +6,16 @@ using namespace std;
 
 namespace {
   bool isAnagram(string s, string t) {
+    const int SIZE = 256;
     if (s.size() != t.size()) return false;
     if (s.empty()) return true;
-    unsigned char map[256] = {0};
-    unsigned char rmap[256] = {0};
+    unsigned char map[SIZE] = {0};
+    unsigned char rmap[SIZE] = {0};
     for (int i = 0; i < s.size(); ++i) {
       map[(unsigned char)s[i]]++;
       rmap[(unsigned char)t[i]]++;
     }
-    for (int i = 0; i < 256; ++i) {
+    for (int i = 0; i < SIZE; ++i) {
       if (map[i] != rmap[i]) return false;
     }
     return true;
