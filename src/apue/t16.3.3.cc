@@ -29,5 +29,6 @@ int main() {
   for (; ent; ent = gethostent()) {
     printf("entry> %s\n", format(ent).c_str());
   }
+  endhostent();
   return 0;
 }
