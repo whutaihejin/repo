@@ -44,6 +44,20 @@ int main() {
     memset(&addr, 0, sizeof(addr));
     printf("inet_ntoa=%s\n", inet_ntoa(addr));
 
+    // for inet_pton
+    if (inet_pton(AF_INET, strptr, &addr) != 1) {
+        printf("%s inet_pton error\n", strptr);
+    }
+    if (inet_pton(AF_INET, invalid_str, &addr) != 1) {
+        printf("%s inet_pton error\n", invalid_str);
+    }
+
+    // for inet_ntop
+    char buf[INET_ADDRSTRLEN] = {0};
+    if (inet_ntop(AF_INET, &addr, buf, sizeof(buf)) != NULL) {
+        printf("inet_ntop %s\n", buf);
+    }
+
     return 0;
 }
 
