@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h> // for exit
 #include <unistd.h>  // for write & close
 #include <time.h> // for time & ctime
 #include <string.h> // for memset
@@ -9,6 +10,9 @@
 #define MAX_LISTEN_QUEUE 100
 
 int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        printf("usage: %s <listen_port>\n", argv[0]), exit(1);
+    }
     char buffer[MAX_BUFFER_SIZE] = {0};
 
     int listen_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -16,7 +20,7 @@ int main(int argc, char* argv[]) {
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port = htons(13);
+    servaddr.sin_port = htons(atoi(argv[1]));
 
     bind(listen_fd, (struct sockaddr*)&servaddr, sizeof(servaddr));
 

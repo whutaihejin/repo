@@ -10,8 +10,8 @@
 #define MAX_LISTEN_QUEUE 100
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        printf("usage: argv[0] <ip_address>\n"), exit(1);
+    if (argc != 3) {
+        printf("usage: argv[0] <ip_address> <port>\n"), exit(1);
     }
 
     int sock_fd = 0;
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     struct sockaddr_in servaddr;
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(13);
+    servaddr.sin_port = htons(atoi(argv[2]));
     if (inet_pton(AF_INET, argv[1], &servaddr.sin_addr) <= 0) {
         printf("inet_pton error\n"), exit(1);
     }
