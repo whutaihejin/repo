@@ -6,6 +6,7 @@
 #include <string.h> // for memset
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 
 #define MAX_BUFFER_SIZE 1024
 #define MAX_LISTEN_QUEUE 100
@@ -27,10 +28,20 @@ int main(int argc, char* argv[]) {
         printf("bind error: %s\n", strerror(errno)), exit(1);
     }
 
-    listen(listen_fd, MAX_LISTEN_QUEUE);
+    if (listen(listen_fd, MAX_LISTEN_QUEUE) != 0) {
+        printf("listen error: %s\n", strerror(errno)), exit(1);
+    }
 
+    struct sockaddr_in client_addr;
+    socklen_t client_addr_len = 0;
     for (;;) {
-        int connect_fd = accept(listen_fd, (struct sockaddr*)NULL, NULL);
+        client_addr_len = sizeof(client_addr);
+        int connect_fd = accept(listen_fd, (struct sockaddr*)&client_addr, &client_addr_len);
+
+        // show information about client
+        printf("request from %s port %d\n", inet_ntop(AF_INET, &client_addr.sin_addr, buffer, sizeof(buffer)), ntohs(client_addr.sin_port));
+
+        // handle the request
         time_t ticks = time(NULL);
         snprintf(buffer, MAX_BUFFER_SIZE, "%.24s\r\n", ctime(&ticks));
         write(connect_fd, buffer, strlen(buffer));
