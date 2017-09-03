@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <errno.h>
 #include <stdlib.h> // for exit
 #include <unistd.h>  // for write & close
 #include <time.h> // for time & ctime
@@ -22,7 +23,9 @@ int main(int argc, char* argv[]) {
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servaddr.sin_port = htons(atoi(argv[1]));
 
-    bind(listen_fd, (struct sockaddr*)&servaddr, sizeof(servaddr));
+    if (bind(listen_fd, (struct sockaddr*)&servaddr, sizeof(servaddr)) != 0) {
+        printf("bind error: %s\n", strerror(errno)), exit(1);
+    }
 
     listen(listen_fd, MAX_LISTEN_QUEUE);
 
