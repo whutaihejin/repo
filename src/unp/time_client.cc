@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <errno.h> // for strerror
 #include <stdlib.h> // for exit
 #include <unistd.h>  // for write & close
 #include <string.h> // for memset
@@ -29,7 +30,7 @@ int main(int argc, char* argv[]) {
 
     // connect to the server
     if (connect(sock_fd, (struct sockaddr*)&servaddr, sizeof(servaddr)) < 0) {
-        printf("connect error\n"), exit(1);
+        printf("connect error: %s\n", strerror(errno)), exit(1);
     }
 
     int n = 0;
