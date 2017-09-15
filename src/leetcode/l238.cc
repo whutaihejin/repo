@@ -16,7 +16,7 @@ namespace {
         val = 1;
         for (int i = result.size() - 1; i >= 0; --i) {
             result[i] *= val;
-            val = nums[i];
+            val *= nums[i];
         }
         return result;
     }
