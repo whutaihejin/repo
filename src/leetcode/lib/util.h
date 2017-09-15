@@ -12,6 +12,8 @@ namespace leetcode {
   
   std::string toString(const std::vector<std::string>& vec);
 
+  bool Equal(const std::vector<int>& v1, const std::vector<int>& v2);
+
 } // namespace leetcode
 
 #endif // LIB_UTIL_H
