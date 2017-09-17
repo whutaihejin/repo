@@ -7,8 +7,6 @@ using namespace std;
 namespace {
     bool isValidSerialization(string preorder) {
         static const std::string sentinel = "#";
-        if (preorder.empty()) return false;
-        if (preorder.size() == 1U) return preorder == sentinel;
         std::stack<string> stack;
         for (size_t l = 0; l < preorder.size();) {
             size_t h = l;
@@ -18,17 +16,19 @@ namespace {
             if (val != sentinel) {
                 stack.push(val);
             } else {
-                if (!stack.empty() && stack.top() == sentinel) {
+                if (stack.empty() || stack.top() != sentinel) {
+                    stack.push(val);
+                    continue;
+                }
+                while (!stack.empty() && stack.top() == sentinel) {
                     stack.pop();
                     if (stack.empty()) return false;
                     stack.pop();
-                    stack.push(sentinel);
-                } else {
-                    stack.push(val);
                 }
+                stack.push(sentinel);
             }
         }
-        return stack.empty();
+        return stack.size() == 1U && stack.top() == sentinel;
     }
 } // anonymous namespace
 
