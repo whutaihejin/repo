@@ -34,6 +34,8 @@ namespace {
 
 TEST(isValidSerializationTest, Case0) {
     ASSERT_TRUE(isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#"));
+    ASSERT_FALSE(isValidSerialization("1,#"));
+    ASSERT_FALSE(isValidSerialization("9,#,#,1"));
 }
 
 int main(int argc, char* argv[]) {
