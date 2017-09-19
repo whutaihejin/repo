@@ -47,12 +47,12 @@ namespace {
                operand.push(val);
                continue;
            }
-           if (!operatox.empty() && hightPriority(operatox.top(), ch)) {
+           while (!operatox.empty() && hightPriority(operatox.top(), ch)) {
                doCal(operand, operatox);
            }
            operatox.push(ch);
        }
-       while (!operatox.empty()) {
+       if (!operatox.empty()) {
            doCal(operand, operatox);
        }
        return operand.top();
