@@ -52,7 +52,7 @@ namespace {
            }
            operatox.push(ch);
        }
-       if (!operatox.empty()) {
+       while (!operatox.empty()) {
            doCal(operand, operatox);
        }
        return operand.top();
