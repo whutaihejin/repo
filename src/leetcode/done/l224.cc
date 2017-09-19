@@ -15,6 +15,23 @@ namespace {
                     break;
                 case '+':
                 case '-':
+                    if (!operatox.empty() && operatox.top() != '(') {
+                        int right = operand.top(); operand.pop();
+                        int left = operand.top(); operand.pop();
+                        char op = operatox.top(); operatox.pop();
+                        switch (op) {
+                            case '+':
+                                operand.push(left + right);
+                                break;
+                            case '-':
+                                operand.push(left - right);
+                                break;
+                            default:
+                                exit(1);
+                        }
+                    }
+                    operatox.push(ch);
+                    break;
                 case '(':
                     operatox.push(ch);
                     break;
