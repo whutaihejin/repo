@@ -1,26 +1,23 @@
 #include <iostream>
-#include <unordered_map>
-
 #include <gtest/gtest.h>
 
 using namespace std;
 
 namespace {
     int majorityElement(vector<int>& nums) {
-        std::unordered_map<int, int> map;
-        std::unordered_map<int, int>::iterator it;
+        int count = 0;
+        int major = 0;
         for (size_t i = 0; i < nums.size(); ++i) {
-            if ((it = map.find(nums[i])) != map.end()) {
-                it->second++;
+            if (count == 0) {
+                count++;
+                major = nums[i];
+            } else if (major == nums[i]) {
+                count++;
             } else {
-                map[nums[i]] = 1;
+                count--;
             }
         }
-        int threshold = nums.size() / 2;
-        for (it = map.begin(); it != map.end(); ++it) {
-            if (it->second > threshold) return it->first;
-        }
-        return -1;
+        return major;
     }
 } // anonymous namespace
 
