@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -8,18 +7,18 @@ namespace {
     vector<int> majorityElement(vector<int>& nums) {
         vector<int> result;
         int candidatex = 0, countx = 0;
-        int candidatey = 0, county = 0;
+        int candidatey = 1, county = 0;
         for (size_t i = 0; i < nums.size(); ++i) {
-            if (countx == 0) {
+            if (candidatex == nums[i]) {
+              countx++;
+            } else if (candidatey == nums[i]) {
+              county++;
+            } else if (countx == 0) {
                 countx++;
                 candidatex = nums[i];
-            } else if (candidatex == nums[i]) {
-                countx++;
             } else if (county == 0) {
                 county++;
                 candidatey = nums[i];
-            } else if (candidatey == nums[i]) {
-                county++;
             } else {
                 countx--;
                 county--;
@@ -27,8 +26,8 @@ namespace {
         }
         size_t x = 0, y = 0;
         for (size_t i = 0; i < nums.size(); ++i) {
-            if (countx > 0 && nums[i] == candidatex) x++;
-            if (county > 0 && nums[i] == candidatey) y++;
+            if (nums[i] == candidatex) x++;
+            if (nums[i] == candidatey) y++;
         }
         if (x > nums.size() / 3) result.push_back(candidatex);
         if (y > nums.size() / 3) result.push_back(candidatey);
