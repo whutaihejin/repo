@@ -35,5 +35,14 @@ namespace leetcode {
       return true;
   }
 
+  void convert(std::vector<std::string>& source, std::vector<std::vector<char> >& matrix) {
+    std::vector<char> row;
+    for (size_t i = 0; i < source.size(); ++i) {
+      std::string& l = source[i];
+      row.assign(&l[0], &l[0] + l.size());
+      matrix.push_back(row);
+    }
+  }
+
 
 } // namespace leetcode

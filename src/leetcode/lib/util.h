@@ -14,6 +14,8 @@ namespace leetcode {
 
   bool Equal(const std::vector<int>& v1, const std::vector<int>& v2);
 
+  void convert(std::vector<std::string>& source, std::vector<std::vector<char> >& matrix);
+
 } // namespace leetcode
 
 #endif // LIB_UTIL_H
