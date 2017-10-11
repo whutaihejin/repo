@@ -18,23 +18,6 @@ namespace {
         };
     };
 
-    void Tokenize(std::string& input, std::vector<Token>& tokens) {
-        for (size_t low = 0, high = 0; low < input.size();) {
-            char ch = input[low];
-            if (ch == '+' || ch == '-' || ch == '*') {
-                tokens.push_back(Token(Token::OPERATOX, ch));
-                low++;
-                continue;
-            }
-            int val = 0;
-            for (high = low; high < input.size() && isdigit(input[high]); high++) {
-                val = val * 10 + input[high] - '0';
-            }
-            tokens.push_back(Token(Token::OPERAND, val));
-            low = high;
-        }
-    }
-
     vector<int> cal(std::vector<Token>& tokens, int low, int high) {
         std::vector<int> results;
         if (low == high) {
@@ -61,7 +44,20 @@ namespace {
 
     vector<int> diffWaysToCompute(string input) {
         std::vector<Token> tokens;
-        Tokenize(input, tokens);
+        for (size_t low = 0, high = 0; low < input.size();) {
+            char ch = input[low];
+            if (ch == '+' || ch == '-' || ch == '*') {
+                tokens.push_back(Token(Token::OPERATOX, ch));
+                low++;
+                continue;
+            }
+            int val = 0;
+            for (high = low; high < input.size() && isdigit(input[high]); high++) {
+                val = val * 10 + input[high] - '0';
+            }
+            tokens.push_back(Token(Token::OPERAND, val));
+            low = high;
+        }
         return cal(tokens, 0, tokens.size() - 1);
     }
 } // anonymous namespace
