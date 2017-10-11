@@ -71,8 +71,8 @@ TEST(diffWaysToComputeTest, Case0) {
     ASSERT_EQ("123", leetcode::toString(r));
     r = diffWaysToCompute("5*2+3");
     ASSERT_EQ("25,13", leetcode::toString(r));
-    r = diffWaysToCompute("2*3+4*5");
-    ASSERT_EQ("-34,-14,-10,-10,10", leetcode::toString(r));
+    r = diffWaysToCompute("2*3-4*5");
+    ASSERT_EQ("-34,-10,-14,-10,10", leetcode::toString(r));
 }
 
 int main(int argc, char* argv[]) {
