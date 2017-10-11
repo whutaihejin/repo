@@ -14,10 +14,10 @@ namespace {
          if (pre && pre->val == root->val) {
              count++;
          } else {
-             span = std::max(count, span);
              count = 1;
              pre = root;
          }
+         span = std::max(count, span);
          findMaxSpan(root->right, pre, count, span);
      }
      
@@ -27,10 +27,10 @@ namespace {
          if (pre && pre->val == root->val) {
              count++;
          } else {
-             if (count == span) result.push_back(pre->val);
              count = 1;
              pre = root;
          }
+         if (count == span) result.push_back(pre->val);
          findMaxMode(root->right, pre, count, span, result);
      }
 
