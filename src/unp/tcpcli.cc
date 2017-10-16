@@ -19,7 +19,7 @@ ssize_t readline(int fd, void* buf, ssize_t maxlen);
 void str_cli(FILE* in, int sockfd);
 
 int main(int argc, char* argv[]) {
-  std::string host;
+  std::string host = "127.0.0.1";
   int port = 0, opt = 0;
   while ((opt = getopt(argc, argv, "h:p:v")) != -1) {
     switch(opt) {
