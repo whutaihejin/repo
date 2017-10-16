@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -5,12 +6,15 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#define MAXLINE 1024
+
 void Usage() {
   printf("usage:\n");
   printf("  -p <port>\n");
   printf("  -v show this help message\n");
 }
 
+void str_echo(int fd);
 
 int main(int argc, char* argv[]) {
   int port = 0, opt = 0;
@@ -25,6 +29,10 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
   }
+  if (port <= 0) {
+    Usage(), exit(1);
+  }
+  printf("listen on port: %d\n", port);
   int listen_fd = 0;
   if ((listen_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
     printf("socket error\n"), exit(1);
@@ -32,6 +40,44 @@ int main(int argc, char* argv[]) {
   struct sockaddr_in cliaddr, servaddr;
   memset(&servaddr, 0, sizeof(servaddr));
   servaddr.sin_family = AF_INET;
+  servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+  servaddr.sin_port = htons(port);
+
+  if (bind(listen_fd, (struct sockaddr*)&servaddr, sizeof(servaddr)) != 0) {
+    printf("bind error\n"), exit(1);
+  }
+  if (listen(listen_fd, 512) != 0) {
+    printf("listen error\n"), exit(1);
+  }
+ 
+  pid_t pid;
+  for (;;) {
+    socklen_t clilen = sizeof(cliaddr);
+    int conn_fd = 0;
+    if ((conn_fd = accept(listen_fd, (struct sockaddr*)&cliaddr, &clilen)) == -1) {
+      printf("accept error\n"), exit(1);
+    }
+    if ((pid = fork()) == 0) {
+      close(listen_fd);
+      str_echo(conn_fd);
+      exit(0);
+    }
+    close(conn_fd);
+  }
 
   return 0;
+}
+
+void str_echo(int fd) {
+  ssize_t n;
+  char buf[MAXLINE];
+again:
+  while ((n = read(fd, buf, MAXLINE)) > 0) {
+    write(fd, buf, n);
+  }
+  if (n < 0 && errno == EINTR) {
+    goto again;
+  } else if (n < 0) {
+    printf("read error\n"), exit(1);
+  }
 }
