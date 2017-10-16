@@ -90,5 +90,6 @@ again:
       return -1;
     }
   }
+  *ptr = 0;
   return n;
 }
