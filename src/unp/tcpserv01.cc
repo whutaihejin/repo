@@ -96,4 +96,5 @@ void sig_child(int signo) {
   int stat;
   pid = wait(&stat);
   printf("receive %d child %d terminated\n",signo, pid);
+  // fflush(stdout);
 }
