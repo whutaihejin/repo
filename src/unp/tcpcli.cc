@@ -12,6 +12,7 @@
 
 void Usage() {
   printf("usage:\n");
+  printf("  -h <host>\n");
   printf("  -p <port>\n");
   printf("  -v show this help message\n");
 }
