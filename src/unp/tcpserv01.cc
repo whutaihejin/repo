@@ -63,15 +63,20 @@ int main(int argc, char* argv[]) {
   for (;;) {
     socklen_t clilen = sizeof(cliaddr);
     int conn_fd = 0;
-    if ((conn_fd = accept(listen_fd, (struct sockaddr*)&cliaddr, &clilen)) == -1) {
-      printf("accept error\n"), exit(1);
+    for (;;) {
+      if ((conn_fd = accept(listen_fd, (struct sockaddr*)&cliaddr, &clilen)) < 0) {
+        if (errno == EINTR) {
+          continue;
+        }
+        printf("accept error\n"), exit(1);
+      }
+      if ((pid = fork()) == 0) {
+        close(listen_fd);
+        str_echo(conn_fd);
+        exit(0);
+      }
+      close(conn_fd);
     }
-    if ((pid = fork()) == 0) {
-      close(listen_fd);
-      str_echo(conn_fd);
-      exit(0);
-    }
-    close(conn_fd);
   }
 
   return 0;
