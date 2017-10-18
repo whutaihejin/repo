@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h> // memset
+#include <sys/wait.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
@@ -15,6 +16,7 @@ void Usage() {
 }
 
 void str_echo(int fd);
+void sig_child(int signo);
 
 int main(int argc, char* argv[]) {
   int port = 0, opt = 0;
@@ -49,6 +51,13 @@ int main(int argc, char* argv[]) {
   if (listen(listen_fd, 512) != 0) {
     printf("listen error\n"), exit(1);
   }
+  struct sigaction act, oact;
+  act.sa_handler = sig_child;
+  sigemptyset(&act.sa_mask);
+  act.sa_flags = 0;
+  if (sigaction(SIGCHLD, &act, &oact) < 0) {
+    printf("sigaction error\n"), exit(1);
+  }
  
   pid_t pid;
   for (;;) {
@@ -80,4 +89,11 @@ again:
   } else if (n < 0) {
     printf("read error\n"), exit(1);
   }
+}
+
+void sig_child(int signo) {
+  pid_t pid;
+  int stat;
+  pid = wait(&stat);
+  printf("receive %d child %d terminated\n",signo, pid);
 }
