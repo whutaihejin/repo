@@ -40,8 +40,9 @@ int main(int argc, char* argv[]) {
   if (host.empty() || port == 0) {
     Usage(), exit(1);
   }
-  int sockfd[5] = {0};
-  for (int i = 0; i < 5; ++i) {
+  const static int LEN = 1;
+  int sockfd[LEN] = {0};
+  for (int i = 0; i < LEN; ++i) {
   sockfd[i] = socket(AF_INET, SOCK_STREAM, 0);
   if (sockfd[i] == -1) {
     printf("socket error\n"), exit(1);
@@ -69,7 +70,7 @@ void str_cli(FILE* in, int sockfd) {
     write(sockfd, sendline, strlen(sendline));
 
     if (readline(sockfd, recvline, MAXLINE) == 0) {
-      printf("str_cli: server terminated prematurely\n");
+      printf("str_cli: server terminated prematurely\n"), exit(1);
     }
     fputs(recvline, stdout);
   }
