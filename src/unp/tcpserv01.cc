@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string.h> // memset
 #include <sys/wait.h>
+#include <signal.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
