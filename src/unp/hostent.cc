@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
         }
         break;
       default:
+        printf("unknown address type\n");
         break;
     }
   }
