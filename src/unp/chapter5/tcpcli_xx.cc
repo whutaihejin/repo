@@ -7,7 +7,6 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <errno.h>
-#include <fcntl.h> // fcntl
 
 #define MAXLINE 1024
 
@@ -65,60 +64,40 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-#define BUFSIZE 1024
-
 void str_cli(FILE* in, int sockfd) {
-    int val = fcntl(sockfd, F_GETFL, 0);
-    fcntl(sockfd, F_SETFL, val | O_NONBLOCK);
+  char sendline[MAXLINE], recvline[MAXLINE];
+  while (fgets(sendline, MAXLINE, in) != NULL) {
+    write(sockfd, sendline, strlen(sendline));
+    sleep(1);
+    write(sockfd, sendline + 1, strlen(sendline) - 1);
 
-    val = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, val | O_NONBLOCK);
-
-    val = fcntl(STDOUT_FILENO, F_GETFL, 0);
-    fcntl(STDOUT_FILENO, F_SETFL, val | O_NONBLOCK);
-
-    char buf_to[BUFSIZE], buf_fr[BUFSIZE];
-    char *to_in, *to_out, *fr_in, *fr_out;
-
-    // init buf pointers
-    to_in = to_out = buf_to;
-    fr_in = fr_out = buf_fr;
-
-    // max fd for select
-    int maxfd = std::max(sockfd, std::max(STDIN_FILENO, STDOUT_FILENO));
-
-    // fd set for read and write
-    fd_set rset, wset;
-
-    // std input
-    int stdin_eof = 0;
-
-    for (;;) {
-        FD_ZERO(&rset);
-        FD_ZERO(&wset);
-
-        // read from stdin
-        if (stdin_eof == 0 && to_in < &buf_to[BUFSIZE]) {
-            FD_SET(STDIN_FILENO, &rset);
-        }
-        // read from socket
-        if (fr_in < &buf_fr[BUFSIZE]) {
-            FD_SET(sockfd, &rset);
-        }
-        // data to write to socket
-        if (to_out != to_in) {
-            FD_SET(sockfd, &wset);
-        }
-        // data to write to stdout
-        if (fr_out != fr_in) {
-            FD_SET(STDOUT_FILENO, &wset);
-        }
-
-        // select
-        select(maxfd + 1, &rset, &wset, NULL, NULL);
-
+    if (readline(sockfd, recvline, MAXLINE) == 0) {
+      printf("str_cli: server terminated prematurely\n"), exit(1);
     }
+    fputs(recvline, stdout);
+  }
+}
 
-
-
+ssize_t readline(int fd, void* buf, ssize_t maxlen) {
+  char ch, *ptr = (char*)buf;
+  ssize_t n = 0, rc = 0;
+  for (n = 1; n < maxlen; ++n) {
+again:
+    if ((rc = read(fd, &ch, 1)) == 1) {
+      *ptr++ = ch;
+      if (ch == '\n') {
+        break;
+      }
+    } else if (rc == 0) {
+      *ptr = 0;
+      return n - 1;
+    } else {
+      if (errno == EINTR) {
+        goto again;
+      }
+      return -1;
+    }
+  }
+  *ptr = 0;
+  return n;
 }
