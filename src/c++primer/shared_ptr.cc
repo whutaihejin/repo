@@ -7,8 +7,10 @@ int main() {
     std::shared_ptr<std::string> p1;
     std::shared_ptr<std::list<int>> p2;
 
-    if (p1 && p1->empty()) {
+    if (p1) {
         *p1 = "hi";
+    } else {
+        std::cout << "p1 not pointer to anything" << std::endl;
     }
     std::cout << p1 << std::endl;
 
