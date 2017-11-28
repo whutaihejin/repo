@@ -11,5 +11,10 @@ int main() {
         *p1 = "hi";
     }
     std::cout << p1 << std::endl;
+
+    std::shared_ptr<std::string> px = std::make_shared<std::string>("hi");
+    if (px && !px->empty()) {
+        std::cout << "px=" << *px << std::endl;
+    }
     return 0;
 }
