@@ -45,10 +45,13 @@ foreach(include_entry ${include_list})
   message(STATUS ${include_entry})
 endforeach()
 
+# add_subdirectory(${library_home}/gflags-2.2.1)
+
 # for the source 
 file(GLOB source_list 
     ${work_home}/src/leetcode/*.cc 
     ${work_home}/src/apue/*.cc
+    ${work_home}/src/c++primer/*.cc
     ${work_home}/src/unp/*.cc)
 
 # for compile the source
