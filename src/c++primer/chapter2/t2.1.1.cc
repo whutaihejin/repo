@@ -22,5 +22,10 @@ int main() {
     // int32_t
     print_size(int32_t);
     print_size(int64_t);
+
+    print_size(long double);
+    print_size(1.0E1L);
+    print_size(3.14L);
+    print_size(3.14);
     return 0;
 }
