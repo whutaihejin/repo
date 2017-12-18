@@ -3,6 +3,7 @@
 int main() {
   int x = 0;
   goto end;
+  // note: jump bypasses variable initialization
   // int y = 1;
   // std::cout << y << std::endl;
 end:
