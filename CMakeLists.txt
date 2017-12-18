@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 # build flags
 #option(TARGET_DEBUG_MODE "Build the project with debug mode" OFF)
-set(CMAKE_CXX_FLAGS "-g -pipe -std=c++0x -fPIC -DGTEST_HAS_TR1_TUPLE=0 -DHAVE_POSIX_REGEX")
+set(CMAKE_CXX_FLAGS "-g -pipe -std=c++11 -fPIC -DGTEST_HAS_TR1_TUPLE=0 -DHAVE_POSIX_REGEX")
 if (TARGET_DEBUG_MODE) 
   set(CMAKE_BUILD_TYPE "Debug")
   set(CMAKE_CXX_FLAGS_DEBUG "-W -Wall -O0 -ftest-coverage -fprofile-arcs")
