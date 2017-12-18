@@ -16,6 +16,11 @@ int f1() {
 }
 
 int main() {
+  try {
+    int z = 3 / 0;
+  } catch(...) {
+    std::cout << "catch exception" << std::endl;
+  }
   f1();
   int x = 0, y = 0;
   std::cout << "Enter two numbers:" << std::endl;
