@@ -1,4 +1,5 @@
 #include <thread>
+#include <memory>
 #include <unistd.h>
 #include <iostream>
 
@@ -48,6 +49,10 @@ private:
   int val_;
 };
 
+void MoveTask(std::unique_ptr<Data> p) {
+  std::cout << p->lng << " " << p->lat << std::endl;
+}
+
 int main() {
   std::thread thread(Task, 3, "hello");
   thread.join();
@@ -75,5 +80,12 @@ int main() {
   DoTask do_task;
   std::thread t2(&DoTask::Display, &do_task);
   t2.join();
+
+  //
+  std::unique_ptr<Data> p(new Data{88, 88});
+  // std::thread t3(MoveTask, p);
+  std::thread t3(MoveTask, std::move(p));
+  t3.join();
+  std::cout << (p == NULL ? "true" : "false") << std::endl;
   return 0;
 }
