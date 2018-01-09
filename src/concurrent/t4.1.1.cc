@@ -38,9 +38,36 @@ void Task2() {
     }
 }
 
+std::mutex bus_mutex;
+std::condition_variable bus_condition;
+int station_arrived = 0;
+
+void TaskSeller() {
+    for (;;) {
+        std::unique_lock<std::mutex> lock(bus_mutex);
+        bus_condition.wait(lock, []() { return station_arrived == 1; });
+        std::cout << std::this_thread::get_id() << " seller seller done" << std::endl;
+        std::cout << "------------------------------" << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        station_arrived = 0;
+        bus_condition.notify_one();
+    }
+}
+
+void TaskDriver() {
+    for (;;) {
+        std::unique_lock<std::mutex> lock(bus_mutex);
+        bus_condition.wait(lock, []() { return station_arrived == 0; });
+        std::cout << std::this_thread::get_id() << " driver driver done" << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        station_arrived = 1;
+        bus_condition.notify_one();
+    }
+}
+
 int main() {
-    std::thread thread2(Task2);
-    std::thread thread1(Task1);
+    std::thread thread2(TaskSeller);
+    std::thread thread1(TaskDriver);
     thread1.join();
     thread2.join();
     return 0;
