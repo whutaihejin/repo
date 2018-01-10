@@ -2,6 +2,7 @@
 #include <thread>
 #include <mutex>
 #include <list>
+#include <algorithm>
 
 std::list<int> cars;
 std::mutex cars_mutext;
