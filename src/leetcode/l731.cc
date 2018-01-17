@@ -44,7 +44,7 @@ public:
     bool book(int start, int end) {
         int inter_count = 1;
         Node x(start, end);
-        if (BookHelper(root_, x, inter_count)) {
+        if (!BookHelper(root_, x, inter_count)) {
             return false;
         }
         Node* root = root_;
