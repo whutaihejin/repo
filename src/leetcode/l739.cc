@@ -1,47 +1,46 @@
 #include <iostream>
-
+#include <map>
+#include <list>
 #include <gtest/gtest.h>
 
 using namespace std;
 
 namespace {
 	vector<int> dailyTemperatures(vector<int>& temperatures) {
-        std::unordered_map<int, std::vector<int>> map;
+        std::vector<int> result(temperatures.size());
+        std::map<int, std::list<int>> map;
         for (int i = 0; i < temperatures.size(); ++i) {
-            auto it = map.find(temperatures[i]);
-            if (it == map.end()) {
-                std::vector<int> index;
-                index.push_back(i);
-                map[temperatures[i]] = index;
-            } else {
-                it->second.push_back(i);
-            }
-        }
-        std:vector<int> rst;
-        for (int i = 0; i < temperatures.size(); ++i) {
-            bool cond = true;
-            for (int val = temperatures[i] + 1; val <= 100 && cond; ++val) {
-                auto it = map.find(val);
-                if (it != map.end()) {
-                    std::vector<int>& index = it->second;
-                    for (auto iter = index.begin(); iter != index.end(); ++iter) {
-                        if (*iter > val) {
-                            rst.push_back(*iter);
-                            cond = false;
-                            break;
-                        }
+            for (int val = temperatures[i] - 1; val >= 30; --val) {
+                auto iter = map.find(val);
+                if (iter != map.end()) {
+                    std::list<int>& index = iter->second;
+                    for (auto it = index.begin(); it != index.end();) {
+                        result[*it] = i - *it;
+                        it = index.erase(it);
                     }
                 }
             }
-            if (cond) {
-                rst.push_back(0);
+            auto it = map.find(temperatures[i]);
+            if (it != map.end()) {
+                it->second.push_back(i);
+            } else {
+                std::list<int> list;
+                list.push_back(i);
+                map.insert(std::make_pair(i, list));
             }
         }
-        return rst;
+        return result;
     } 
 } // anonymous namespace
 
 TEST(YourTest, Case0) {
+    std::vector<int> vec(10, 71);
+    vec.push_back(72);
+    const std::vector<int>& v = dailyTemperatures(vec);
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
     ASSERT_EQ(2, 2); 
 }
 
