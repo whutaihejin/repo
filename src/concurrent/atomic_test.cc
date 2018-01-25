@@ -38,5 +38,8 @@ int main() {
     std::cout << "x3.load()=" << x3.load() << std::endl;
     x3.store(12, std::memory_order_seq_cst);
     std::cout << "x3.load()=" << x3.load() << std::endl;
+    // --
+    int val = x3;
+    std::cout << "val=" << val << std::endl;
     return 0;
 }
