@@ -20,9 +20,9 @@ int main() {
     std::cout << std::boolalpha
         << "std::atomic<int> is lock free? "
         << std::atomic<int>{}.is_lock_free() << std::endl;
-    std::cout << "std::atomic<A> is lock free? "
-        << std::atomic<A>{}.is_lock_free() << std::endl;
-    std::cout << "std::atomic<B> is lock free? "
-        << std::atomic<B>{}.is_lock_free() << std::endl;
+    // std::cout << "std::atomic<A> is lock free? "
+    //     << std::atomic<A>{}.is_lock_free() << std::endl;
+    // std::cout << "std::atomic<B> is lock free? "
+    //     << std::atomic<B>{}.is_lock_free() << std::endl;
     return 0;
 }
