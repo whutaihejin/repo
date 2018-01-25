@@ -24,5 +24,19 @@ int main() {
     //     << std::atomic<A>{}.is_lock_free() << std::endl;
     // std::cout << "std::atomic<B> is lock free? "
     //     << std::atomic<B>{}.is_lock_free() << std::endl;
+    std::cout << "x3.load()=" << x3.load() << std::endl;
+    std::cout << "x3.load()=" << x3.load(std::memory_order_relaxed) << std::endl;
+    std::cout << "x3.load()=" << x3.load(std::memory_order_consume) << std::endl;
+    std::cout << "x3.load()=" << x3.load(std::memory_order_acquire) << std::endl;
+    std::cout << "x3.load()=" << x3.load(std::memory_order_seq_cst) << std::endl;
+    std::cout << "--- ---" << std::endl;
+    x3.store(12);
+    std::cout << "x3.load()=" << x3.load() << std::endl;
+    x3.store(12, std::memory_order_relaxed);
+    std::cout << "x3.load()=" << x3.load() << std::endl;
+    x3.store(12, std::memory_order_release);
+    std::cout << "x3.load()=" << x3.load() << std::endl;
+    x3.store(12, std::memory_order_seq_cst);
+    std::cout << "x3.load()=" << x3.load() << std::endl;
     return 0;
 }
