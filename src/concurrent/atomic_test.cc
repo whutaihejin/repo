@@ -41,5 +41,12 @@ int main() {
     // --
     int val = x3;
     std::cout << "val=" << val << std::endl;
+    int val2 = static_cast<int>(x3);
+    std::cout << "val2=" << val2 << std::endl;
+
+    // read-modify-write operation
+    std::cout << "x3.exchange(22)=" << x3.exchange(22) << std::endl;
+    std::cout << "x3.load()=" << x3.load() << std::endl;
+    
     return 0;
 }
