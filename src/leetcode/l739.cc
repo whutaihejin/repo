@@ -1,6 +1,5 @@
 #include <iostream>
-#include <map>
-#include <list>
+#include <stack>
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -8,26 +7,18 @@ using namespace std;
 namespace {
 	vector<int> dailyTemperatures(vector<int>& temperatures) {
         std::vector<int> result(temperatures.size());
-        std::map<int, std::list<int>> map;
+        std::stack<int> stack;
         for (int i = 0; i < temperatures.size(); ++i) {
-            for (int val = temperatures[i] - 1; val >= 30; --val) {
-                auto iter = map.find(val);
-                if (iter != map.end()) {
-                    std::list<int>& index = iter->second;
-                    for (auto it = index.begin(); it != index.end();) {
-                        result[*it] = i - *it;
-                        it = index.erase(it);
-                    }
+            while (stack.empty()) {
+                int top = stack.top();
+                int val = top >> 24, index = (0x00FFFFFF & top);
+                if (val >= temperatures[i]) {
+                    break;
                 }
+                result[index] = i - index;
             }
-            auto it = map.find(temperatures[i]);
-            if (it != map.end()) {
-                it->second.push_back(i);
-            } else {
-                std::list<int> list;
-                list.push_back(i);
-                map.insert(std::make_pair(i, list));
-            }
+            int val = (temperatures[i] << 24) | i;
+            stack.push(val);
         }
         return result;
     } 
