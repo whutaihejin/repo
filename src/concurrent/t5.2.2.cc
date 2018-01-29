@@ -6,6 +6,9 @@ public:
     // SpinLockMutex(): flag_{ATOMIC_FLAG_INIT} {}
     SpinLockMutex() {}
 
+    // By its very nature it does a busy-wait in lock(), so it's a poor
+    // choice if you expect there to be any degree fo contention,
+    // but it's enough to ensure mutual exclusion.
     void Lock() {
         while (flag_.test_and_set(std::memory_order_acquire)) {
             // ignore
