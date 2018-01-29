@@ -28,5 +28,17 @@ int main() {
        std::cout << "compare_exchange_weak fail" << std::endl;
     }
     std::cout << bbval << " " << expect << std::endl;
+
+    //
+    std::atomic<bool> atomic_v1(true);
+    std::atomic<bool> atomic_v2(false);
+    // copying variable of type 'std::atomic<bool>' invokes deleted constructor 
+    // std::atomic<bool> atomic_v3 = true;
+    // std::atomic<bool> atomic_v4 = false;
+    atomic_v2 = true;
+    std::cout << "atomic_v2=" << (atomic_v2 = true) << std::endl;
+    atomic_v1 = false;
+    std::cout << "atomic_v1=" << (atomic_v1 = false) << std::endl;
+
     return 0;
 }
