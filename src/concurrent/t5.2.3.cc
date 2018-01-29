@@ -39,6 +39,12 @@ int main() {
     std::cout << "atomic_v2=" << (atomic_v2 = true) << std::endl;
     atomic_v1 = false;
     std::cout << "atomic_v1=" << (atomic_v1 = false) << std::endl;
+    
+    std::cout << "exchange=" << atomic_v1.exchange(true, std::memory_order_acquire) << std::endl;
+    std::cout << "load=" << atomic_v1.load(std::memory_order_acquire) << std::endl;
+    std::cout << "exchange=" << atomic_v1.exchange(true, std::memory_order_acquire) << std::endl;
+    std::cout << "load=" << atomic_v1.load(std::memory_order_acquire) << std::endl;
+    std::cout << "exchange=" << atomic_v1.exchange(false, std::memory_order_acquire) << std::endl;
 
     return 0;
 }
