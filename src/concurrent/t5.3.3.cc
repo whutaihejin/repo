@@ -44,5 +44,6 @@ int main() {
     c.join();
     d.join();
     assert(z.load() != 0);
+    std::cout << "z.load()=" << z.load() << std::endl;
     return 0;
 }
