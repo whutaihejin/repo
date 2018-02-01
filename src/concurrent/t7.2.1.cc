@@ -15,6 +15,9 @@ public:
 
     int Pop(T& val) {
         Node* node = head_.load();
+        if (node == NULL) {
+            return -1;
+        }
         while (!head_.compare_exchange_weak(node, node->next_)) {
             // ignore
         }
@@ -31,11 +34,13 @@ private:
 
 LockfreeStack<int> stack;
 const int limit = 10;
+
 void Reader() {
     int val = 0;
-    for (int i = 0; i < limit; ++i) {
+    for (int i = 0; i < limit;) {
         if (stack.Pop(val) == 0) {
             std::cout << val << std::endl;
+            ++i;
         }
     }
 }
