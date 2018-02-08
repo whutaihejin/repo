@@ -26,6 +26,7 @@ int main(int argc, char** argv) {
     pto = &timeout;
     timeout.tv_sec = atoi(argv[1]);
     timeout.tv_usec = 0; // no microsecond
+    printf("timeout.tv_sec=%ld\n", timeout.tv_sec);
   }
 
   // process remaining arguments to build file descriptor sets
