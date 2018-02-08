@@ -1,7 +1,7 @@
 #include <iostream>
-#include <atomic>
 #include <thread>
-#include <assert.h>
+#include <atomic>
+#include <memory>
 
 template <typename T> class LockfreeStack {
 public:
@@ -13,33 +13,31 @@ public:
         }
     }
 
-    int Pop(T& val) {
+    std::shared_ptr<T> Pop() {
         Node* node = head_.load();
-        if (node == NULL) {
-            return -1;
-        }
-        while (!head_.compare_exchange_weak(node, node->next_)) {
+        while (node && !head_.compare_exchange_weak(node, node->next_)) {
             // ignore
         }
-        return node ? (val = node->data_), 0 : -1;
+        return node ? node->data_ : NULL;
     }
+
 private:
     struct Node {
-        T data_;
+        std::shared_ptr<T> data_;
         Node* next_;
-        Node(const T& data): data_(data) {}
+        Node(const T& data): data_(std::make_shared<T>(data)) {}
     };
+
     std::atomic<Node*> head_;
 };
 
 LockfreeStack<int> stack;
 const int limit = 10;
-
 void Reader() {
-    int val = 0;
+    std::shared_ptr<int> p;
     for (int i = 0; i < limit;) {
-        if (stack.Pop(val) == 0) {
-            std::cout << val << std::endl;
+        if ((p = stack.Pop())) {
+            std::cout << *p << std::endl;
             ++i;
         }
     }
@@ -47,7 +45,7 @@ void Reader() {
 
 void Writer() {
     for (int i = 0; i < limit; ++i) {
-        stack.Push(i);
+        stack.Push(i + 1);
     }
 }
 
