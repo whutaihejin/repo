@@ -34,14 +34,14 @@ int main(int argc, char** argv) {
     }
   }
 
-  // perform specified number of writes to random pipes
+  // Perform specified number of writes to random pipes
   int num_writes = (argc > 2) ? atoi(argv[2]) : 1;
   printf("num_writes=%d\n", num_writes);
   srandom((int) time(NULL));
   for (int j = 0; j < num_writes; ++j) {
     int rand_pipe = random() % num_pipes;
     printf("writing to fd: %3d (read fd: %3d)\n", pfds[rand_pipe][1], pfds[rand_pipe][0]);
-    if (write(pfds[rand_pipe][1], "a", 1)) {
+    if (write(pfds[rand_pipe][1], "a", 1) == -1) {
       printf("write %d error\n", pfds[rand_pipe][1]);
     }
   }
