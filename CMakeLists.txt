@@ -30,6 +30,9 @@ set(benchmark_library ${library_home}/google-benchmark-1.2.0)
 list(APPEND include_list ${benchmark_library}/include)
 file(GLOB_RECURSE benchmark_source ${benchmark_library}/src/*.cc)
 
+# add include headers
+list(APPEND include_list ${work_home}/include)
+
 # build googletest static library
 include_directories(${include_list})
 add_library(googletest STATIC ${googletest_source})

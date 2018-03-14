@@ -1,4 +1,5 @@
 #include <iostream>
+#include "util.h"
 
 void Merge(int A[], int B[], int p, int q, int r) {
     int i = p, j = q + 1, k = p;
@@ -23,6 +24,15 @@ void Merge(int A[], int B[], int p, int q, int r) {
     }
 }
 
+void MergeSort(int A[], int B[], int p, int r) {
+    if (p < r) {
+        int q = (p + r) / 2;
+        MergeSort(A, B, p, q);
+        MergeSort(A, B, q + 1, r);
+        Merge(A, B, p, q, r);
+    }
+}
+
 int main() {
     int A[] = {1, 4, 2, 3};
     int B[] = {0, 0, 0, 0};
@@ -30,5 +40,12 @@ int main() {
     for (int i = 0; i < 4; ++i) {
         std::cout << A[i] << std::endl;
     }
+
+    // merge sort test
+    int x[] = {5, 4, 3, 2, 1};
+    int y[5] = {0};
+    PrintArray(x);
+    MergeSort(x, y, 0, 5);
+    PrintArray(x);
     return 0;
 }
