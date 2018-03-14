@@ -4,7 +4,7 @@
 
 int main() {
     std::vector<int> vec{5, 4, 3, 2, 1};
-    Node* head = LinkedList(vec);
-    head->Display();
+    LinkedList list(vec);
+    list.Display();
     return 0;
 }
