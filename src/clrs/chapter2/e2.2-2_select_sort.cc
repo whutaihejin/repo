@@ -2,6 +2,7 @@
 #include <vector>
 #include "util.h"
 
+// 选择排序实现
 void SelectSort(int a[], size_t size) {
     for (size_t i = 0; i < size - 1; ++i) {
         int min = i;
