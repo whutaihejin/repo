@@ -1,7 +1,7 @@
 #include <iostream>
 
 void Merge(int A[], int B[], int p, int q, int r) {
-    int i = p, j = q + 1, k = q;
+    int i = p, j = q + 1, k = p;
     while (i <= q && j <= r) {
         if (A[i] <= A[j]) {
             B[k++] = A[i++];
