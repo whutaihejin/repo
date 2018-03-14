@@ -15,6 +15,7 @@ void SelectSort(int a[], size_t size) {
         a[min] = tmp;
     }
 }
+
 int main() {
     std::vector<int> vec{5, 4, 3, 2, 1};
     SelectSort(&vec[0], vec.size());
