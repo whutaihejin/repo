@@ -37,9 +37,7 @@ int main() {
     int A[] = {1, 4, 2, 3};
     int B[] = {0, 0, 0, 0};
     Merge(A, B, 0, 1, 3);
-    for (int i = 0; i < 4; ++i) {
-        std::cout << A[i] << std::endl;
-    }
+    PrintArray(A);
 
     // merge sort test
     int x[] = {5, 4, 3, 2, 1};
