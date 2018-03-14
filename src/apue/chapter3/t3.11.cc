@@ -3,18 +3,27 @@
 #include <stdlib.h>
 #include <string>
 
+// shell command for test: bin/t3.11 2 2>>temp.dat
+
 // show how to use this program
 void Usage();
 
 // convert the status flag value to string for readable
 std::string StatusFlag(int val);
 
+// turn file status flags on with specified flags value
+int SetStatusFlag(int fd, int flags);
+
+// turn file status flags off with specified flags value
+int ClearStatusFlag(int fd, int flags);
+
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         Usage(), exit(1);
     }
-    int val = 0;
-    if ((val = fcntl(atoi(argv[1]), F_GETFL, 0)) == -1) {
+    int fd = atoi(argv[1]), val = 0;
+    SetStatusFlag(fd, O_NONBLOCK);
+    if ((val = fcntl(fd, F_GETFL, 0)) == -1) {
         printf("fcntl error, exit\n"), exit(1);
     }
     std::string status_flag = StatusFlag(val);
@@ -58,4 +67,28 @@ std::string StatusFlag(int val) {
     }
 #endif
     return flag;
+}
+
+int SetStatusFlag(int fd, int flags) {
+    int val = 0;
+    if ((val = fcntl(fd, F_GETFL, 0)) == -1) {
+        return -1;
+    }
+    val |= flags;
+    if (fcntl(fd, F_SETFL, val) == -1) {
+        return -1;
+    }
+    return 0;
+}
+
+int ClearStatusFlag(int fd, int flags) {
+    int val = 0;
+    if ((val = fcntl(fd, F_GETFL, 0)) == -1) {
+        return -1;
+    }
+    val &= ~flags;
+    if (fcntl(fd, F_SETFL, val) == -1) {
+        return -1;
+    }
+    return 0;
 }
