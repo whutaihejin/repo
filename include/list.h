@@ -38,7 +38,14 @@ public:
         }
         std::cout << std::endl;
     }
-private:
+    
+    static void Display(Node* head) {
+        for (Node* n = head; n != NULL; n = n->next) {
+            std::cout << n->val << " ";
+        }
+        std::cout << std::endl;
+    }
+    
     Node* head_;
 };
 
