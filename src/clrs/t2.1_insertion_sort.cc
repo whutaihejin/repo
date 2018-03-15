@@ -18,7 +18,7 @@ void InsertionSort(int A[], int size) {
 
 int main() {
     std::vector<int> vec{5, 4, 3, 2, 1};
-    vec.resize(1000);
+    vec.resize(10000);
     InsertionSort(&vec[0], vec.size());
     Print(vec);
     return 0;
