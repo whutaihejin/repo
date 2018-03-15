@@ -1,6 +1,7 @@
 #include <iostream>
 #include "util.h"
 
+// 归并排序的实现
 void Merge(int A[], int B[], int p, int q, int r) {
     int i = p, j = q + 1, k = p;
     while (i <= q && j <= r) {
