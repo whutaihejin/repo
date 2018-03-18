@@ -2,6 +2,12 @@
 #include <vector>
 #include "util.h"
 
+// 给出一个确定在n个元素的任何排列中逆序对的数量的算法，最坏情况需要O(nlgn)时间。
+// 问题思路：利用归并排序思想，在merge时若A[i] > A[j], 由于A[i]之后的所有元素都
+// 大于等于A[i]并且个数为(q - i + 1)(包含A[i]元素), 这些元素与A[j]都构成了逆序对，
+// 所以逆序对数量新增(q - i + 1)个。求解左子数组和右子数组并与当前Merge时产生的
+// 逆序对求和即为总的逆序对数量。
+
 int Merge(int A[], int B[], int p, int q, int r) {
     int inversion_count = 0;
     int i = p, j = q + 1, k = p;
