@@ -8,9 +8,10 @@
 
 // Using Marcin Ciura's gap sequence, with an inner insertion sort.
 static int gaps[] = {701, 301, 132, 57, 23, 10, 4, 1};
+static size_t gaps_size = sizeof(gaps) / sizeof(gaps[0]);
 
 void ShellSort(int A[], int size) {
-    for (size_t g = 0; g < sizeof(gaps) / sizeof(gaps[0]); ++g) {
+    for (size_t g = 0; g < gaps_size; ++g) {
         int gap = gaps[g];
         for (int i = gap; i < size; ++i) {
             int val = A[i], j = i - gap;
