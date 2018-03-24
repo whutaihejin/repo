@@ -44,7 +44,7 @@ int FindMaxCrossingSubarray(int A[], int low, int mid, int high) {
     return left_sum + right_sum;
 }
 
-// 初始调用应该为(A, 0, A.length)
+// 初始调用应该为(A, 0, A.length - 1)
 int FindMaxSubarray(int A[], int low, int high) {
     if (low == high) {
         return A[low];
