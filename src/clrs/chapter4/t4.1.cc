@@ -56,12 +56,37 @@ int FindMaxSubarray(int A[], int low, int high) {
     return std::max(std::max(left_sum, right_sum), crossing_sum);
 }
 
+// 方法三. 线性方法扫描法
+int FindMaxSubarrayLinear(int A[], int size) {
+    int max_sum = A[0], sum = max_sum;
+    int left = -1, max_left = -1, max_right = -1;
+    for (int i = 1; i < size; ++i) {
+        sum += A[i];
+        if (sum > max_sum) {
+            max_sum = sum;
+            max_left = left;
+            max_right = i;
+        }
+        if (sum < 0) {
+            left = i + 1;
+            sum = 0;
+        }
+    }
+    std::cout << "[" << (left + 1) << "," << (max_right + 1) << "]" << std::endl;
+    return max_sum;
+}
+
 int main() {
-    // std::vector<int> vec{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
-    // int max_sum = FindMaxSubarray(&vec[0], vec.size());
-    
-    std::vector<int> vec{-3, -2, -5, -1, -16};
-    int max_sum = FindMaxSubarray(&vec[0], 0, vec.size() - 1);
+    std::vector<int> v1{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
+    int max_sum = FindMaxSubarray(&v1[0], v1.size());
     std::cout << max_sum << std::endl;
+    
+    std::vector<int> v2{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
+    int max_sum2 = FindMaxSubarrayLinear(&v2[0], v2.size());
+    std::cout << max_sum2 << std::endl;
+    
+    std::vector<int> v3{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
+    int max_sum3 = FindMaxSubarray(&v3[0], 0, v3.size() - 1);
+    std::cout << max_sum3 << std::endl;
     return 0;
 }
