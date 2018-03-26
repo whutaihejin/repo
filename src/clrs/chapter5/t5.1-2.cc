@@ -7,7 +7,7 @@ int Random() {
     return uniform(e);
 }
 
-int Random(int a, int b) {
+int BadRandom(int a, int b) {
     int r = a;
     for (int i = 0; i < b - a; ++i) {
         r += Random();
@@ -30,8 +30,8 @@ int UniformRandom(int a, int b) {
 
 int main() {
     for (int i = 0; i < 10000; ++i) {
-        // std::cout << Random(0, 9) << std::endl;
-        std::cout << UniformRandom(0, 9) << std::endl;
+        std::cout << BadRandom(0, 9) << std::endl;
+        // std::cout << UniformRandom(0, 9) << std::endl;
     }
     return 0;
 }
