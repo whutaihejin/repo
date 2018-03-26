@@ -57,8 +57,10 @@ int FindMaxSubarray(int A[], int low, int high) {
 }
 
 int main() {
-    std::vector<int> vec{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
+    // std::vector<int> vec{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
     // int max_sum = FindMaxSubarray(&vec[0], vec.size());
+    
+    std::vector<int> vec{-3, -2, -5, -1, -16};
     int max_sum = FindMaxSubarray(&vec[0], 0, vec.size() - 1);
     std::cout << max_sum << std::endl;
     return 0;
