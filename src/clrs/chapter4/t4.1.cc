@@ -88,5 +88,9 @@ int main() {
     std::vector<int> v3{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
     int max_sum3 = FindMaxSubarray(&v3[0], 0, v3.size() - 1);
     std::cout << max_sum3 << std::endl;
+    
+    std::vector<int> v4{13, 3, 25, 20, 3, 16, 23};
+    int max_sum4 = FindMaxSubarrayLinear(&v4[0], v4.size());
+    std::cout << max_sum4 << std::endl;
     return 0;
 }
