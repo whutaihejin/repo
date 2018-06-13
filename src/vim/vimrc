@@ -1,0 +1,130 @@
+" configure for vim
+set autoindent
+set number
+filetype plugin indent on
+set ts=4
+set expandtab
+set tabstop=4
+set shiftwidth=4
+let do_syntax_sel_menu=1
+set backspace=2
+" set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+"syntax on
+colorscheme ron
+
+set nocompatible              " be iMproved, required
+" filetype off                  " required
+filetype on                  " required
+"au BufRead,BufNewFile *.go set filetype=go
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'fatih/vim-go'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
+Plugin 'dgryski/vim-godef'
+"Plugin 'Blackrush/vim-gocode'
+"Plugin 'scrooloose/nerdcommenter'
+"Plugin 'altercation/vim-colors-solarized'
+"Plugin 'tpope/vim-surround'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+" configuration for nerdtree
+map <C-n> :NERDTreeToggle<CR>
+
+" configuration for YouCompleteMe
+let mapleader = ","
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_key_invoke_completion = '<M-;>'
+inoremap <leader><leader> <C-x><C-o>
+nnoremap <leader>gg :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+
+set conceallevel=2
+set concealcursor=vin
+let g:clang_snippets=1
+let g:clang_conceal_snippets=1
+" The single one that works with clang_complete
+let g:clang_snippets_engine='clang_complete'
+
+" Complete options (disable preview scratch window, longest removed to aways
+" show menu)
+set completeopt=menu,menuone
+
+" Limit popup menu height
+set pumheight=20
+
+" SuperTab completion fall-back 
+let g:SuperTabDefaultCompletionType='<c-x><c-u><c-p>'
+
+" Vim-go
+"let g:go_dispatch_enabled = 1
+"let g:go_fmt_command = "goimports"
+"let g:go_autodetect_gopath = 1
+"let g:go_list_type = "quickfix"
+
+"let g:go_highlight_types = 1
+"let g:go_highlight_fields = 1
+"let g:go_highlight_extra_types = 1
+"let g:go_highlight_generate_tags = 1
+"let g:go_highlight_functions = 1
+"let g:go_highlight_methods = 1
+"let g:go_highlight_structs = 1
+"let g:go_highlight_operators = 1
+"let g:go_highlight_build_constraints = 1
+"au FileType go nmap <leader>b <Plug>(go-build)
+"autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0,'edit')
+" Open :GoDeclsDir with ctrl-g
+"nmap <C-g> :GoDeclsDir<cr>
+"imap <C-g> <esc>:<C-u>GoDeclsDir<cr>let g:go_highlight_build_constraints = 1
+
+" set status line
+set laststatus=2
+
+syntax on
+au BufRead,BufNewFile *.go set filetype=go
+
+" SET Comment START
+autocmd BufNewFile *.h,*.cc,*.cpp exec ":call SetComment()" | normal 10Go
+
+func SetComment()
+    "if expand("%:e") == 'h'
+    "    call setline(1, '// C++ header file')
+    "elseif expand("%:e") == 'cc'
+    "    call setline(1, '// C++ source file')
+    "elseif expand("%:e") == 'cpp'
+    "    call setline(1, '// C++ source file')
+    "endif
+    call append(0, '// Copyright (c) 2018 The Didi Corporation and The Pickup Authors.')
+    call append(1, '// All rights reserved. Use of this source code should be governed')
+    call append(2, '// by the corporation. See the AUTHORS file for names of authors.')
+    call append(3, '// Author: zhanglonghanks              Email: taihejin@whu.edu.cn')
+    call append(4, '// Create: '.strftime("%Y-%m-%d %H:%M:%S").' Last-Modified: '.strftime("%Y-%m-%d %H:%M:%S"))
+endfunc
+
+map <F2> :call SetComment() <CR>:10<CR>o
+" SET Comment END
