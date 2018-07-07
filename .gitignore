@@ -10,3 +10,5 @@ src/latex/*.fdb_latexmk
 src/latex/*.fls
 src/latex/*.log
 src/latex/*.synctex.gz
+src/latex/*.toc
+src/latex/*.xdv
