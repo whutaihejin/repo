@@ -1,4 +1,5 @@
 #include <iostream>
+#include <netinet/in.h>
 
 int main() {
     union un {
@@ -18,5 +19,13 @@ int main() {
     } else {
         std::cout << "sizeof(short)=" << sizeof(short) << std::endl;
     }
+
+    uint16_t port = 8019;
+    std::cout << "host port:" << port << " net port:" << htons(port) << std::endl;
+    std::cout << "net port:" << htons(port) << " host port:" << ntohs(htons(port)) << std::endl;
+    uint32_t val = 8022;
+    std::cout << "host val:" << val << " net val:" << htonl(val) << std::endl;
+    std::cout << "net val:" << htonl(val) << " net val:" << ntohl(htonl(val)) << std::endl;
+
     return 0;
 }
