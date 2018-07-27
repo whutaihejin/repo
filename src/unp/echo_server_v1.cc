@@ -1,4 +1,8 @@
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <stdint.h>
 #include <unistd.h>
 #include <arpa/inet.h>
@@ -80,6 +84,8 @@ void EchoImpl(int fd) {
 
     for (;;) {
         while ((len = read(fd, buf, BUFSIZE)) > 0) {
+            buf[std::min(len, BUFSIZE - 1)] = '\0';
+            fputs(buf, stdout);
             write(fd, buf, len);
         }
         if (len < 0) {
@@ -90,7 +96,7 @@ void EchoImpl(int fd) {
             }
         } else if (len == 0) {
             // end of file
-            std::cout << "end-of-file" << std::endl;
+            std::cout << "read end-of-file" << std::endl;
             // break;
         }
         break;

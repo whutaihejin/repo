@@ -1,4 +1,8 @@
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <unistd.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -55,6 +59,8 @@ void cli_echo(FILE* in, int out) {
             std::cout << "read end-of-file" << std::endl;
             break;
         }
+        // set the terminating null character ('\0')
+        recvbuf[std::min(len, BUFSIZE - 1)] = '\0';
         fputs(recvbuf, stdout);
     }
 }
