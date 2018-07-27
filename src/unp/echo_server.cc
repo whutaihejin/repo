@@ -26,7 +26,7 @@ struct EndPoint {
 };
 
 // echo what readed from the client
-void echo_impl(int fd);
+void EchoImpl(int fd);
 
 int main() {
     int listen_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -62,18 +62,19 @@ int main() {
         int pid = fork();
         if (pid == 0) { // child process
             close(listen_fd);
-            echo_impl(conn_fd);
-            close(conn_fd);
-        } else if (pid > 0) { // parent process
-            close(conn_fd);
-        } else {
+            EchoImpl(conn_fd);
+            exit(0);
+        } else if (pid < 0) {
             ERROR_LOG("fork error", errno);
+            return -1;
         }
+        // parent process
+        close(conn_fd);
     }
     return 0;
 }
 
-void echo_impl(int fd) {
+void EchoImpl(int fd) {
     int len = 0;
     char buf[BUFSIZE];
 
@@ -81,14 +82,17 @@ void echo_impl(int fd) {
         while ((len = read(fd, buf, BUFSIZE)) > 0) {
             write(fd, buf, len);
         }
-        if (len < 0 && errno == EINTR) {
-            continue;
+        if (len < 0) {
+            if (errno == EINTR) {
+                continue;
+            } else {
+                ERROR_LOG("read error", errno);
+            }
         } else if (len == 0) {
             // end of file
             std::cout << "end-of-file" << std::endl;
             // break;
         }
-        ERROR_LOG("read error", errno);
         break;
     }
 }
