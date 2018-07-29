@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdio.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
@@ -32,6 +33,21 @@ struct EndPoint {
 // echo what readed from the client
 void EchoImpl(int fd);
 
+// 信号注册函数
+// void (*signal(int signo, void(*func)(int)))(int);
+typedef void signal_hanlder_t(int);
+signal_hanlder_t* signal(int signo, signal_hanlder_t* func);
+
+// signal SIGCHLD handler
+void signal_child_handler(int signo) {
+    pid_t pid = 0;
+    int status = 0;
+    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+        std::cout << "receive signo " << signo << " child " << pid << " terminated with status " << status << std::endl;
+    }
+    return;
+}
+
 int main() {
     int listen_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (listen_fd == -1) {
@@ -55,10 +71,19 @@ int main() {
         ERROR_LOG("listen error", errno);
         return -1;
     }
+    signal(SIGCHLD, signal_child_handler);
 
     for (;;) {
         socklen_t len = sizeof(cli_addr);
         int conn_fd = accept(listen_fd, (struct sockaddr*)(&cli_addr), &len);
+        if (conn_fd < 0) {
+            if (errno == EINTR) {
+                continue;
+            } else {
+                ERROR_LOG("accept error", errno);
+                break;
+            }
+        }
         // remote end-point info
         EndPoint remote(&cli_addr);
         std::cout << remote.Text() << std::endl;
@@ -101,4 +126,24 @@ void EchoImpl(int fd) {
         }
         break;
     }
+}
+
+signal_hanlder_t* signal(int signo, signal_hanlder_t* func) {
+    struct sigaction act, oact;
+    act.sa_handler = func;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+    if (signo == SIGALRM) {
+#ifdef SA_INTERRUPT
+        act.sa_flags |= SA_INTERRUPT; // SunOS 4.x
+#endif
+    } else {
+#ifdef SA_RESTART
+        act.sa_flags |= SA_RESTART; // SVR4, 4.4BSD
+#endif
+    }
+    if (sigaction(signo, &act, &oact) < 0) {
+        return SIG_ERR;
+    }
+    return oact.sa_handler;
 }
