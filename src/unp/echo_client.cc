@@ -52,42 +52,52 @@ int main(int argc, char* argv[]) {
 
 void cli_echo(FILE* in, int out) {
     int in_fd = fileno(in);
-    char recvbuf[BUFSIZE] = {0};
-    char sendbuf[BUFSIZE] = {0};
+    char buf[BUFSIZE] = {0};
     
     fd_set read_set;
     FD_ZERO(&read_set);
+    bool is_stdio_eof = false;
 
     for (;;) {
-        FD_SET(in_fd, &read_set);
+        if (!is_stdio_eof) {
+            FD_SET(in_fd, &read_set);
+        }
         FD_SET(out, &read_set);
         int max_fd = std::max(in_fd, out) + 1;
         select(max_fd, &read_set, NULL, NULL, NULL);
         
-        // read from std I/O
+        // read from stdio
         if (FD_ISSET(in_fd, &read_set)) {
-            std::cout << "read from stdio" << std::endl;
-            if (fgets(sendbuf, BUFSIZE, in) == NULL) {
-                std::cout << "read end-of-file from stdio" << std::endl;
-                break;
+            // std::cout << "read from stdio" << std::endl;
+            int len = 0;
+            if ((len = read(in_fd, buf, BUFSIZE)) == 0) {
+                is_stdio_eof = true;
+                shutdown(out, SHUT_WR);
+                // clear 'in_fd' from select read set
+                FD_CLR(in_fd, &read_set);
+                // std::cout << "read end-of-file from stdio" << std::endl;
+            } else {
+                write(out, buf, len);
             }
-            write(out, sendbuf, strlen(sendbuf));
         }
         
         // read from socket
         if (FD_ISSET(out, &read_set)) {
-            std::cout << "read from socket" << std::endl;
+            // std::cout << "read from socket" << std::endl;
             int len = 0;
-            if ((len = read(out, recvbuf, BUFSIZE)) < 0) {
+            if ((len = read(out, buf, BUFSIZE)) < 0) {
                 ERROR_LOG("read error", errno);
                 break;
             } else if (len == 0) {
-                std::cout << "read end-of-file" << std::endl;
+                // std::cout << "read end-of-file" << std::endl;
+                if (is_stdio_eof) {
+                    // std::cout << "normal terminated" << std::endl;
+                } else {
+                    // std::cout << "server terminated prematurely" << std::endl;
+                }
                 break;
             }
-            // set the terminating null character ('\0')
-            recvbuf[std::min(len, BUFSIZE - 1)] = '\0';
-            fputs(recvbuf, stdout);
+            write(fileno(stdout), buf, len);
         }
     }
 }

@@ -109,9 +109,10 @@ void EchoImpl(int fd) {
 
     for (;;) {
         while ((len = read(fd, buf, BUFSIZE)) > 0) {
-            buf[std::min(len, BUFSIZE - 1)] = '\0';
-            fputs(buf, stdout);
+            // buf[std::min(len, BUFSIZE - 1)] = '\0';
+            // fputs(buf, stdout);
             write(fd, buf, len);
+            write(fileno(stdout), buf, len);
         }
         if (len < 0) {
             if (errno == EINTR) {
