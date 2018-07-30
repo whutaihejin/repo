@@ -7,13 +7,14 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
+#include <poll.h>
+#include <limits.h>
 
 #define SERV_PORT 8017
 #define BACKLOG 1024
 #define BUFSIZE 1024
-#define NIL_FD -1
+#define NILFD -1
 
 #define ERROR_LOG(prefix, code) \
     do { std::cout << prefix << " code=" << code << " msg=" << strerror(code) << std::endl; } while(0)
@@ -55,25 +56,22 @@ int main() {
         return -1;
     }
 
-    int max_fd = listen_fd, client_size = -1;
+    int client_size = 0;
+    struct pollfd client[OPEN_MAX];
+    client[0].fd = listen_fd;
+    client[0].events = POLLRDNORM;
     // client array and initialization
-    std::cout << "FD_SETSIZE: " << FD_SETSIZE << std::endl;
-    int client[FD_SETSIZE] = {0};
-    for (int i = 0; i < FD_SETSIZE; ++i) {
-        client[i] = NIL_FD;
+    for (int i = 1; i < FD_SETSIZE; ++i) {
+        client[i].fd = NILFD;
     }
-    fd_set read_set, all_set;
-    FD_ZERO(&all_set);
-    FD_SET(listen_fd, &all_set);
-    std::cout << "listen fd: " << listen_fd << std::endl;
     char buf[BUFSIZE] = {0};
 
     for (;;) {
-        read_set = all_set;
-        std::cerr << "before select" << std::endl;
-        int ready_number = select(max_fd + 1, &read_set, NULL, NULL, NULL);
-        std::cerr << "after select " << ready_number << " ready" << std::endl;
-        if (FD_ISSET(listen_fd, &read_set)) {
+        std::cerr << "before poll" << std::endl;
+        int ready_number = poll(client, client_size + 1, -1);
+        std::cerr << "after poll " << ready_number << " ready" << std::endl;
+        // Testing read event is ok
+        if (client[0].revents & POLLRDNORM) {
             socklen_t len = sizeof(cli_addr);
             int conn_fd = accept(listen_fd, (struct sockaddr*)(&cli_addr), &len);
             if (conn_fd < 0) {
@@ -89,18 +87,17 @@ int main() {
             std::cout << remote.Text() << std::endl;
 
             int index = 0;
-            for (index = 0; index < FD_SETSIZE; ++index) {
-                if (client[index] == NIL_FD) {
-                    client[index] = conn_fd;
+            for (index = 1; index < OPEN_MAX; ++index) {
+                if (client[index].fd == NILFD) {
                     break;
                 }
             }
-            if (index == FD_SETSIZE) {
+            if (index == OPEN_MAX) {
                 std::cerr << "too many clients, abort" << std::endl;
                 exit(0);
             }
-            FD_SET(conn_fd, &all_set);
-            max_fd = std::max(max_fd, conn_fd);
+            client[index].fd = conn_fd;
+            client[index].events = POLLRDNORM;
             client_size = std::max(index, client_size);
             
             if (--ready_number <= 0) {
@@ -108,15 +105,20 @@ int main() {
             }
         }
 
-        for (int i = 0; i <= client_size; ++i) {
-            int fd = client[i];
-            if (fd != NIL_FD && FD_ISSET(fd, &read_set)) {
+        for (int i = 1; i <= client_size; ++i) {
+            int fd = client[i].fd;
+            if (fd != NILFD && (client[i].revents & (POLLRDNORM | POLLERR))) {
                 int len = 0;
-                if ((len = read(fd, buf, BUFSIZE)) == 0) {
-                    std::cout << "close fd: " << fd << std::endl;
+                if ((len = read(fd, buf, BUFSIZE)) < 0) {
+                    if (errno != ECONNRESET) {
+                        ERROR_LOG("read error", errno);
+                    }
                     close(fd);
-                    FD_CLR(fd, &all_set);
-                    client[i] = NIL_FD;
+                    client[i].fd = NILFD;
+                } else if (len == 0) {
+                    close(fd);
+                    client[i].fd = NILFD;
+                    std::cout << "close fd: " << fd << std::endl;
                 } else {
                     std::cerr << "read bytes of " << len << std::endl;
                     write(fd, buf, len);
@@ -126,7 +128,6 @@ int main() {
                     break;
                 }
             }
-
         }
     }
 }
