@@ -13,6 +13,7 @@
 #define SERV_PORT 8017
 #define BACKLOG 1024
 #define BUFSIZE 1024
+#define NIL_FD (-1)
 
 #define ERROR_LOG(prefix, code) \
     do { std::cout << prefix << " code=" << code << " msg=" << strerror(code) << std::endl; } while(0)
@@ -29,24 +30,6 @@ struct EndPoint {
     }
     char present_[INET_ADDRSTRLEN + 8];
 };
-
-// echo what readed from the client
-void EchoImpl(int fd);
-
-// 信号注册函数
-// void (*signal(int signo, void(*func)(int)))(int);
-typedef void signal_hanlder_t(int);
-signal_hanlder_t* signal(int signo, signal_hanlder_t* func);
-
-// signal SIGCHLD handler
-void signal_child_handler(int signo) {
-    pid_t pid = 0;
-    int status = 0;
-    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
-        std::cout << "receive signo " << signo << " child " << pid << " terminated with status " << status << std::endl;
-    }
-    return;
-}
 
 int main() {
     int listen_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -66,85 +49,73 @@ int main() {
         ERROR_LOG("bind error", errno);
         return -1;
     }
-
-    if (listen(listen_fd, BACKLOG) != 0) {
-        ERROR_LOG("listen error", errno);
-        return -1;
+    int max_fd = listen_fd, client_size = -1;
+    // client array and initialization
+    int client[FD_SETSIZE] = {0};
+    for (int i = 0; i < FD_SETSIZE; ++i) {
+        client[i] = NIL_FD;
     }
-    signal(SIGCHLD, signal_child_handler);
+    fd_set read_set, all_set;
+    FD_ZERO(&all_set);
+    FD_SET(listen_fd, &all_set);
+
+    char buf[BUFSIZE] = {0};
 
     for (;;) {
-        socklen_t len = sizeof(cli_addr);
-        int conn_fd = accept(listen_fd, (struct sockaddr*)(&cli_addr), &len);
-        if (conn_fd < 0) {
-            if (errno == EINTR) {
+        read_set = all_set;
+        int ready_number = select(max_fd + 1, &read_set, NULL, NULL, NULL);
+        if (FD_ISSET(listen_fd, &read_set)) {
+            socklen_t len = sizeof(cli_addr);
+            int conn_fd = accept(listen_fd, (struct sockaddr*)(&cli_addr), &len);
+            if (conn_fd < 0) {
+                if (errno == EINTR) {
+                    continue;
+                } else {
+                    ERROR_LOG("accept error", errno);
+                    break;
+                }
+            }
+            // remote end-point info
+            EndPoint remote(&cli_addr);
+            std::cout << remote.Text() << std::endl;
+
+            int index = 0;
+            for (index = 0; index < FD_SETSIZE; ++index) {
+                if (client[index] == NIL_FD) {
+                    client[index] = conn_fd;
+                    break;
+                }
+            }
+            if (index == FD_SETSIZE) {
+                std::cerr << "too many clients, abort" << std::endl;
+                exit(0);
+            }
+            FD_SET(conn_fd, &all_set);
+            max_fd = std::max(max_fd, conn_fd);
+            client_size = std::max(index, client_size);
+            
+            if (--ready_number <= 0) {
                 continue;
-            } else {
-                ERROR_LOG("accept error", errno);
-                break;
             }
         }
-        // remote end-point info
-        EndPoint remote(&cli_addr);
-        std::cout << remote.Text() << std::endl;
 
-        int pid = fork();
-        if (pid == 0) { // child process
-            close(listen_fd);
-            EchoImpl(conn_fd);
-            exit(0);
-        } else if (pid < 0) {
-            ERROR_LOG("fork error", errno);
-            return -1;
-        }
-        // parent process
-        close(conn_fd);
-    }
-    return 0;
-}
-
-void EchoImpl(int fd) {
-    int len = 0;
-    char buf[BUFSIZE];
-
-    for (;;) {
-        while ((len = read(fd, buf, BUFSIZE)) > 0) {
-            // buf[std::min(len, BUFSIZE - 1)] = '\0';
-            // fputs(buf, stdout);
-            write(fd, buf, len);
-            write(fileno(stdout), buf, len);
-        }
-        if (len < 0) {
-            if (errno == EINTR) {
-                continue;
-            } else {
-                ERROR_LOG("read error", errno);
+        for (int i = 0; i <= client_size; ++i) {
+            int fd = client[i];
+            if (fd != NIL_FD && FD_ISSET(fd, &read_set)) {
+                int len = 0;
+                if ((len = read(fd, buf, BUFSIZE)) == 0) {
+                    close(fd);
+                    FD_CLR(fd, &all_set);
+                    client[i] = NIL_FD;
+                } else {
+                    write(fd, buf, len);
+                    write(fileno(stdout), buf, len);
+                }
+                if (--ready_number <= 0) {
+                    break;
+                }
             }
-        } else if (len == 0) {
-            // end of file
-            std::cout << "read end-of-file" << std::endl;
-            // break;
-        }
-        break;
-    }
-}
 
-signal_hanlder_t* signal(int signo, signal_hanlder_t* func) {
-    struct sigaction act, oact;
-    act.sa_handler = func;
-    sigemptyset(&act.sa_mask);
-    act.sa_flags = 0;
-    if (signo == SIGALRM) {
-#ifdef SA_INTERRUPT
-        act.sa_flags |= SA_INTERRUPT; // SunOS 4.x
-#endif
-    } else {
-#ifdef SA_RESTART
-        act.sa_flags |= SA_RESTART; // SVR4, 4.4BSD
-#endif
+        }
     }
-    if (sigaction(signo, &act, &oact) < 0) {
-        return SIG_ERR;
-    }
-    return oact.sa_handler;
 }
