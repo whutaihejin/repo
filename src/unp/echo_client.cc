@@ -75,7 +75,7 @@ void cli_echo(FILE* in, int out) {
                 shutdown(out, SHUT_WR);
                 // clear 'in_fd' from select read set
                 FD_CLR(in_fd, &read_set);
-                // std::cout << "read end-of-file from stdio" << std::endl;
+                std::cerr << "read end-of-file from stdio" << std::endl;
             } else {
                 write(out, buf, len);
             }
@@ -89,11 +89,11 @@ void cli_echo(FILE* in, int out) {
                 ERROR_LOG("read error", errno);
                 break;
             } else if (len == 0) {
-                // std::cout << "read end-of-file" << std::endl;
+                // std::cerr << "read end-of-file" << std::endl;
                 if (is_stdio_eof) {
-                    // std::cout << "normal terminated" << std::endl;
+                    std::cerr << "normal terminated" << std::endl;
                 } else {
-                    // std::cout << "server terminated prematurely" << std::endl;
+                    std::cerr << "server terminated prematurely" << std::endl;
                 }
                 break;
             }
