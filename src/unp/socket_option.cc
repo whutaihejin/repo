@@ -1,5 +1,8 @@
+#include <stdio.h>
 #include <iostream>
 
+#include <errno.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
 
@@ -62,7 +65,9 @@ struct SocketOption socket_option_list[] = {
     {"SO_REUSEADDR", SOL_SOCKET, SO_REUSEADDR, PrintSocketFlag},
     {"SO_REUSEPORT", SOL_SOCKET, SO_REUSEPORT, PrintSocketFlag},
     {"SO_TYPE", SOL_SOCKET, SO_TYPE, PrintSocketFlag},
+#ifdef SO_USELOOPBACK
     {"SO_USELOOPBACK", SOL_SOCKET, SO_USELOOPBACK, PrintSocketFlag},
+#endif
     {NULL, 0, 0, NULL}
 };
 
