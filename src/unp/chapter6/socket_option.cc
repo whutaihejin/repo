@@ -93,6 +93,9 @@ int main() {
         } else {
             (*p->printer)(p->opt_str, &entry, static_cast<int>(len));
         }
+        if (fd != -1) {
+            close(fd);
+        }
     }
     return 0;
 }
