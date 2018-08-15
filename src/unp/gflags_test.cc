@@ -8,5 +8,13 @@ int main(int argc, char* argv[]) {
     google::ParseCommandLineFlags(&argc, &argv, true);
     
     std::cout << "name: " << FLAGS_name << std::endl;
+
+    std::string xx = "xx";
+    std::string x = xx.substr(0, 100000);
+    std::cout << "x=" << x << std::endl;
+
+    x = "11sdyosdf";
+    x.clear();
+    std::cout << "x.clear()=" << x << "|" << std::endl;
     return 0;
 }
