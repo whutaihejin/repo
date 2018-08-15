@@ -134,9 +134,11 @@ void WebImpl(int fd) {
     if ((n = read(fd, recvbuf, 64)) > 0) {
         bytes = std::stol(recvbuf);
     }
+    std::cout << "server write: " << bytes << " bytes" << std::endl;
     write(fd, "begin ", 7);
-    int count = std::min(1024, bytes), wn = 0;
-    while (count > 0 && (wn = write(fd, sendbuf, count)) > 0) {
-        count -= wn;
+    int unit = std::min(1024, bytes), wn = 0;
+    while (bytes > 0 && (wn = write(fd, sendbuf, unit)) > 0) {
+        bytes -= wn;
+        unit = std::min(bytes, unit);
     }
 }
