@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 project(leetcode)
 set(CMAKE_CXX_STANDARD 11)
 
+set(GFLAGS_NAMESPACE "google")
+
 # build flags
 #option(TARGET_DEBUG_MODE "Build the project with debug mode" OFF)
 set(CMAKE_CXX_FLAGS "-g -pipe -std=c++11 -fPIC -DGTEST_HAS_TR1_TUPLE=0 -DHAVE_POSIX_REGEX")
@@ -25,20 +27,12 @@ list(APPEND include_list ${googletest_library})
 list(APPEND include_list ${googletest_library}/include)
 file(GLOB_RECURSE googletest_source ${googletest_library}/src/*.cc)
 
-# google benchmark lib
-set(benchmark_library ${library_home}/google-benchmark-1.2.0)
-list(APPEND include_list ${benchmark_library}/include)
-file(GLOB_RECURSE benchmark_source ${benchmark_library}/src/*.cc)
-
 # add include headers
 list(APPEND include_list ${work_home}/include)
 
 # build googletest static library
 include_directories(${include_list})
 add_library(googletest STATIC ${googletest_source})
-
-# build google benchmark static library
-add_library(benchmark STATIC ${benchmark_source})
 
 # build self leetcode library
 file(GLOB_RECURSE leetcode_source ${work_home}/src/leetcode/lib/*.cc)
@@ -48,7 +42,7 @@ foreach(include_entry ${include_list})
   message(STATUS ${include_entry})
 endforeach()
 
-# add_subdirectory(${library_home}/gflags-2.2.1)
+add_subdirectory(${library_home}/gflags-2.2.1)
 
 # for the source 
 file(GLOB source_list 
@@ -64,7 +58,7 @@ foreach(origin_source ${source_list})
   get_filename_component(source ${origin_source} NAME)
   string(REGEX REPLACE "(.*).cc$" "\\1" target ${source})
   add_executable(${target} ${origin_source})
-  target_link_libraries(${target} -pthread googletest benchmark leetcode)
+  target_link_libraries(${target} googletest gflags leetcode)
 endforeach()
 
 # for install the targets
