@@ -2,10 +2,13 @@
 #include <gflags/gflags.h>
 
 #include <unistd.h>
+#include <string.h>
+#include <signal.h>
+#include <sys/wait.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-DEFINE_string(host, "127.0.0.1", "hostname or ip address");
+DEFINE_string(host, "0.0.0.0", "hostname or ip address");
 DEFINE_int32(port, 8017, "port number");
 
 #define LOG(prefix, code) \

@@ -2,8 +2,9 @@
 #include <gflags/gflags.h>
 
 #include <unistd.h>
-#include <netinet/in.h>
 #include <string.h>
+#include <netinet/in.h>
+#include <sys/wait.h>
 #include <arpa/inet.h>
 
 DEFINE_string(host, "127.0.0.1", "hostname or ip address");
