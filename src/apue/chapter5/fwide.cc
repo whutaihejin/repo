@@ -52,7 +52,7 @@ int main() {
         printf("ret: %d errno: %d msg: %s\n", ret, errno, strerror(errno));
         // 
         errno = 0;
-        int ret = fwide(stderr, 0);
+        ret = fwide(stderr, 0);
         printf("ret: %d errno: %d msg: %s\n", ret, errno, strerror(errno));
         // 
         errno = 0;
