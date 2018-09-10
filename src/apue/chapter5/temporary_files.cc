@@ -40,10 +40,11 @@ int main() {
     if ((fd = MakeTmpFile(template_name)) == -1) {
         printf("MakeTmpFile error: %s", strerror(errno));
     }
-    write(fd, "hh", 3);
-    // memset(line, 0, sizeof(line));
-    // int n = read(fd, line, sizeof(line));
-    // printf("bytes: %d, line: %s", n, line);
+    write(fd, "qianqian", 8);
+    memset(line, 0, sizeof(line));
+    lseek(fd, 0, SEEK_SET);
+    int n = read(fd, line, sizeof(line));
+    printf("bytes: %d, line: %s\n", n, line);
     close(fd);
     return 0;
 }
