@@ -1,4 +1,4 @@
-all: fwide temporary_files t5.9
+all: fwide temporary_files t5.9 file_lock
 
 %: %.cc
 	g++ -w -o $@ $<
