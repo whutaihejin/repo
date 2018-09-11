@@ -76,7 +76,7 @@ void* WriteFile(void *arg) {
 
 int main() {
     FileLock lock;
-    printf("process %ld lock file\n", getpid());
+    printf("main process %ld\n", getpid());
     pid_t pid;
     if ((pid = fork()) == 0) {
         // child processs
