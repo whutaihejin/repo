@@ -18,7 +18,7 @@ public:
             fd_ = -1;
             return;
         }
-        // Truncate shared memory segment so it would contain pthread_mutex_t.
+        // truncate shared memory segment so it would contain pthread_mutex_t.
         if (ftruncate(fd_, sizeof(pthread_mutex_t)) != 0) {
             printf("ftruncate error: %s\n", strerror(errno));
             fd_ = -1;
