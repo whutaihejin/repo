@@ -13,3 +13,4 @@ src/latex/*.synctex.gz
 src/latex/*.toc
 src/latex/*.xdv
 .DS_Store
+src/latex/*.pdf

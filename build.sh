@@ -31,7 +31,7 @@ fi
 
 # compile the source to target
 if [ "$mode" == "debug" ]; then
-  cd $build_dir && cmake -DTARGET_DEBUG_MODE=ON .. && make VERBOSE=1 && make install 
+  cd $build_dir && cmake -DTARGET_DEBUG_MODE=ON .. && make && make install 
 else
   cd $build_dir && cmake -DTARGET_DEBUG_MODE=OFF .. && make && make install 
 fi
