@@ -57,7 +57,6 @@ public:
 private:
     int fd_;
     pthread_mutex_t* mutex_;
-    pthread_mutex_t m_;
 };
 
 void* WriteFile(void *arg) {
