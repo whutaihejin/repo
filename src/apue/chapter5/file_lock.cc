@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
+
+#include <sys/wait.h>
 
 #include <pthread.h>
 
@@ -12,8 +15,11 @@ class FileLock {
 public:
     FileLock(const std::string& template_name = "file_lock.XXXXXX") {
         // must copy caller's string in case it's a constant
+        memset(template_name_, 0, sizeof(template_name_));
         memcpy(template_name_, template_name.c_str(), template_name.size());
-        file_descriptor_ = mkstemp(template_name_);
+        if ((file_descriptor_ = mkstemp(template_name_)) == -1) {
+            printf("mkstemp error in file lock: %s\n", strerror(errno));
+        }
 
         //
         lock_.l_type = F_WRLCK;
@@ -34,14 +40,15 @@ public:
             if (errno == EINTR) {
                 continue;
             } else {
-                printf("fcntl error in file lock: %s", strerror(errno));
+                printf("fcntl error in file lock: %s\n", strerror(errno));
+                break;
             }
         }
     }
 
     void Unlock() {
         if (fcntl(file_descriptor_, F_SETLKW, &unlock_) < 0) {
-            printf("fcntl error in file lock: %s", strerror(errno));
+            printf("fcntl error in file lock: %s\n", strerror(errno));
         }
     }
    
@@ -60,7 +67,7 @@ private:
 void* WriteFile(void *arg) {
     FileLock* lock = static_cast<FileLock*>(arg);
     lock->Lock();
-    printf("thread %ld lock file\n", pthread_self());
+    printf("process %ld lock file\n", getpid());
     fflush(NULL);
     sleep(3);
     lock->Unlock();
@@ -69,10 +76,14 @@ void* WriteFile(void *arg) {
 
 int main() {
     FileLock lock;
-    pthread_t tid1, tid2;
-    pthread_create(&tid1, NULL, WriteFile, &lock);
-    pthread_create(&tid2, NULL, WriteFile, &lock);
-    pthread_join(tid1, NULL);
-    pthread_join(tid2, NULL);
+    printf("process %ld lock file\n", getpid());
+    pid_t pid;
+    if ((pid = fork()) == 0) {
+        // child processs
+        WriteFile(&lock);
+        exit(0);
+    }
+    WriteFile(&lock);
+    wait(NULL);
     return 0;
 }
