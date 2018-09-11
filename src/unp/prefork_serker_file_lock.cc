@@ -8,6 +8,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include <fcntl.h>
+
 DEFINE_string(host, "0.0.0.0", "hostname or ip address");
 DEFINE_int32(port, 8017, "port number");
 DEFINE_int32(child_num, 6, "preforked child process number");
@@ -43,6 +45,62 @@ pid_t MakeChild(int, int);
 
 void ChildMain(int, int);
 
+class FileLock {
+public:
+    FileLock(const std::string& template_name = "file_lock.XXXXXX") {
+        // must copy caller's string in case it's a constant
+        memset(template_name_, 0, sizeof(template_name_));
+        memcpy(template_name_, template_name.c_str(), template_name.size());
+        if ((file_descriptor_ = mkstemp(template_name_)) == -1) {
+            printf("mkstemp error in file lock: %s\n", strerror(errno));
+        }
+
+        //
+        lock_.l_type = F_WRLCK;
+        lock_.l_whence = SEEK_SET;
+        lock_.l_start = 0;
+        lock_.l_len = 0;
+       
+        //
+        unlock_.l_type = F_UNLCK;
+        unlock_.l_whence = SEEK_SET;
+        unlock_.l_start = 0;
+        unlock_.l_len = 0;
+    }
+
+    void Lock() {
+        int rc = 0;
+        while ((rc = fcntl(file_descriptor_, F_SETLKW, &lock_)) < 0) {
+            if (errno == EINTR) {
+                continue;
+            } else {
+                printf("fcntl error in file lock: %s\n", strerror(errno));
+                break;
+            }
+        }
+    }
+
+    void Unlock() {
+        if (fcntl(file_descriptor_, F_SETLKW, &unlock_) < 0) {
+            printf("fcntl error in file lock: %s\n", strerror(errno));
+        }
+    }
+   
+    ~FileLock() {
+        unlink(template_name_);
+        close(file_descriptor_);
+    }
+
+private:
+    char template_name_[1024];
+    int file_descriptor_;
+    struct flock lock_;
+    struct flock unlock_;
+};
+
+static FileLock file_lock;
+
+
 int main(int argc, char* argv[]) {
     // Parse gflags. We recommend you to use gflags as well.
     google::ParseCommandLineFlags(&argc, &argv, true);
@@ -77,11 +135,9 @@ int main(int argc, char* argv[]) {
         pid_list[i] = MakeChild(i, listen_fd);
     }
 
-
     for (;;) {
         pause();
     }
-
     return 0;
 }
 
@@ -134,7 +190,6 @@ void WebImpl(int fd) {
 
 pid_t MakeChild(int i, int listen_fd) {
     pid_t pid;
-    void child_main(int, int, int);
     if ((pid = fork()) > 0) {
         return pid;
     }
@@ -147,7 +202,9 @@ void ChildMain(int i, int listen_fd) {
     struct sockaddr_in cli_addr;
     for (;;) {
         socklen_t len = sizeof(struct sockaddr_in);
+        file_lock.Lock();
         int conn_fd = accept(listen_fd, (struct sockaddr*)(&cli_addr), &len);
+        file_lock.Unlock();
         if (conn_fd < 0) {
             if (errno == EINTR) {
                 continue;
@@ -164,3 +221,4 @@ void ChildMain(int i, int listen_fd) {
         close(conn_fd);
     }
 }
+
