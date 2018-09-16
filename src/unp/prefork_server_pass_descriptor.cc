@@ -112,12 +112,14 @@ int main(int argc, char* argv[]) {
 
         // accept new connection
         if (FD_ISSET(listen_fd, &rset)) {
-            socklen_t sock_len = 0;
+            socklen_t sock_len = sizeof(struct sockaddr_in);
             struct sockaddr_in cli_addr;
             int conn_fd = accept(listen_fd, (struct sockaddr*)&cli_addr, &sock_len);
+
             // remote end-point info
             EndPoint remote(&cli_addr);
             std::cout << "main process accept " << remote.Text() << std::endl;
+
             int index = 0;
             for (index = 0; index < FLAGS_child_num; ++index) {
                 if (child_list[index].child_status == 0) {
@@ -210,6 +212,7 @@ void ChildMain(int i) {
             std::cout << "invalid descriptor " << conn_fd << std::endl;
             continue;
         }
+        sock_len = sizeof(struct sockaddr_in);
         getpeername(conn_fd,(struct sockaddr*)&cli_addr, &sock_len);
         // remote end-point info
         EndPoint remote(&cli_addr);
