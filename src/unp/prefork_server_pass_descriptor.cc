@@ -112,7 +112,12 @@ int main(int argc, char* argv[]) {
 
         // accept new connection
         if (FD_ISSET(listen_fd, &rset)) {
-            int conn_fd = accept(listen_fd, NULL, NULL);
+            socklen_t sock_len = 0;
+            struct sockaddr_in cli_addr;
+            int conn_fd = accept(listen_fd, (struct sockaddr*)&cli_addr, &sock_len);
+            // remote end-point info
+            EndPoint remote(&cli_addr);
+            std::cout << "main process accept " << remote.Text() << std::endl;
             int index = 0;
             for (index = 0; index < FLAGS_child_num; ++index) {
                 if (child_list[index].child_status == 0) {
@@ -161,7 +166,7 @@ void WebImpl(int fd) {
     if ((n = read(fd, recvbuf, 64)) > 0) {
         bytes = std::stol(recvbuf);
     }
-    std::cout << "server write: " << bytes << " bytes" << std::endl;
+    // std::cout << "server write: " << bytes << " bytes" << std::endl;
     write(fd, "begin ", 7);
     int unit = std::min(1024, bytes), wn = 0;
     while (bytes > 0 && (wn = write(fd, sendbuf, unit)) > 0) {
