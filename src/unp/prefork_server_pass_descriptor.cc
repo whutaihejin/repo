@@ -108,7 +108,6 @@ int main(int argc, char* argv[]) {
         if (available_count <= 0) {
             FD_CLR(listen_fd, &rset);
         }
-        printf("before select %d\n", available_count);
         select_count = select(max_fd + 1, &rset, NULL, NULL, NULL);
 
         // accept new connection
@@ -133,7 +132,6 @@ int main(int argc, char* argv[]) {
                 continue;
             }
         }
-        printf("after select %d\n", available_count);
         for (int i = 0; i < FLAGS_child_num; ++i) {
             if (FD_ISSET(child_list[i].child_pipefd, &rset)) {
                 if (read(child_list[i].child_pipefd, &c, 1) == 0) {
@@ -147,7 +145,6 @@ int main(int argc, char* argv[]) {
                 }
             }
         }
-        fflush(NULL);
     }
 
     delete[] child_list;
@@ -213,11 +210,10 @@ void ChildMain(int i) {
         EndPoint remote(&cli_addr);
         std::cout << (i + 1) << "th child accept " << remote.Text() << std::endl;
 
-        printf("before web impl\n");
         WebImpl(conn_fd);
-        printf("web impl done\n");
         close(conn_fd);
-        close(conn_fd);
+        // tell parent we're ready again
+        write(STDERR_FILENO, &c, 1);
     }
 }
 
