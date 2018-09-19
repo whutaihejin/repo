@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <string.h>
 
-#define FILE_MODE (S_IRUSE | S_IWUSR | S_IRGRP | S_IROTH)
+#define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
 int main(int argc, char* argv[]) {
     int flags = O_RDWR | O_CREAT;
@@ -30,4 +30,5 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     return mq_close(mqd);
+    // return 0;
 }

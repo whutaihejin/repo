@@ -1,7 +1,7 @@
-all: mqcreate
+all: mqcreate mqunlink 
 
 %: %.cc
-	gcc -o $@ $<
+	g++ -o $@ $< -lrt
 
 clean:
 	find . -type f -perm "u=rwx,go=rx" -exec rm {} \;
