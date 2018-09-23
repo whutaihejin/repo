@@ -116,7 +116,6 @@ void* WebImpl(void* arg) {
         bytes -= wn;
         unit = std::min(bytes, unit);
     }
-    close(fd);
     return NULL;
 }
 
@@ -138,6 +137,7 @@ void MainLoop(int listen_fd) {
 
         pthread_t tid;
         pthread_create(&tid, NULL, WebImpl, (void*)(long)conn_fd);
+        close(conn_fd);
         std::cout << "accept from " << remote.Text() << " assign with thread " << tid << std::endl;
     }
 }
