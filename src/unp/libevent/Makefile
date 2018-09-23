@@ -1,7 +1,7 @@
-all: block_http_client stdarg_test
+all: block_http_client stdarg_test attribute
 
 %: %.c
-	gcc -o $@ $<
+	gcc -Wall -o $@ $<
 
 clean:
 	find . -type f -perm /111 -exec rm {} \;
