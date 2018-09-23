@@ -1,4 +1,4 @@
-all: mqcreate mqunlink 
+all: mqcreate mqunlink mqgetattr mqcreate2 mqsend mqreceive
 
 %: %.cc
 	g++ -o $@ $< -lrt
