@@ -120,7 +120,7 @@ int main(int argc, char* argv[]) {
 
     thread_pool = new Thread[pool_size];
     for (int i = 0; i < pool_size; ++i) {
-        pthread_create(&thread_pool[i].tid, NULL, &ThreadMain, (void*)(long)listen_fd);
+        pthread_create(&thread_pool[i].tid, NULL, &ThreadMain, (void*)(long)i);
     }
 
     struct sockaddr_in cli_addr;
@@ -168,6 +168,7 @@ void WebImpl(int fd) {
 }
 
 void* ThreadMain(void* arg) {
+    int index = (long)arg;
     struct sockaddr_in cli_addr;
     for (;;) {
         pthread_mutex_lock(&mutex);
@@ -181,7 +182,8 @@ void* ThreadMain(void* arg) {
             iget = 0; // reset to the begin of the pool
         }
         pthread_mutex_unlock(&mutex);
-        
+       
+        std::cout << index << "th thread do service" << std::endl;
         WebImpl(connfd);
         close(connfd);
     }
