@@ -9,6 +9,11 @@
 #include <fcntl.h>
 #include <getopt.h>
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <errno.h>
+
 #define LOG(prefix, code) \
     do { std::cout << prefix << " code=" << code << " msg=" << strerror(code) << std::endl; } while(0)
 
@@ -31,7 +36,7 @@ struct EndPoint {
             return false;
         }
         host = endpoint.substr(0, pos + 1);
-        port = std::atol(endpoint.substr(pos + 1).c_str());
+        port = atol(endpoint.substr(pos + 1).c_str());
         return true;
     }
 
@@ -107,7 +112,7 @@ void* WebImpl(void* arg) {
     memset(sendbuf, 'a', 1024);
     int n = 0, bytes = 0;
     if ((n = read(fd, recvbuf, 64)) > 0) {
-        bytes = std::stol(recvbuf);
+        bytes = atol(recvbuf);
     }
     std::cout << "server write: " << bytes << " bytes" << std::endl;
     write(fd, "begin ", 7);
