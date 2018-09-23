@@ -1,4 +1,4 @@
-all: block_http_client
+all: block_http_client stdarg_test
 
 %: %.c
 	gcc -o $@ $<
