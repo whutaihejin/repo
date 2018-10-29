@@ -1,6 +1,8 @@
 #include <iostream>
-#include <algorithm>
 #include <thread>
+#include <vector>
+#include <numeric>
+#include <algorithm>
 
 template<typename I, typename T>
 struct AccumulateBlock {
