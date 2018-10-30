@@ -61,5 +61,14 @@ int main() {
         v.push_back(o); // copy cons
         v.emplace_back(4); // cons
     }
+    // section 4
+    {
+        std::cout << "-- resize test --" << std::endl;
+        std::vector<Obj> v;
+        int limit = 9;
+        for (int i = 0; i < limit; ++i) {
+            v.emplace_back(i);
+        }
+    }
     return 0;
 }
