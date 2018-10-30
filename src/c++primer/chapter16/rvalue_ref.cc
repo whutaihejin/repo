@@ -4,6 +4,35 @@
 int f() {
     return 0;
 }
+
+class Obj {
+ public:    
+    explicit Obj(int v): val_(v) {
+        std::cout << "Obj constructor: " << val_ << std::endl;
+    }
+
+    ~Obj() {
+        std::cout << "~Obj destory: " << val_ <<  std::endl;
+    }
+
+    Obj(const Obj& obj) {
+        this->val_ = obj.val_;
+        std::cout << "copy constructor: " << val_ <<  std::endl;
+    }
+    
+    Obj(const Obj&& obj) noexcept {
+        this->val_ = obj.val_;
+        std::cout << "rvalue copy constructor: " << val_ << std::endl;
+    }
+
+    Obj& operator=(const Obj& o) {
+        this->val_ = o.val_;
+        std::cout << "assign operator: " << val_ << std::endl;
+        return *this;
+    }
+ private:
+    int val_;
+};
 int main() {
     // section 1
     {
@@ -22,6 +51,15 @@ int main() {
         int& r2 = v[0];
         int& r3 = r1;
         int&& f4 = v[0] * f();
+    }
+    // section 3
+    {
+        std::vector<Obj> v;
+        v.push_back(std::move(Obj(1))); // cons and move copy
+        v.push_back(Obj(2)); // cons and move copy
+        Obj o(3); // cons
+        v.push_back(o); // copy cons
+        v.emplace_back(4); // cons
     }
     return 0;
 }
