@@ -67,7 +67,7 @@ int main() {
         std::vector<Obj> v;
         int limit = 9;
         for (int i = 0; i < limit; ++i) {
-            v.emplace_back(i);
+            v.emplace_back(i + 1);
         }
     }
     return 0;
