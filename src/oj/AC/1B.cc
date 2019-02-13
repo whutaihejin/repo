@@ -3,9 +3,8 @@
 #include <string>
 
 void Spreadsheets(const std::string& line) {
-    // bad case: R853
     if (line[0] == 'R' && isdigit(line[1]) && line.find('C', 2) != std::string::npos) {
-        long long i = 1, row = 0, column = 0;
+        int i = 1, row = 0, column = 0;
         // read row and column
         for (; line[i] != 'C'; ++i) {
             row = row * 10 + line[i] - '0';
@@ -25,7 +24,7 @@ void Spreadsheets(const std::string& line) {
         }
         std::cout << row << std::endl;
     } else {
-        long long i = 0, row = 0, column = 0;
+        int i = 0, row = 0, column = 0;
         // read column and row
         for (; isalpha(line[i]); ++i) {
             column = column * 26 + line[i] - 'A' + 1;
