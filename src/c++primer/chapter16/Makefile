@@ -1,4 +1,4 @@
-srcs = rvalue_ref t16.1 t16.2
+srcs = rvalue_ref t16.1 t16.2 snprintf
 all: $(srcs)
 
 %: %.cc
@@ -6,3 +6,4 @@ all: $(srcs)
 
 clean:
 	rm -rf $(srcs)
+	rm -rf *.dSYM
