@@ -1,11 +1,10 @@
 #!/bin/bash
 
-sources=$(ls *.cc)
 for s in $(ls *.cc); do
     srcs=$srcs" "${s%.cc}
 done
 srcs="srcs = "$srcs
-rm -rf .premake
 
+rm -rf .premake
 echo $srcs > .premake
 cat Makefile | tail -n +2 >> .premake && mv .premake Makefile
