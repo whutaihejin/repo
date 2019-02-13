@@ -1,8 +1,8 @@
-srcs = x
+srcs = 1B test
 all: $(srcs)
 
 %: %.cc
-	g++ -g -O0 -std=c++11 -o $@ $<
+	g++ -O0 -std=c++11 -o $@ $<
 
 clean:
 	rm -rf $(srcs)

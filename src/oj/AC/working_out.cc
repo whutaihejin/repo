@@ -1,6 +1,5 @@
 #include <iostream>
 #include <algorithm>
-#include <string.h>
 
 const int N = 1001;
 long long top_left[N][N] = {0};
@@ -49,10 +48,6 @@ long long WorkOut(int n, int m) {
 
 
 int main() {
-    memset(top_left, 0, sizeof(top_left));
-    memset(top_right, 0, sizeof(top_right));
-    memset(bottom_left, 0, sizeof(bottom_left));
-    memset(bottom_right, 0, sizeof(bottom_right));
     int n = 0, m = 0;
     while (std::cin >> n >> m) {
         for (int i = 1; i <= n; ++i) {
