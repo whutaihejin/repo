@@ -1,4 +1,4 @@
-srcs = counter launch launch_thread parallel_accu wait
+srcs = x
 all: $(srcs)
 
 %: %.cc
