@@ -1,4 +1,4 @@
-srcs = matrix_chain robbery test
+srcs = lcs robbery test
 all: $(srcs)
 
 %: %.cc
