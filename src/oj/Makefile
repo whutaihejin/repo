@@ -1,4 +1,4 @@
-srcs = 1B test
+srcs = matrix_chain robbery test
 all: $(srcs)
 
 %: %.cc
