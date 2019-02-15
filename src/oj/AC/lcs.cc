@@ -68,8 +68,8 @@ void Solution(const std::string& x, std::vector<std::vector<int>>& t, int i, int
 }
 
 int main() {
-    std::string x = "ABC";
-    std::string y = "AB";
+    std::string x = "ACCGGTCGAGTGCGCGGAAGCCGGCCGAA";
+    std::string y = "GTCGTTCGGAATGCCGTTGCTCTGTAAA";
     std::cout << DPLCS(x, y) << std::endl;
     return 0;
 }
