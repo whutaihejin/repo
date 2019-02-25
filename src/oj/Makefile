@@ -1,8 +1,8 @@
-srcs = lcs robbery test
+srcs = robbery test
 all: $(srcs)
 
 %: %.cc
-	g++ -O0 -std=c++11 -o $@ $<
+	g++ -g -O0 -std=c++11 -o $@ $<
 
 clean:
 	rm -rf $(srcs)
