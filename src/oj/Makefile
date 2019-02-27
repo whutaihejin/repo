@@ -1,4 +1,4 @@
-srcs = robbery test
+srcs = robbery test unit_set
 all: $(srcs)
 
 %: %.cc
