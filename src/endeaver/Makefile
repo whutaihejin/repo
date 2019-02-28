@@ -1,4 +1,4 @@
-srcs = robbery test unit_set
+srcs = robbery test tournament_tree unit_set
 all: $(srcs)
 
 %: %.cc
