@@ -1,4 +1,4 @@
-srcs = robbery test tournament_tree unit_set
+srcs = largest_sum_after_k_negations robbery test unit_set
 all: $(srcs)
 
 %: %.cc
