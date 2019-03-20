@@ -1,4 +1,4 @@
-srcs = largest_sum_after_k_negations robbery test unit_set
+srcs = change_making robbery test unit_set
 all: $(srcs)
 
 %: %.cc
