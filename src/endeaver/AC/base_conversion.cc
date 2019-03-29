@@ -1,16 +1,17 @@
 #include <iostream>
 
-std::string BaseConversion(int n, int base) {
+void BaseConversion(int n, int base, std::string& rst) {
     if (n < base) {
-        return std::string(1, n + '0');
+        rst.push_back(n + '0');
+        return;
     }
-    std::string s = BaseConversion(n / base, base);
-    s.push_back(n % base + '0');
-    return s;
+    BaseConversion(n / base, base, rst);
+    rst.push_back(n % base + '0');
 }
 
 int main() {
-    std::string s = BaseConversion(12345, 8);
-    std::cout << s << std::endl;
+    std::string rst;
+    BaseConversion(12345, 8, rst);
+    std::cout << rst << std::endl;
     return 0;
 }
