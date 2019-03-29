@@ -1,4 +1,4 @@
-srcs = modular_arithmetic multiply robbery test unit_set
+srcs = robbery test unit_set
 all: $(srcs)
 
 %: %.cc
