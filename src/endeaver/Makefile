@@ -1,4 +1,4 @@
-srcs = robbery test unit_set
+srcs = gcd robbery snprinf test unit_set vector_init
 all: $(srcs)
 
 %: %.cc

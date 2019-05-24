@@ -22,7 +22,7 @@ int main() {
     std::cout << "Enter two number:" << std::endl;
     int a = 0, b = 0;
     while (std::cin >> a >> b) {
-        std::cout << "gcd(" << a << ", " << b << ") =" << gcd(a, b) << std::endl;
+        std::cout << "gcd(" << a << ", " << b << ") = " << gcd(a, b) << std::endl;
     }
     return 0;
 }
