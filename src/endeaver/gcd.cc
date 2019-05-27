@@ -11,9 +11,11 @@ int gcd(int a, int b) {
         return gcd(b, a);
     }
     int r = 0;
+    std::cout << "-- " << a << " " << b << std::endl;
     while ((r = a % b)) {
         a = b;
         b = r;
+        std::cout << "-- " << a << " " << b << std::endl;
     }
     return b;
 }
@@ -22,7 +24,8 @@ int main() {
     std::cout << "Enter two number:" << std::endl;
     int a = 0, b = 0;
     while (std::cin >> a >> b) {
-        std::cout << "gcd(" << a << ", " << b << ") = " << gcd(a, b) << std::endl;
+        int val = gcd(a, b);
+        std::cout << "gcd(" << a << ", " << b << ") = " << val << std::endl;
     }
     return 0;
 }
