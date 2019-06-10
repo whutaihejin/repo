@@ -1,10 +1,11 @@
 #include <iostream>
 #include <pthread.h>
 #include <deque>
+#include <unistd.h>
 
 class BlockingQueue {
 public:
-    BlockingQueue(const size_t capacity = 10): capacity_(capacity) {
+    BlockingQueue(const size_t capacity = 10000): capacity_(capacity) {
         pthread_mutex_init(&mutex_, NULL);
         pthread_cond_init(&nonempty_cond_, NULL);
         pthread_cond_init(&nonfull_cond_, NULL);
@@ -21,9 +22,9 @@ public:
             pthread_cond_wait(&nonfull_cond_, &mutex_);
         }
         queue_.push_back(entry);
+        pthread_mutex_unlock(&mutex_);
         // send non empty signal
         pthread_cond_signal(&nonempty_cond_);
-        pthread_mutex_unlock(&mutex_);
     }
 
     int Pop() {
@@ -33,8 +34,9 @@ public:
         }
         int val = queue_.front();
         queue_.pop_front();
-        pthread_cond_signal(&nonfull_cond_);
         pthread_mutex_unlock(&mutex_);
+        // send non full signal
+        pthread_cond_signal(&nonfull_cond_);
         return val;
     }
 
@@ -68,6 +70,7 @@ void* Task(void* args) {
     BlockingQueue* queue = meta->queue;
     // consumer task
     while (!meta->Exit()) {
+        // usleep(1000);
         int val = queue->Pop();
         pthread_mutex_lock(&cout_mutex);
         std::cout << "take an element " << val << std::endl;
@@ -90,14 +93,14 @@ int main() {
         return -1;
     }
     // producer task
-    // for (int i = 0; i < 1000; ++i) {
-    //     queue.Push(i + 1);
-    //     pthread_mutex_lock(&cout_mutex);
-    //     std::cout << "push queue " << (i + 1) << std::endl;
-    //     pthread_mutex_unlock(&cout_mutex);
-    // }
-    size_t i = 0;
-    while (true) { queue.Push(i++); }
+    for (int i = 0; i < 1000; ++i) {
+        queue.Push(i + 1);
+        pthread_mutex_lock(&cout_mutex);
+        std::cout << "push queue " << (i + 1) << std::endl;
+        pthread_mutex_unlock(&cout_mutex);
+    }
+    // size_t i = 0;
+    // while (true) { queue.Push(i++); }
     task_meta.SetExit(true);
     pthread_join(tid, NULL);
     std::cout << "join done, exit the main thread!" << std::endl;
