@@ -40,8 +40,16 @@ public:
         return val;
     }
 
+    size_t Capacity() {
+        return capacity_;
+    }
+
+    void SetCapacity(size_t capacity) {
+        capacity_ = capacity;
+    }
+
 private:
-    size_t capacity_;
+    std::atomic<size_t> capacity_;
     std::deque<int> queue_;
     pthread_mutex_t mutex_;
     pthread_cond_t nonempty_cond_;
