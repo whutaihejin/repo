@@ -1,4 +1,4 @@
-srcs = gcd robbery snprinf sum_target test unit_set vector_init
+srcs = block_queue gcd robbery snprinf sum_target test unit_set vector_init
 all: $(srcs)
 
 %: %.cc
