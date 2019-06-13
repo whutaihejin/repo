@@ -6,8 +6,8 @@ int BinaryAdd(std::vector<int>& a, std::vector<int>& b, std::vector<int>& s) {
     s.resize(a.size() + 1);
     int carry = 0;
     for (size_t i = 0; i < a.size(); ++i) {
-        s[i] = (a[i] + b[i] + carry) % 2;
-        carry = (a[i] + b[i] + carry) / 2;
+        s[i] = (a[i] + b[i] + carry) & 0x01;
+        carry = (a[i] + b[i] + carry) >> 1;
     }
     s[a.size()] = carry;
     return 0;
@@ -20,8 +20,8 @@ void Show(std::vector<int>& nums) {
 
 int main() {
     {
-        std::vector<int> a{1, 1};
-        std::vector<int> b{1, 1};
+        std::vector<int> a{0, 0};
+        std::vector<int> b{0, 0};
         std::vector<int> c;
         BinaryAdd(a, b, c);
         Show(a);
