@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 int LinearSearch(std::vector<int>& nums, int target) {
     int rst = -1;

@@ -1,19 +1,20 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 int BinaryAdd(std::vector<int>& a, std::vector<int>& b, std::vector<int>& s) {
     s.resize(a.size() + 1);
     int carry = 0;
     for (size_t i = 0; i < a.size(); ++i) {
-        carry = (a[i] + b[i] + carry) / 2;
         s[i] = (a[i] + b[i] + carry) % 2;
+        carry = (a[i] + b[i] + carry) / 2;
     }
     s[a.size()] = carry;
     return 0;
 }
 
 void Show(std::vector<int>& nums) {
-    for_each(nums.begin(), nums.end(), [](const int& v) { std::cout << v; });
+    std::for_each(nums.begin(), nums.end(), [](const int& v) { std::cout << v; });
     std::cout << std::endl;
 }
 
