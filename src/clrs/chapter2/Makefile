@@ -1,4 +1,4 @@
-srcs = binary_add insertion_sort linear_search selection_sort shell_sort
+srcs = binary_add bit_add insertion_sort linear_search selection_sort shell_sort
 all: $(srcs)
 
 %: %.cc
