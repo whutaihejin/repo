@@ -1,19 +1,6 @@
 #include <iostream>
 #include <vector>
 
-void DoShellSort(std::vector<int>& nums, int d) {
-    for (int k = 0; k < d; ++k) {
-        for (size_t i = k + d; i < nums.size(); i += d) {
-            int key = nums[i];
-            int j = i - d;
-            for (; j >= 0 && key < nums[j]; j -= d) {
-                nums[j + d] = nums[j];
-            }
-            nums[j + d] = key;
-        }
-    }
-}
-
 void Show(std::vector<int>& nums) {
     for (auto it = nums.begin(); it != nums.end(); ++it) {
         std::cout << *it << " ";
@@ -23,9 +10,17 @@ void Show(std::vector<int>& nums) {
 
 void ShellSort(std::vector<int>& nums) {
     std::vector<int> deltas{10, 5, 3, 2, 1};
-    for (size_t i = 0; i < deltas.size(); ++i) {
-        DoShellSort(nums, deltas[i]);
-        std::cout << "shell sort by " << deltas[i] << std::endl;
+    for (size_t k = 0; k < deltas.size(); ++k) {
+        int d = deltas[k];
+        for (size_t i = d; i < nums.size(); ++i) {
+            int key = nums[i];
+            int j = i - d;
+            for (; j >= 0 && key < nums[j]; j -= d) {
+                nums[j + d] = nums[j];
+            }
+            nums[j + d] = key;
+        }
+        std::cout << "internal result by " << d << " steps" << std::endl;
         Show(nums);
     }
 }
