@@ -1,4 +1,4 @@
-srcs = block_queue gcd robbery snprinf sum_target test unit_set vector_init
+srcs = binary_add insertion_sort linear_search
 all: $(srcs)
 
 %: %.cc
