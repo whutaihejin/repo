@@ -3,22 +3,20 @@
 
 void Merge(std::vector<int>& nums, std::vector<int>& back, int low, int mid, int high) {
     int k = low, i = low, j = mid + 1;
-    for (; i <= mid && j <= high; k++) {
+    while (i <= mid && j <= high) {
         if (nums[i] < nums[j]) {
-            back[k] = nums[i];
-            i++;
+            back[k++] = nums[i++];
         } else {
-            back[k] = nums[j];
-            j++;
+            back[k++] = nums[j++];
         }
     }
     // take tail array of [i, mid]
-    for (; i <= mid; k++, i++) {
-        back[k] = nums[i];
+    while (i <= mid) {
+        back[k++] = nums[i++];
     }
     // take tail array of [j, high]
-    for (; j <= high; k++, j++) {
-        back[k] = nums[j];
+    while (j <= high) {
+        back[k++] = nums[j++];
     }
     // copy back from 'back' to 'nums' array
     for (k = low; k <= high; k++) {
