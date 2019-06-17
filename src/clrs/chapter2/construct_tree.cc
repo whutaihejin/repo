@@ -23,7 +23,7 @@ TreeNode* BuildTree(
         }
     }
     // left in: [il, k - 1], in: [pl + 1, k + pl - il]
-    TreeNode* left = BuildTree(preorder, pl + 1, k + pl -il, inorder, il, k - 1);
+    TreeNode* left = BuildTree(preorder, pl + 1, k + pl - il, inorder, il, k - 1);
     TreeNode* right = BuildTree(preorder, k + pl - il + 1, ph, inorder, k + 1, ih);
     root->left = left;
     root->right = right;
