@@ -11,7 +11,7 @@ struct TreeNode {
 TreeNode* BuildTree(
         std::vector<int>& preorder, int pl, int ph,
         std::vector<int>& inorder, int il, int ih) {
-    if (pl > ph) {
+    if (pl > ph || il > ih) {
         return NULL;
     }
     TreeNode* root = new TreeNode(preorder[pl]);
@@ -39,9 +39,9 @@ void PreorderTraversal(TreeNode* root) {
 
 void InorderTraversal(TreeNode* root) {
     if (!root) return;
-    PreorderTraversal(root->left);
+    InorderTraversal(root->left);
     std::cout << root->val << " ";
-    PreorderTraversal(root->right);
+    InorderTraversal(root->right);
 }
 
 int main() {
