@@ -11,7 +11,7 @@ struct TreeNode {
 TreeNode* BuildTree(
         std::vector<int>& preorder, int pl, int ph,
         std::vector<int>& inorder, int il, int ih) {
-    if (pl > ph || il > ih) {
+    if (pl > ph) {
         return NULL;
     }
     TreeNode* root = new TreeNode(preorder[pl]);
@@ -23,8 +23,9 @@ TreeNode* BuildTree(
         }
     }
     // left in: [il, k - 1], in: [pl + 1, k + pl - il]
-    TreeNode* left = BuildTree(preorder, pl + 1, k + pl - il, inorder, il, k - 1);
-    TreeNode* right = BuildTree(preorder, k + pl - il + 1, ph, inorder, k + 1, ih);
+    int left_tree_size = k - il;
+    TreeNode* left = BuildTree(preorder, pl + 1, pl + left_tree_size, inorder, il, k - 1);
+    TreeNode* right = BuildTree(preorder, pl + left_tree_size + 1, ph, inorder, k + 1, ih);
     root->left = left;
     root->right = right;
     return root;
