@@ -31,10 +31,23 @@ int main() {
         std::vector<int> changes{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
         MaxMeta profit = MaxSubarray(changes);
         std::cout << "profit: [" << profit.low << "," << profit.high << "]=" << profit.val << std::endl;
-        for (int i = profit.low; i <= profit.high; ++i) {
+        for (int i = profit.low; i >= 0 && i <= profit.high; ++i) {
             std::cout << changes[i] << " ";
         }
-        std::cout << std::endl;
+        if (profit.low >= 0) {
+            std::cout << std::endl;
+        }
+    }
+    {
+        std::vector<int> changes{-7, -5, -2, -22, -4};
+        MaxMeta profit = MaxSubarray(changes);
+        std::cout << "profit: [" << profit.low << "," << profit.high << "]=" << profit.val << std::endl;
+        for (int i = profit.low; i >= 0 && i <= profit.high; ++i) {
+            std::cout << changes[i] << " ";
+        }
+        if (profit.low >= 0) {
+            std::cout << std::endl;
+        }
     }
     {
         std::vector<int> changes{-7, -5, -2, -22, -4};
