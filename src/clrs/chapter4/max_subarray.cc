@@ -1,48 +1,63 @@
 #include <iostream>
 #include <vector>
 
-int CrossMid(std::vector<int>& nums, int low, int mid, int high) {
+struct MaxMeta {
+    int val;
+    int low;
+    int high;
+};
+
+MaxMeta CrossMid(std::vector<int>& nums, int low, int mid, int high) {
     int sum = 0;
-    int max_left = nums[mid];
+    int max_left = nums[mid], left_index = mid;
     for (int i = mid; i >= 0; --i) {
         sum += nums[i];
-        max_left = std::max(max_left, sum);
+        if (sum > max_left) {
+            max_left = sum;
+            left_index = i;
+        }
     }
-    int max_right = nums[mid + 1];
+    int max_right = nums[mid + 1], right_index = mid + 1;
     sum = 0;
     for (int i = mid + 1; i <= high; ++i) {
         sum += nums[i];
-        max_right = std::max(max_right, sum);
+        if (sum > max_right) {
+            max_right = sum;
+            right_index = i;
+        }
     }
-    return max_left + max_right;
+    return MaxMeta{max_left + max_right, left_index, right_index};
 }
 
-int MaxSubarray(std::vector<int>& nums, int low, int high) {
+MaxMeta MaxSubarray(std::vector<int>& nums, int low, int high) {
     if (low < high) {
         int mid = (low + high) / 2;
         // left
-        int left = MaxSubarray(nums, low, mid);
+        MaxMeta left = MaxSubarray(nums, low, mid);
         // right
-        int right = MaxSubarray(nums, mid + 1, high);
+        MaxMeta right = MaxSubarray(nums, mid + 1, high);
         // cross mid case
-        int cross = CrossMid(nums, low, mid, high);
+        MaxMeta cross = CrossMid(nums, low, mid, high);
         int profit = 0;
-        if (left >= right && left >= cross) {
-            profit = left;
-        } else if (right >= left && right >= cross) {
-            profit = right;
+        if (left.val >= right.val && left.val >= cross.val) {
+            return left;
+        } else if (right.val >= left.val && right.val >= cross.val) {
+            return right;
         } else {
-            profit = cross;
+            return cross;
         }
-        return profit;
     }
     // only one element, just return it.
-    return nums[low];
+    return MaxMeta{nums[low], low, high};
 }
 
 int main() {
     std::vector<int> changes{13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7};
-    int profit = MaxSubarray(changes, 0, changes.size() - 1);
-    std::cout << "profit: " << profit << std::endl;
+    MaxMeta profit = MaxSubarray(changes, 0, changes.size() - 1);
+    std::cout << "profit: [" << profit.low << "," << profit.high << "]=" << profit.val << std::endl;
+    for (int i = profit.low; i <= profit.high; ++i) {
+        std::cout << changes[i] << " ";
+    }
+    std::cout << std::endl;
     return 0;
 }
