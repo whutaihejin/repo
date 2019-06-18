@@ -1,4 +1,4 @@
-srcs = max_profit max_subarray
+srcs = linear_max_subarray max_profit max_subarray
 all: $(srcs)
 
 %: %.cc
