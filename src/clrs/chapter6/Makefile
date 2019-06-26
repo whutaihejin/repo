@@ -1,4 +1,4 @@
-srcs = max_heapify
+srcs = max_heapify min_heapify
 all: $(srcs)
 
 %: %.cc
