@@ -1,4 +1,4 @@
-srcs = max_heapify min_heapify
+srcs = build_heap heap_sort max_heapify min_heapify priority_queue
 all: $(srcs)
 
 %: %.cc
