@@ -1,4 +1,4 @@
-srcs = build_heap heap_sort max_heapify min_heapify priority_queue
+srcs = build_heap heap_sort k_merge_sort less max_heapify min_heapify priority_queue t winner_tree
 all: $(srcs)
 
 %: %.cc
