@@ -33,6 +33,7 @@ int main() {
 #else
     printf("no symbol for _SC_ARG_MAX\n");
 #endif
+printf("\n");
 #ifdef ATEXIT_MAX
     printf("ATEXIT_MAX defined to be %ld\n", (long)ATEXIT_MAX+0);
 #else
@@ -43,6 +44,7 @@ int main() {
 #else
     printf("no symbol for _SC_ATEXIT_MAX\n");
 #endif
+printf("\n");
 #ifdef CHILD_MAX
     printf("CHILD_MAX defined to be %ld\n", (long)CHILD_MAX+0);
 #else
@@ -53,6 +55,7 @@ int main() {
 #else
     printf("no symbol for _SC_CHILD_MAX\n");
 #endif
+printf("\n");
 #ifdef CLK_TCK
     printf("CLK_TCK defined to be %ld\n", (long)CLK_TCK+0);
 #else
@@ -63,6 +66,7 @@ int main() {
 #else
     printf("no symbol for _SC_CLK_TCK\n");
 #endif
+printf("\n");
 #ifdef COLL_WEIGHTS_MAX
     printf("COLL_WEIGHTS_MAX defined to be %ld\n", (long)COLL_WEIGHTS_MAX+0);
 #else
@@ -73,6 +77,7 @@ int main() {
 #else
     printf("no symbol for _SC_COLL_WEIGHTS_MAX\n");
 #endif
+printf("\n");
 #ifdef DELAYTIMER_MAX
     printf("DELAYTIMER_MAX defined to be %ld\n", (long)DELAYTIMER_MAX+0);
 #else
@@ -83,6 +88,7 @@ int main() {
 #else
     printf("no symbol for _SC_DELAYTIMER_MAX\n");
 #endif
+printf("\n");
 #ifdef HOST_NAME_MAX
     printf("HOST_NAME_MAX defined to be %ld\n", (long)HOST_NAME_MAX+0);
 #else
@@ -93,6 +99,7 @@ int main() {
 #else
     printf("no symbol for _SC_HOST_NAME_MAX\n");
 #endif
+printf("\n");
 #ifdef IOV_MAX
     printf("IOV_MAX defined to be %ld\n", (long)IOV_MAX+0);
 #else
@@ -103,6 +110,7 @@ int main() {
 #else
     printf("no symbol for _SC_IOV_MAX\n");
 #endif
+printf("\n");
 #ifdef LINE_MAX
     printf("LINE_MAX defined to be %ld\n", (long)LINE_MAX+0);
 #else
@@ -113,6 +121,7 @@ int main() {
 #else
     printf("no symbol for _SC_LINE_MAX\n");
 #endif
+printf("\n");
 #ifdef LOGIN_NAME_MAX
     printf("LOGIN_NAME_MAX defined to be %ld\n", (long)LOGIN_NAME_MAX+0);
 #else
@@ -123,6 +132,7 @@ int main() {
 #else
     printf("no symbol for _SC_LOGIN_NAME_MAX\n");
 #endif
+printf("\n");
 #ifdef NGROUPS_MAX
     printf("NGROUPS_MAX defined to be %ld\n", (long)NGROUPS_MAX+0);
 #else
@@ -133,6 +143,7 @@ int main() {
 #else
     printf("no symbol for _SC_NGROUPS_MAX\n");
 #endif
+printf("\n");
 #ifdef OPEN_MAX
     printf("OPEN_MAX defined to be %ld\n", (long)OPEN_MAX+0);
 #else
@@ -143,6 +154,7 @@ int main() {
 #else
     printf("no symbol for _SC_OPEN_MAX\n");
 #endif
+printf("\n");
 #ifdef PAGESIZE
     printf("PAGESIZE defined to be %ld\n", (long)PAGESIZE+0);
 #else
@@ -153,6 +165,7 @@ int main() {
 #else
     printf("no symbol for _SC_PAGESIZE\n");
 #endif
+printf("\n");
 #ifdef PAGE_SIZE
     printf("PAGE_SIZE defined to be %ld\n", (long)PAGE_SIZE+0);
 #else
@@ -163,6 +176,7 @@ int main() {
 #else
     printf("no symbol for _SC_PAGE_SIZE\n");
 #endif
+printf("\n");
 #ifdef RE_DUP_MAX
     printf("RE_DUP_MAX defined to be %ld\n", (long)RE_DUP_MAX+0);
 #else
@@ -173,6 +187,7 @@ int main() {
 #else
     printf("no symbol for _SC_RE_DUP_MAX\n");
 #endif
+printf("\n");
 #ifdef RTSIG_MAX
     printf("RTSIG_MAX defined to be %ld\n", (long)RTSIG_MAX+0);
 #else
@@ -183,6 +198,7 @@ int main() {
 #else
     printf("no symbol for _SC_RTSIG_MAX\n");
 #endif
+printf("\n");
 #ifdef SEM_NSEMS_MAX
     printf("SEM_NSEMS_MAX defined to be %ld\n", (long)SEM_NSEMS_MAX+0);
 #else
@@ -193,6 +209,7 @@ int main() {
 #else
     printf("no symbol for _SC_SEM_NSEMS_MAX\n");
 #endif
+printf("\n");
 #ifdef SEM_VALUE_MAX
     printf("SEM_VALUE_MAX defined to be %ld\n", (long)SEM_VALUE_MAX+0);
 #else
@@ -203,6 +220,7 @@ int main() {
 #else
     printf("no symbol for _SC_SEM_VALUE_MAX\n");
 #endif
+printf("\n");
 #ifdef SIGQUEUE_MAX
     printf("SIGQUEUE_MAX defined to be %ld\n", (long)SIGQUEUE_MAX+0);
 #else
@@ -213,6 +231,7 @@ int main() {
 #else
     printf("no symbol for _SC_SIGQUEUE_MAX\n");
 #endif
+printf("\n");
 #ifdef SYMLOOP_MAX
     printf("SYMLOOP_MAX defined to be %ld\n", (long)SYMLOOP_MAX+0);
 #else
@@ -223,6 +242,7 @@ int main() {
 #else
     printf("no symbol for _SC_SYMLOOP_MAX\n");
 #endif
+printf("\n");
 #ifdef STREAM_MAX
     printf("STREAM_MAX defined to be %ld\n", (long)STREAM_MAX+0);
 #else
@@ -233,6 +253,7 @@ int main() {
 #else
     printf("no symbol for _SC_STREAM_MAX\n");
 #endif
+printf("\n");
 #ifdef TTY_NAME_MAX
     printf("TTY_NAME_MAX defined to be %ld\n", (long)TTY_NAME_MAX+0);
 #else
@@ -243,6 +264,7 @@ int main() {
 #else
     printf("no symbol for _SC_TTY_NAME_MAX\n");
 #endif
+printf("\n");
 #ifdef TZNAME_MAX
     printf("TZNAME_MAX defined to be %ld\n", (long)TZNAME_MAX+0);
 #else
@@ -253,5 +275,6 @@ int main() {
 #else
     printf("no symbol for _SC_TZNAME_MAX\n");
 #endif
+printf("\n");
     return 0;
 }

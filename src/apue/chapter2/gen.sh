@@ -14,6 +14,7 @@ for entry in $(cat sysconf.conf); do
     echo "#else"
     echo "    printf(\"no symbol for _SC_$entry\n\");"
     echo "#endif"
+    echo "printf(\"\n\");"
 done
 echo "    return 0;"
 echo "}"
