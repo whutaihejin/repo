@@ -1,8 +1,11 @@
-srcs = limits
+srcs = limits x
 all: $(srcs)
 
 %: %.c
-	gcc -fno-inline-functions -O0 -std=c99 -o $@ $<
+	gcc -O0 -std=c99 -o $@ $<
+
+%: %.cc
+	g++ -O0 -std=c++11 -o $@ $<
 
 clean:
 	rm -rf $(srcs)
