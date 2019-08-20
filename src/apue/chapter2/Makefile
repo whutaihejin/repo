@@ -1,4 +1,4 @@
-srcs = limits x
+srcs = env limits
 all: $(srcs)
 
 %: %.c
