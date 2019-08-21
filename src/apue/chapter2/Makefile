@@ -1,4 +1,4 @@
-srcs = env limits
+srcs = call_order env limits
 all: $(srcs)
 
 %: %.c

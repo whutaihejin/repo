@@ -1,4 +1,4 @@
-srcs = counter counter hanppen_before hanppen_before launch launch launch_thread launch_thread parallel_accu parallel_accu wait wait
+srcs = call_order counter hanppen_before launch launch_thread parallel_accu wait
 all: $(srcs)
 
 %: %.cc
