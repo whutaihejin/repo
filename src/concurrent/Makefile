@@ -1,4 +1,4 @@
-srcs = call_order counter hanppen_before launch launch_thread parallel_accu wait
+srcs = acquire_release acquire_release2 call_order counter hanppen_before launch launch_thread parallel_accu relaxed_order relaxed_order_2 release_consume sequential_consistent transitive_acquire_release transitive_acquire_release2 wait
 all: $(srcs)
 
 %: %.cc
