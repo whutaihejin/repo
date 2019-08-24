@@ -1,4 +1,4 @@
-srcs = call_order env limits varints
+srcs = e3.6 streambuf_01 streambuf_02 streambuf_03 streambuf_04 t3.11
 all: $(srcs)
 
 %: %.c
