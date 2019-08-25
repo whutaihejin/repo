@@ -1,4 +1,4 @@
-srcs = show_stat
+srcs = show_stat traverse_dir
 all: $(srcs)
 
 %: %.c
