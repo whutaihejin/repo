@@ -1,7 +1,12 @@
-all: fwide temporary_files t5.9 file_lock process_lock
+srcs = binary_io file_lock fwide process_lock t5.9 temporary_files
+all: $(srcs)
+
+%: %.c
+	gcc -g -O0 -std=c99 -o $@ $<
 
 %: %.cc
-	g++ -w -o $@ $<
+	g++ -g -O0 -std=c++11 -o $@ $<
 
 clean:
-	find . -type f -perm "u=rwx,go=rx" -exec rm {} \;
+	rm -rf $(srcs)
+	rm -rf *.dSYM

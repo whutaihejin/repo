@@ -62,7 +62,7 @@ private:
 void* WriteFile(void *arg) {
     ProcessLock* lock = static_cast<ProcessLock*>(arg);
     lock->Lock();
-    printf("process %ld lock file\n", getpid());
+    printf("process %ld lock file\n", (long)getpid());
     fflush(NULL);
     sleep(3);
     lock->Unlock();
@@ -71,7 +71,7 @@ void* WriteFile(void *arg) {
 
 int main() {
     ProcessLock lock;
-    printf("main process %ld\n", getpid());
+    printf("main process %ld\n", (long)getpid());
     pid_t pid;
     if ((pid = fork()) == 0) {
         // child processs
