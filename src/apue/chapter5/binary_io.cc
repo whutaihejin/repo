@@ -50,6 +50,7 @@ int binaryIO2(const char* file) {
         printf("fopen error\n");
         return 1;
     }
+    printf("fd of open stream: %d\n", fileno(fp));
     if (fwrite(base, sizeof(size_t), LEN, fp) < LEN) {
         printf("fwrite error\n");
         return 1;
