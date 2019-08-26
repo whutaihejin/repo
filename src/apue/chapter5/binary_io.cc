@@ -74,7 +74,8 @@ int binaryIO2(const char* file) {
 }
 
 int main() {
-    binaryIO("base.dat");
+    printf("sizeof(size_t)=%zd\n", sizeof(size_t));
+    // binaryIO("base.dat");
     binaryIO2("base2.dat");
     return 0;
 }
