@@ -1,4 +1,4 @@
-srcs = binary_io endian file_lock fwide printf process_lock str t5.9 temporary_files
+srcs = binary_io char endian file_lock fwide printf process_lock str t5.9 temporary_files
 all: $(srcs)
 
 %: %.c
