@@ -1,4 +1,4 @@
-srcs = pid
+srcs = fork pid
 all: $(srcs)
 
 %: %.c
