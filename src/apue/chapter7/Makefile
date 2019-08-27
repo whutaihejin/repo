@@ -1,4 +1,4 @@
-srcs = _Exit __exit command_line_args environ exit setjump
+srcs = _Exit __exit command_line_args environ exit jmp_val setjump
 all: $(srcs)
 
 %: %.c
