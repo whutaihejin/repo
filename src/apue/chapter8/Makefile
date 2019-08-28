@@ -1,4 +1,4 @@
-srcs = fork fork_with_thread pid
+srcs = fork fork_buf fork_with_thread pid
 all: $(srcs)
 
 %: %.c
