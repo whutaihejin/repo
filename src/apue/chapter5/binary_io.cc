@@ -64,10 +64,10 @@ int binaryIO2(const char* file) {
     }
     for (size_t i = 0; i < LEN; ++i) {
         assert(copy[i] == base[i]);
-        printf("%d ", (int)copy[i]);
-        if ((i + 1) % 20 == 0) {
-            printf("\n");
-        }
+        // printf("%d ", (int)copy[i]);
+        // if ((i + 1) % 20 == 0) {
+        //     printf("\n");
+        // }
     }
     unlink(file);
     printf("\n");
