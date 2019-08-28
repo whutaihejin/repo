@@ -13,6 +13,7 @@ void* RunTask(void *arg) {
 }
 
 void* RunTask2(void *arg) {
+    sleep(2);
     for (int i = 0; i < 3; ++i) {
         printf("just shit it! pthread task %ld, %ld\n", (long)getpid(), (long)getppid());
     }
