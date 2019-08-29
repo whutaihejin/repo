@@ -19,11 +19,17 @@ int main() {
     if ((pid = fork()) < 0) {
     } else if (pid == 0) {
         // child process
+        char c;
+        close(pipefd[1]); // first close write pipe
+        read(pipefd[0], &c, 1); // wait for the child process to write
         slowShow("I am child\n");
         exit(0);
     }
     // parent prcess
     slowShow("I am parent\n");
+    close(pipefd[0]); // close read pipe
+    char c = 'a';
+    write(pipefd[1], &c, 1); // write a char to tell prarent process
     return 0;
 }
 

@@ -20,9 +20,15 @@ int main() {
     } else if (pid == 0) {
         // child process
         slowShow("I am child\n");
+        close(pipefd[0]); // close read pipe
+        char c = 'a';
+        write(pipefd[1], &c, 1); // write a char to tell prarent process
         exit(0);
     }
     // parent prcess
+    char c;
+    close(pipefd[1]); // first close write pipe
+    read(pipefd[0], &c, 1); // wait for the child process to write
     slowShow("I am parent\n");
     return 0;
 }
