@@ -1,4 +1,4 @@
-srcs = fork fork_buf fork_with_thread pid tiwce_fork vfork wait
+srcs = fork fork_buf fork_with_thread pid race_condition tiwce_fork twice_fork vfork wait
 all: $(srcs)
 
 %: %.c
