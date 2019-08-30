@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
+
 #include <string>
+#include <algorithm>
 
 #include "apue.h"
 
