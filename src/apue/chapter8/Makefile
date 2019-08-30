@@ -1,4 +1,4 @@
-srcs = echo_all exec1 fork fork_buf fork_with_thread pid race_condition race_condition_child race_condition_parent twice_fork vfork wait
+srcs = echo_all echo_args exec1 fork fork_buf fork_with_thread interpreter pid race_condition race_condition_child race_condition_parent twice_fork vfork wait
 all: $(srcs)
 
 %: %.c
