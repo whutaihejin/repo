@@ -3,6 +3,8 @@
 #include <signal.h>
 #include <stdlib.h>
 
+#include <sys/wait.h>
+
 void handler(int signo);
 
 int main() {
@@ -19,6 +21,7 @@ int main() {
         _exit(0);
     }
 
+    printf("master process %ld\n", (long)getpid());
     pause();
     return 0;
 }
