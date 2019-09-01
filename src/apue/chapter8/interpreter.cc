@@ -5,7 +5,7 @@
 int main() {
     pid_t pid;
     if ((pid = fork()) == 0) {
-        execl("/Users/zhanglonghanks/HomeTime/repo/src/apue/chapter8/interpreter_file",
+        execl("/home/taihejin/HomeTime/repo/src/apue/chapter8/interpreter_file",
                 "interpreter_file", "yy", "myarg1", "MYARG2", nullptr);
     }
     waitpid(pid, nullptr, 0);

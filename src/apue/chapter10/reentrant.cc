@@ -20,12 +20,12 @@ int main() {
     alarm(1);
     
     for (;;) {
-        if ((pw = getpwnam("zhanglonghanks")) == nullptr) {
-            printf("getpwnam error\n");
+        if ((pw = getpwnam("taihejin")) == nullptr) {
+            printf("getpwnam error main\n");
             continue;
         }
-        if (strcmp(pw->pw_name, "zhanglonghanks") != 0) {
-            printf("getpwnam error\n");
+        if (strcmp(pw->pw_name, "taihejin") != 0) {
+            printf("currupted data\n");
         }
     }
     return 0;
