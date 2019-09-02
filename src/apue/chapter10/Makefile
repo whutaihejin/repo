@@ -1,4 +1,4 @@
-srcs = mask reentrant sig_set sigcld signal sigpenging
+srcs = mask reentrant sig_set sigaction sigcld signal sigpenging
 all: $(srcs)
 
 %: %.c
