@@ -7,7 +7,7 @@ void handler(int signo);
 
 int main() {
     pid_t pid;
-    if (signal(SIGCLD, handler) == SIG_ERR) {
+    if (signal(SIGCHLD, handler) == SIG_ERR) {
         printf("singal error\n");
         exit(0);
     }
@@ -28,7 +28,7 @@ void handler(int signo) {
     int status;
     printf("SIGCLD received\n");
 
-    if (signal(SIGCLD, handler) == SIG_ERR) {
+    if (signal(SIGCHLD, handler) == SIG_ERR) {
         printf("singal error\n");
         exit(0);
     }
