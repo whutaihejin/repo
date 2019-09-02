@@ -19,6 +19,7 @@ int main() {
     act.__sigaction_u.__sa_handler = sigQuit;
 #elif defined(__linux__)
     printf("compile on linux platform\n");
+    act.sa_handler = sigQuit;
 #else
 #error "unsuported platform"
 #endif
