@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <assert.h>
 
 void PrintThread(const char* str) {
     pthread_t tid = pthread_self();
@@ -18,5 +19,7 @@ int main() {
     }
     PrintThread("main thread:");
     sleep(1);
+    assert(pthread_equal(pthread_self(), pthread_self()) != 0);
+    assert(tid != pthread_self());
     return 0;
 }
