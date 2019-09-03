@@ -1,4 +1,4 @@
-srcs = mask reentrant sig_set sigaction sigcld siglongjmp signal sigpenging sigsuspend
+srcs = mask reentrant sig_global_val sig_set sigaction sigcld siglongjmp signal sigpenging sigsuspend
 all: $(srcs)
 
 %: %.c
