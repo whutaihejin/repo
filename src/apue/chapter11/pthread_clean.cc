@@ -8,11 +8,11 @@ void CleanUp(void* arg) {
 
 void* StartTask1(void* arg) {
     printf("thread 1 start\n");
-    pthread_cleanup_push(CleanUp, (void*)"thread 1 first handler");
-    pthread_cleanup_push(CleanUp, (void*)"thread 1 second handler");
-    return (void*)1;
-    pthread_cleanup_pop(0);
-    pthread_cleanup_pop(0);
+    // pthread_cleanup_push(CleanUp, (void*)"thread 1 first handler");
+    // pthread_cleanup_push(CleanUp, (void*)"thread 1 second handler");
+    // return (void*)1;
+    // pthread_cleanup_pop(0);
+    // pthread_cleanup_pop(0);
     return (void*)1;
 }
 
