@@ -8,7 +8,7 @@ int FillTime(struct timespec* spec) {
     spec->tv_sec = 0;
 #ifdef __APPLE__
     time(&spec->tv_sec);
-#elif defined(__LINUX__)
+#elif defined(__linux__)
     clock_gettime(CLOCK_REALTIME, spec);
 #else
 #error "unsuported plantform"
@@ -21,13 +21,13 @@ int FillTime(struct timespec* spec) {
 }
 
 int main() {
-#ifdef __LINUX__
+#ifdef __linux__
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_lock(&mutex);
     printf("mutex is locked!\n");
     struct timespec spec;
     FillTime(&spec);
-    spec.tv_sec += 5; // wait five seconds
+    spec.tv_sec += 2; // wait two seconds
     int ret = pthread_mutex_timedlock(&mutex, &spec);
     FillTime(&spec);
     if (ret == 0) {
