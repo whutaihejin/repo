@@ -10,9 +10,7 @@ void* StartTask1(void* arg) {
     printf("thread 1 start\n");
     pthread_cleanup_push(CleanUp, (void*)"thread 1 first handler");
     pthread_cleanup_push(CleanUp, (void*)"thread 1 second handler");
-    if (arg) {
-        return (void*)1;
-    }
+    return (void*)1;
     pthread_cleanup_pop(0);
     pthread_cleanup_pop(0);
     return (void*)1;
@@ -22,9 +20,7 @@ void* StartTask2(void* arg) {
     printf("thread 2 start\n");
     pthread_cleanup_push(CleanUp, (void*)"thread 2 first handler");
     pthread_cleanup_push(CleanUp, (void*)"thread 2 second handler");
-    if (arg) {
-        pthread_exit((void*)2);
-    }
+    pthread_exit((void*)2);
     pthread_cleanup_pop(0);
     pthread_cleanup_pop(0);
     pthread_exit((void*)2);
@@ -40,7 +36,7 @@ int main() {
     }
 
     // first thread
-    void *ret = nullptr;
+    void *ret;
     if (pthread_join(tid1, &ret) != 0) {
         printf("pthread_join 1 error\n");
     }
