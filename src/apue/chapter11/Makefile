@@ -1,4 +1,4 @@
-srcs = pthread_create pthread_exit pthread_join
+srcs = pthread_clean pthread_create pthread_exit pthread_join
 all: $(srcs)
 
 %: %.c
