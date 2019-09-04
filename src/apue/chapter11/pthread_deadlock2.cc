@@ -24,7 +24,7 @@ void* StartTask2(void *arg) {
 int main() {
     pthread_t tid1, tid2;
     pthread_create(&tid1, nullptr, StartTask, nullptr);
-    pthread_create(&tid2, nullptr, StartTask, nullptr);
+    pthread_create(&tid2, nullptr, StartTask2, nullptr);
     void *ret;
     pthread_join(tid1, &ret);
     pthread_join(tid2, &ret);
