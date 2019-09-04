@@ -29,6 +29,7 @@ public:
         } else {
             tail_ = job; // empty
         }
+        job->prev = &head_;
         head_.next = job;
         pthread_rwlock_unlock(&rwlock_);
         return 0;
@@ -48,7 +49,11 @@ public:
     void Remove(Job *job) {
         pthread_rwlock_wrlock(&rwlock_);
         job->prev->next = job->next;
-        job->next->prev = job->prev;
+        if (job->next) {
+            job->next->prev = job->prev;
+        } else {
+            tail_ = job->prev;
+        }
         pthread_rwlock_unlock(&rwlock_);
     }
 
@@ -64,6 +69,22 @@ public:
         return p;
     }
 
+    Job *List() {
+        struct Job* p = nullptr;
+        pthread_rwlock_rdlock(&rwlock_);
+        for (p = head_.next; p != nullptr; p = p->next) {
+            printf("->%lu ", p->id);
+        }
+        printf("\n");
+        // for (p = tail_; p != &head_; p = p->prev) {
+        //     printf("->%lu ", p->id);
+        // }
+        // printf("\n");
+        pthread_rwlock_unlock(&rwlock_);
+        return p;
+    }
+
+
 private:
     Job head_;
     Job* tail_;
@@ -72,7 +93,7 @@ private:
 
 int main() {
     Queue queue;
-    size_t limit = 199;
+    size_t limit = 19;
     for (int i = 0; i < limit; ++i) {
         Job* job = (Job*)malloc(sizeof(struct Job));
         job->id = i;
@@ -82,7 +103,10 @@ int main() {
             queue.Append(job);
         }
     }
-    
+
+   
+    queue.List();
+
     // find and remove
     for (int i = 0; i < limit; ++i) {
         Job* job = queue.Find(i);
@@ -91,5 +115,6 @@ int main() {
         printf("->%lu ", job->id);
         free(job);
     }
+    printf("\n");
     return 0;
 }
