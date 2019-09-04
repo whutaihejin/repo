@@ -8,6 +8,7 @@ public:
     Mutex() {
         pthread_mutex_init(&mutex_, nullptr);
     }
+
     ~Mutex() {
         pthread_mutex_destroy(&mutex_);
     }
