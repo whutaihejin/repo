@@ -1,4 +1,4 @@
-srcs = phread_deadlock pthread_clean pthread_create pthread_exit pthread_join pthread_mutex pthread_ref
+srcs = pthread_clean pthread_create pthread_deadlock pthread_exit pthread_join pthread_mutex pthread_ref
 all: $(srcs)
 
 %: %.c
