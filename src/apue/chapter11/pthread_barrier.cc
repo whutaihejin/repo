@@ -64,5 +64,6 @@ int main(int argc, char* argv[]) {
     } else {
         std::sort(std::begin(nums), std::end(nums));
     }
+    pthread_barrier_destroy(&barrier);
     return 0;
 }
