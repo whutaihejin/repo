@@ -38,8 +38,8 @@ public:
 private:
     size_t capacity_;
     Mutex mutex_;
-    CondVar notfull_cond_;
-    CondVar notempty_cond_;
+    Condition notfull_cond_;
+    Condition notempty_cond_;
     std::deque<T> queue_;
 };
 

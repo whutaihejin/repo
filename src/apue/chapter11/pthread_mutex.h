@@ -3,6 +3,9 @@
 
 #include <pthread.h>
 
+class Mutex;
+class Condition;
+
 class Mutex {
 public:
     explicit Mutex() {
@@ -21,13 +24,12 @@ public:
         pthread_mutex_unlock(&mutex_);
     }
 
-    pthread_mutex_t* mutex() {
-        return &mutex_;
-    }
-
 private:
+    //
+    friend class Condition;
+
     pthread_mutex_t mutex_;
-   
+
     // No copying allowed 
     Mutex(const Mutex&) = delete;
     void operator=(const Mutex&) = delete;
@@ -50,14 +52,14 @@ private:
     void operator=(const LockGuard&) = delete;
 };
 
-class CondVar {
+class Condition {
 public:
-    explicit CondVar(Mutex* mutex):mutex_(mutex) {
+    explicit Condition(Mutex* mutex):mutex_(mutex) {
         pthread_cond_init(&cond_, nullptr);
     }
 
     void Wait() {
-        pthread_cond_wait(&cond_, mutex_->mutex());
+        pthread_cond_wait(&cond_, &(mutex_->mutex_));
     }
 
     void Signal() {
@@ -68,7 +70,7 @@ public:
         pthread_cond_broadcast(&cond_);
     }
 
-    ~CondVar() {
+    ~Condition() {
         pthread_cond_destroy(&cond_);
     }
 
