@@ -13,6 +13,15 @@ const size_t kSpan = kTotalSize / kThreads;
 size_t nums[kTotalSize];
 size_t copy[kTotalSize];
 
+#if defined(__APPLE__)
+
+int main() {
+    printf("platform does not support pthread_barriers\n");
+    return 0;
+}
+
+#elif defined(__linux__)
+
 pthread_barrier_t barrier;
 
 void* PartitionSort(void* arg) {
@@ -67,3 +76,5 @@ int main(int argc, char* argv[]) {
     pthread_barrier_destroy(&barrier);
     return 0;
 }
+
+#endif
