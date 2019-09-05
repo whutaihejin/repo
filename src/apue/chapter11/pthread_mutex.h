@@ -5,7 +5,7 @@
 
 class Mutex {
 public:
-    Mutex() {
+    explicit Mutex() {
         pthread_mutex_init(&mutex_, nullptr);
     }
 
@@ -21,6 +21,10 @@ public:
         pthread_mutex_unlock(&mutex_);
     }
 
+    pthread_mutex_t* mutex() {
+        return &mutex_;
+    }
+
 private:
     pthread_mutex_t mutex_;
    
@@ -31,7 +35,7 @@ private:
 
 class LockGuard {
 public:
-    LockGuard(Mutex* mutex): mutex_(mutex) {
+    explicit LockGuard(Mutex* mutex): mutex_(mutex) {
         mutex_->Lock();
     }
 
@@ -44,6 +48,33 @@ private:
     // No copying allowed
     LockGuard(const LockGuard&) = delete;
     void operator=(const LockGuard&) = delete;
+};
+
+class CondVar {
+public:
+    explicit CondVar(Mutex* mutex):mutex_(mutex) {
+        pthread_cond_init(&cond_, nullptr);
+    }
+
+    void Wait() {
+        pthread_cond_wait(&cond_, mutex_->mutex());
+    }
+
+    void Signal() {
+        pthread_cond_signal(&cond_);
+    }
+
+    void SignalAll() {
+        pthread_cond_broadcast(&cond_);
+    }
+
+    ~CondVar() {
+        pthread_cond_destroy(&cond_);
+    }
+
+private:
+    Mutex* mutex_;
+    pthread_cond_t cond_;
 };
 
 #endif // APUE_PTHREAD_MUTEX_H
