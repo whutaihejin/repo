@@ -50,7 +50,7 @@ int main() {
     pid_t pid;
     if ((pid = fork()) == 0) {
         // child
-        printf("child start...%lu\n", (long)getpid());
+        printf("child start pid = %lu\n", (long)getpid());
         fd = open(".lock_test.dat", O_RDWR | O_CREAT);
         for (size_t i = 0; i < 5; ++i) {
             printf("lock pid: %lu\n", (long)FileInLock(fd, F_WRLCK, 0, 0, 0));
@@ -59,7 +59,7 @@ int main() {
         exit(0);
     } else {
         // parent
-        printf("parent sleep%lu\n", (long)getpid());
+        printf("parent sleep pid = %lu\n", (long)getpid());
         WriteLock(fd, 0, 0, 0);
         sleep(2);
         FileUnlock(fd, 0, 0, 0);
