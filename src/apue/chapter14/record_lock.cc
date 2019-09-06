@@ -66,7 +66,8 @@ int main() {
         printf("parent sleep pid = %lu\n", (long)getpid());
         WritewLock(fd, 0, SEEK_SET, 0);
         sleep(2);
-        FileUnlock(fd, 0, SEEK_SET, 0);
+        // FileUnlock(fd, 0, SEEK_SET, 0);
+        close(fd);
         sleep(5);
     }
     unlink(filename);
