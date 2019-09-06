@@ -1,10 +1,12 @@
 #include <stdio.h>
-#include <sys/epoll.h>
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
+
+#ifdef __linux__
+#include <sys/epoll.h>
 
 #define MAX_BUF 1024
 #define MAX_EVENTS 8
@@ -86,3 +88,9 @@ int main(int argc, char** argv) {
   printf("All file descriptors closed; bye\n");
   return 0;
 }
+#elif defined(__APPLE__)
+    int main() {
+        printf("unsupport rec\n");
+        return 0;
+    }
+#endif

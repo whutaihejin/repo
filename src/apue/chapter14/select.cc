@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     printf("%d: %s%s\n", fd, FD_ISSET(fd, &readfds) ? "r" : "", FD_ISSET(fd, &writefds) ? "w" : "");
   }
   if (pto != NULL) {
-    printf("timeout after select(): %ld.%03ld\n", timeout.tv_sec ,timeout.tv_usec);
+    printf("timeout after select(): %ld.%03u\n", timeout.tv_sec ,timeout.tv_usec);
   }
   return 0;
 }
