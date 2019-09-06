@@ -46,7 +46,7 @@ inline pid_t FileInLock(int fd, int type, off_t offset, int whence, off_t len) {
 
 int main() {
     const char* filename = ".lock_test.dat";
-    int fd = open(filename, O_RDWR | O_CREAT);
+    int fd = open(filename, O_RDWR | O_CREAT, S_IRWXU);
     
     // writeLock(fd);
     pid_t pid;
@@ -54,7 +54,7 @@ int main() {
         // child
         sleep(1);
         printf("child start pid = %lu\n", (long)getpid());
-        fd = open(filename, O_RDWR | O_CREAT);
+        fd = open(filename, O_RDWR | O_CREAT, S_IRWXU);
         for (size_t i = 0; i < 5; ++i) {
             printf("lock pid: %lu\n", (long)FileInLock(fd, F_WRLCK, 0, SEEK_SET, 0));
             sleep(1);
