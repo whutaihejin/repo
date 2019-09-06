@@ -45,25 +45,30 @@ inline pid_t FileInLock(int fd, int type, off_t offset, int whence, off_t len) {
 }
 
 int main() {
-    int fd = open(".lock_test.dat", O_RDWR | O_CREAT);
+    const char* filename = ".lock_test.dat";
+    int fd = open(filename, O_RDWR | O_CREAT);
+    
     // writeLock(fd);
     pid_t pid;
     if ((pid = fork()) == 0) {
         // child
+        sleep(1);
         printf("child start pid = %lu\n", (long)getpid());
-        fd = open(".lock_test.dat", O_RDWR | O_CREAT);
+        fd = open(filename, O_RDWR | O_CREAT);
         for (size_t i = 0; i < 5; ++i) {
-            printf("lock pid: %lu\n", (long)FileInLock(fd, F_WRLCK, 0, 0, 0));
+            printf("lock pid: %lu\n", (long)FileInLock(fd, F_WRLCK, 0, SEEK_SET, 0));
             sleep(1);
         }
+        unlink(filename);
         exit(0);
     } else {
         // parent
         printf("parent sleep pid = %lu\n", (long)getpid());
-        WriteLock(fd, 0, 0, 0);
+        WritewLock(fd, 0, SEEK_SET, 0);
         sleep(2);
-        FileUnlock(fd, 0, 0, 0);
+        FileUnlock(fd, 0, SEEK_SET, 0);
         sleep(5);
     }
+    unlink(filename);
     return 0;
 }

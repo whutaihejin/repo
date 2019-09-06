@@ -19,7 +19,11 @@ int main() {
             flock.l_start = 0;
             flock.l_len = 0;
             int ret = fcntl(fd, F_GETLK, &flock);
-            printf("ret=%d pid=%lu\n", ret, (long)flock.l_pid);
+            if (flock.l_type == F_UNLCK) {
+                printf("child ret=%d no locked\n", ret);
+            } else {
+                printf("child ret=%d locked by pid=%lu\n", ret, (long)flock.l_pid);
+            }
             sleep(1);
         }
 
@@ -38,7 +42,7 @@ int main() {
     int ret = fcntl(fd, F_SETLK, &flock);
     printf("ret=%d\n", ret);
     //
-    sleep(2);
+    sleep(3);
     // close(fd);
     flock.l_type = F_UNLCK;
     ret = fcntl(fd, F_SETLK, &flock);
