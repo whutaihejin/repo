@@ -17,27 +17,27 @@ int mmapCopy(int srcfd, int dstfd) {
     if (ftruncate(dstfd, stat.st_size) < 0) {
         printf("ftruncate error\n");
     }
-    off_t already_writen = 0;
-    while (already_writen < stat.st_size) {
+    off_t offset = 0;
+    while (offset < stat.st_size) {
         off_t size = 0;
-        if (stat.st_size - already_writen > kLimit) {
+        if (stat.st_size - offset > kLimit) {
             size = kLimit;
         } else {
-            size = stat.st_size - already_writen;
+            size = stat.st_size - offset;
         }
         void *src, *dst;
         if ((src = mmap(0, size, PROT_READ,
-                        MAP_SHARED, srcfd, already_writen)) == MAP_FAILED) {
+                        MAP_SHARED, srcfd, offset)) == MAP_FAILED) {
             fprintf(stderr, "mmap error for input!\n"), exit(1);
         }
         if ((dst = mmap(0, size, PROT_READ | PROT_WRITE, 
-                        MAP_SHARED, dstfd, already_writen)) == MAP_FAILED) {
+                        MAP_SHARED, dstfd, offset)) == MAP_FAILED) {
             fprintf(stderr, "mmap error for output! %s\n", strerror(errno)), exit(1);
         }
         memcpy(dst, src, size);
         munmap(src, size);
         munmap(dst, size);
-        already_writen += size;
+        offset += size;
     }
     return 0;
 }
