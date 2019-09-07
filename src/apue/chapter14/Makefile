@@ -1,4 +1,4 @@
-srcs = deadlock epoll lock poll record_lock select
+srcs = deadlock epoll lock poll readv_writev record_lock select
 all: $(srcs)
 
 %: %.c
