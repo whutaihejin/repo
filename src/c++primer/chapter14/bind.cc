@@ -45,6 +45,12 @@ int main() {
     newCallable(4, 5);
     newCallable(5, 4);
     std::cout << typeid(newCallable).name() << std::endl;
+    std::cout << typeid(int).name() << std::endl;
+    std::cout << typeid(long int).name() << std::endl;
+    std::cout << typeid(long long int).name() << std::endl;
+    std::cout << typeid(unsigned int).name() << std::endl;
+    std::cout << typeid(size_t).name() << std::endl;
+    std::cout << typeid(unsigned long).name() << std::endl;
     if (typeid(newCallable) == typeid(newCallable)) {
         std::cout << "type equal" << std::endl;
     } else {
