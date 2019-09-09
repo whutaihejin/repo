@@ -40,5 +40,16 @@ int main() {
     auto newCallable = std::bind(f, 1, 2, std::placeholders::_2, 3, std::placeholders::_1);
     newCallable(4, 5);
     newCallable(5, 4);
+    std::cout << typeid(newCallable).name() << std::endl;
+    if (typeid(newCallable) == typeid(newCallable)) {
+        std::cout << "type equal" << std::endl;
+    } else {
+        std::cout << "not equal" << std::endl;
+    }
+    if (typeid(newCallable) == typeid(f)) {
+        std::cout << "type equal" << std::endl;
+    } else {
+        std::cout << "not equal" << std::endl;
+    }
     return 0;
 }
