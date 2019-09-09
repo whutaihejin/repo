@@ -26,7 +26,11 @@ int main() {
     size_t threshold = 3;
     auto wc = std::find_if(words.begin(), words.end(), 
             [threshold](const std::string& s) { return s.size() >= threshold; });
-    std::cout << *wc << std::endl;
+    if (wc != words.end()) {
+        std::cout << *wc << std::endl;
+    } else {
+        std::cout << "not found!" << std::endl;
+    }
 
     auto it = std::find_if(words.begin(), words.end(),
             std::bind(CheckSize, std::placeholders::_1, 11));
