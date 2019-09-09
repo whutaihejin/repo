@@ -50,7 +50,7 @@ int main() {
     std::cout << typeid(long long int).name() << std::endl;
     std::cout << typeid(unsigned int).name() << std::endl;
     std::cout << typeid(size_t).name() << std::endl;
-    std::cout << typeid(unsigned long).name() << std::endl;
+    std::cout << "typeid(unsigned long)=" << typeid(unsigned long).name() << std::endl;
     if (typeid(newCallable) == typeid(newCallable)) {
         std::cout << "type equal" << std::endl;
     } else {
