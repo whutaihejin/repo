@@ -1,4 +1,4 @@
-srcs = abs_int t14.2.1 t14.2.2 t14.9.2
+srcs = abs_int bind t14.2.1 t14.2.2 t14.9.2
 all: $(srcs)
 
 %: %.c
