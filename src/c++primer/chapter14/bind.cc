@@ -21,6 +21,26 @@ std::ostream& Print(std::ostream& out, const std::string& s, char c) {
     return out << s << c;
 }
 
+class Chat {
+public:
+    void OnMessage(const std::string& name) {
+        std::cout << name << std::endl;
+    }
+};
+
+class AllChat {
+public:
+    AllChat(): callback_(std::bind(&Chat::OnMessage, &chat_, std::placeholders::_1)) {};
+
+    void OnMessage() {
+        callback_("just shit!");
+    }
+
+private: 
+    Chat chat_;
+    std::function<void (const std::string&)> callback_;
+};
+
 int main() {
     std::vector<std::string> words = {"x", "xx", "xxx", "xxxx", "xxxxx"};
     size_t threshold = 3;
@@ -61,5 +81,8 @@ int main() {
     } else {
         std::cout << "not equal" << std::endl;
     }
+
+    AllChat chat;
+    chat.OnMessage();
     return 0;
 }
