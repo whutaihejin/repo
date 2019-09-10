@@ -4,6 +4,7 @@
 
 #include "poller.h"
 #include "channel.h"
+#include "event_loop.h"
 
 Poller::Poller(EventLoop* eloop): eloop_(eloop) {}
 
@@ -66,4 +67,8 @@ void Poller::UpdateChannel(Channel* channel) {
             pfd.fd = -1; // ignore this pollfd
         }
     }
+}
+
+void Poller::AssertInLoopThread() {
+    this->eloop_->AssertInLoopThread();
 }

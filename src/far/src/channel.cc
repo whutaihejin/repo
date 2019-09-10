@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "channel.h"
+#include "event_loop.h"
 
 Channel::Channel(EventLoop* eloop, int fd):
     eloop_(eloop),
@@ -12,7 +13,7 @@ Channel::Channel(EventLoop* eloop, int fd):
 }
 
 void Channel::Update() {
-    eloop_->UpdateChannel(this);
+   eloop_->UpdateChannel(this);
 }
 
 void Channel::HandleEvent() {

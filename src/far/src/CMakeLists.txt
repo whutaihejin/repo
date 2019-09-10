@@ -4,7 +4,7 @@ project(far)
 
 set(CMAKE_CXX_FLAGS "-gdwarf-2 -g -pipe -std=c++11 -fPIC -fno-omit-frame-pointer")
 
-add_library(far event_loop.cc)
+add_library(far event_loop.cc poller.cc channel.cc)
 
 add_executable(event_loop_test event_loop_test.cc)
 target_link_libraries(event_loop_test far)
