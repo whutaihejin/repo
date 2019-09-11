@@ -19,11 +19,17 @@ public:
 
     void HandleEvent();
 
-    void setReadCallback(const EventCallback& cb);
+    void setReadCallback(const EventCallback& cb) {
+        this->read_cb_ = cb;
+    }
 
-    void setWriteCallback(const EventCallback& cb);
+    void setWriteCallback(const EventCallback& cb) {
+        this->write_cb_ = cb;
+    }
 
-    void setErrorCallback(const EventCallback& cb);
+    void setErrorCallback(const EventCallback& cb) {
+        this->error_cb_ = cb;
+    }
 
     int fd() const {
         return fd_;
