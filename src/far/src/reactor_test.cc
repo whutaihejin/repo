@@ -9,7 +9,7 @@
 
 void Timeout(EventLoop* l) {
     std::cout << "timeout!" << std::endl;
-    // l->Quit();
+    l->Quit();
 }
 
 void StartTask(int fd) {
@@ -26,9 +26,9 @@ int main() {
     channel.setReadCallback(std::bind(Timeout, &loop));
     channel.EnableRead();
 
-    std::thread writer(StartTask, fd[1]);
+    // std::thread writer(StartTask, fd[1]);
 
     loop.Loop();
-    writer.join();
+    // writer.join();
     return 0;
 }

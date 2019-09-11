@@ -11,7 +11,8 @@ __thread EventLoop* LOOP_IN_THIS_THREAD = 0;
 EventLoop::EventLoop():
     quit_(false),
     is_loop_(false),
-    thread_id_(std::this_thread::get_id()) {
+    thread_id_(std::this_thread::get_id()),
+    poller_(std::make_shared<Poller>(this)) {
     std::cout << "EventLoop created " << this << " in thread " << this->thread_id_ << std::endl;
 }
 
