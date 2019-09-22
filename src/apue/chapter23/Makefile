@@ -1,4 +1,4 @@
-srcs = alarm itimer nanosleep timed_read timerfd
+srcs = alarm itimer nanosleep posix_clock timed_read timerfd
 all: $(srcs)
 
 %: %.c
