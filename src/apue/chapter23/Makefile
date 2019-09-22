@@ -1,4 +1,4 @@
-srcs = error_handling my_ls my_shell process_id raw_copy signal_shell std_copy user_id
+srcs = alarm itimer nanosleep timed_read timerfd
 all: $(srcs)
 
 %: %.c
