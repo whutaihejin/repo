@@ -1,10 +1,11 @@
-srcs=helloworld
+srcs= echo1 echo2 echo3 helloworld
 all: $(srcs)
 
 %: %.go
 	go build $<
+
 %: %.cc
-	echo "hh"
+	gcc -O0 -o $@ $<
 
 clean:
 	rm -rf $(srcs)
