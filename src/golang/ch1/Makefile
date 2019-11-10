@@ -1,4 +1,4 @@
-srcs= echo1 echo2 echo3 helloworld
+srcs= dup1 echo1 echo2 echo3 helloworld
 all: $(srcs)
 
 %: %.go
