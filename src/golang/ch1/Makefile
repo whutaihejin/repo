@@ -1,4 +1,4 @@
-srcs= dup1 dup2 dup3 echo1 echo2 echo3 helloworld
+srcs= dup1 dup2 dup3 echo1 echo2 echo3 fetch fetchall helloworld lissajous
 all: $(srcs)
 
 %: %.go
