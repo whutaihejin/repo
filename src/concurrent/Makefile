@@ -1,4 +1,4 @@
-srcs = acquire_release acquire_release2 call_order counter hanppen_before launch launch_thread memory_barriers non_atomic_order parallel_accu relaxed_order relaxed_order_2 release_consume release_sequence sequential_consistent transitive_acquire_release transitive_acquire_release2 wait
+srcs = future
 all: $(srcs)
 
 %: %.cc
