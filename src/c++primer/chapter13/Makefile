@@ -1,11 +1,8 @@
 # scan all source file with suffix '.cc'
 src := $(sort $(wildcard *.cc *.c))
 
-# pattern replacement: '%.cc => %'
-target := $(src:.cc=)
-target := $(target:.c=)
-# equivalent statement for above
-# target := $(patsubst %.cc, %, $(src))
+# pattern replacement: '%.cc => % and %.c => %'
+target := $(patsubst %.cc, %, $(src:.c=))
 
 all: $(target)
 	@echo "target => " $(target)
