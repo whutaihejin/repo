@@ -1,4 +1,4 @@
-# scan all source file with suffix '.cc'
+# scan all source file with suffix '.cc or .c'
 src := $(sort $(wildcard *.cc *.c))
 
 # pattern replacement: '%.cc => % and %.c => %'
