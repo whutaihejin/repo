@@ -14,7 +14,7 @@ all: $(target)
 	$(CXX) -std=c++11 -g -O0 $< -o $@
 
 % : %.c
-	$(CC) -g -O0 $< -o $@
+	$(CC) -std=c11 -g -O0 $< -o $@
 
 clean:
 	rm -rf $(target)
