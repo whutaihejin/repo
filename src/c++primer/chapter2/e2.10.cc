@@ -1,7 +1,11 @@
 #include <iostream>
-#include "common.h"
+
+template<typename T> void print(T& v) {
+    std::cout << v << std::endl;
+}
 
 std::string global_str;
+
 int global_int;
 int main() {
 

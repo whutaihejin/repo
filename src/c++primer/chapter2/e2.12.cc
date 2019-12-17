@@ -1,5 +1,4 @@
 #include <iostream>
-#include "common.h"
 
 int main() {
     // int double = 3.14;
