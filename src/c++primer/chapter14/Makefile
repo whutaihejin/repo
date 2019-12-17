@@ -1,12 +1,17 @@
-srcs = abs_int bind function t14.2.1 t14.2.2 t14.9.2
-all: $(srcs)
+# scan all source file with suffix '.cc or .c'
+src := $(sort $(wildcard *.cc *.c))
 
-%: %.c
-	gcc -g -O0 -std=c99 -o $@ $<
+# pattern replacement: '%.cc => % and %.c => %'
+target := $(patsubst %.cc, %, $(src:.c=))
 
-%: %.cc
-	g++ -g -O0 -std=c++11 -lpthread -o $@ $<
+all: $(target)
+	@echo "target => " $(target)
+
+% : %.cc
+	$(CXX) -std=c++11 -g -O0 $< -o $@
+
+% : %.c
+	$(CC) -std=c11 -g -O0 $< -o $@
 
 clean:
-	rm -rf $(srcs)
-	rm -rf *.dSYM
+	rm -rf $(target)

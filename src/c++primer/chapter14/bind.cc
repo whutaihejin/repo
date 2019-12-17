@@ -2,6 +2,7 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 bool CheckSize(const std::string& s, size_t size) {
     return s.size() >= size;

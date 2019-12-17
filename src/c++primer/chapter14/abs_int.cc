@@ -2,6 +2,7 @@
 #include <cassert>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 struct AbsInt {
     int operator()(int v) {
