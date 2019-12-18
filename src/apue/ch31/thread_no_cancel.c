@@ -1,13 +1,12 @@
-#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <signal.h>
 
 void* RunTask(void* arg) {
     printf("A new thread start.\n"); // may be a cancellation point
     for (int i = 1; ; ++i) {
         // ignore
+        pthread_testcancel();
     }
     // not reached
     return NULL;
@@ -23,7 +22,6 @@ int main() {
     }
     void* status;
     printf("brefore join\n");
-    pthread_kill(tid, SIGTERM);
     if (pthread_join(tid, &status) != 0) {
         printf("join error\n");
         return -1;
