@@ -8,10 +8,10 @@ all: $(target)
 	@echo "target => " $(target)
 
 % : %.cc
-	$(CXX) -std=c++11 -g -O0 $< -o $@
+	$(CXX) -std=c++11 -g -O0 $< -o $@ -lpthread
 
 % : %.c
-	$(CC) -std=c11 -g -O0 $< -o $@
+	$(CC) -std=c11 -g -O0 $< -o $@ -lpthread
 
 clean:
 	rm -rf $(target)
