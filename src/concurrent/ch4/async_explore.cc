@@ -47,8 +47,9 @@ public:
 
     MoveOnly(MoveOnly const&) = delete;
 
-    MoveOnly& operator=(MoveOnly&&) {
+    MoveOnly& operator=(MoveOnly&& a) {
         std::cout << "move operator" << std::endl;
+        return a;
     }
 
     MoveOnly& operator=(MoveOnly const&) = delete;
