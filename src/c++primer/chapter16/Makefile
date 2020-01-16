@@ -14,4 +14,4 @@ all: $(target)
 	$(CC) -std=c11 -g -O0 $< -o $@
 
 clean:
-	rm -rf $(target)
+	rm -rf $(target) *.dSYM
