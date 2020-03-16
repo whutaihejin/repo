@@ -7,6 +7,7 @@ int gen() {
 
 void f() {
     static int x = gen();
+    // int x = gen();
     std::cout << "f -> " << x << std::endl;
 }
 
