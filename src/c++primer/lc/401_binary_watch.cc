@@ -10,7 +10,7 @@ using namespace std;
             for (int m = 0; m < 60; ++m) {
                 std::bitset<10> b((h << 6) + m);
                 if (b.count() == num) {
-                    ans.push_back(std::to_string(h) + (m < 10 ? ":0" : ":") + std::to_string(m));
+                    ans.emplace_back(std::to_string(h) + (m < 10 ? ":0" : ":") + std::to_string(m));
                 }
             }
         }
