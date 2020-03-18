@@ -16,6 +16,9 @@ using namespace std;
             }
             stack.push_back(c);
         }
+        for (; k > 0; --k) {
+          if (!stack.empty()) stack.pop_back();
+        }
         // trim leading zero
         stack.erase(0, stack.find_first_not_of('0'));
         return stack.empty() ? "0" : stack;
