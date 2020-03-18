@@ -34,5 +34,6 @@ int main() {
     assert("200" == removeKdigits("10200", 1));
     assert("1219" == removeKdigits("1432219", 3));
     assert("0" == removeKdigits("10", 2));
+    // just shit!
     return 0;
 }
