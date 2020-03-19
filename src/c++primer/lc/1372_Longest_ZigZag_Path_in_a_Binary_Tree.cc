@@ -1,4 +1,5 @@
 #include <iostream>
+#include <assert.h>
 
 namespace endeavor {
     // Definition for a binary tree node.
