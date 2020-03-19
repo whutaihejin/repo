@@ -18,7 +18,7 @@ namespace endeavor {
     };
 
     Info ZigZag(TreeNode* root) {
-        if (root == NULL) {
+        if (root == nullptr) {
             return Info{-1, -1, -1};
         }
         struct Info l_info = ZigZag(root->left);
