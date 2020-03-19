@@ -30,7 +30,7 @@ namespace endeavor {
     
     int longestZigZag(TreeNode* root) {
         struct Info info = ZigZag(root);
-        return info.max;
+        return std::max(0, info.max);
     }
 
 } // namespace endeavor
