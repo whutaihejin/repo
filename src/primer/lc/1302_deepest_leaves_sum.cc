@@ -1,5 +1,6 @@
 #include <iostream>
 #include <deque>
+#include <assert.h>
 
 // Definition for a binary tree node.
 struct TreeNode {
@@ -29,3 +30,10 @@ public:
         return val;
     }
 };
+
+int main() {
+    TreeNode n(1);
+    Solution s;
+    assert(1 == s.deepestLeavesSum(&n));
+    return 0;
+}
