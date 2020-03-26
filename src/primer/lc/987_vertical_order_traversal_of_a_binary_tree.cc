@@ -42,8 +42,7 @@ public:
         if (it == m.end()) {
             m[x] = vector<K>{{y, root}};
         } else {
-            struct K k{y, root};
-            it->second.emplace_back(k);
+            it->second.emplace_back(K{y, root});
         }
         preOrder(root->left, x - 1, y - 1, m);
         preOrder(root->right, x + 1, y - 1, m);
