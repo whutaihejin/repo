@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <set>
+#include <unordered_map>
 
 using namespace std;
 
@@ -27,6 +29,37 @@ public:
             if (dp[m - 1][j]) return true;
         }
         return false;
+    }
+};
+
+// AC
+class Solution2 {
+public:
+    bool canCross(vector<int>& stones) {
+        std::cout << "++++++++++++" << std::endl;
+        unordered_map<int, set<int>> kv;
+        for (size_t i = 1; i < stones.size(); ++i) {
+            if (stones[i] == 1) {
+                kv[stones[i]] = set<int>{1};
+            } else {
+                kv[stones[i]] = set<int>{};
+            }
+        }
+        for (size_t i = 0; i < stones.size(); ++i) {
+            std::cout << stones[i] << "->";
+            set<int>& steps = kv[stones[i]];
+            for (auto j = steps.begin(); j != steps.end(); ++j) {
+                std::cout << *j << ",";
+                for (int k = max(1, *j - 1); k <= *j + 1; ++k) {
+                    auto it = kv.find(stones[i] + k);
+                    if (it != kv.end()) {
+                        it ->second.insert(k);
+                    }
+                }
+            }
+            std::cout << std::endl;
+        }
+        return !kv[stones.back()].empty();
     }
 };
 
