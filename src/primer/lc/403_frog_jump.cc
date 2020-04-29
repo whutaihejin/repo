@@ -37,13 +37,9 @@ class Solution2 {
 public:
     bool canCross(vector<int>& stones) {
         std::cout << "++++++++++++" << std::endl;
-        unordered_map<int, set<int>> kv;
+        unordered_map<int, set<int>> kv{{0, set<int>{0}}};
         for (size_t i = 1; i < stones.size(); ++i) {
-            if (stones[i] == 1) {
-                kv[stones[i]] = set<int>{1};
-            } else {
-                kv[stones[i]] = set<int>{};
-            }
+            kv[stones[i]] = set<int>{};
         }
         for (size_t i = 0; i < stones.size(); ++i) {
             std::cout << stones[i] << "->";
@@ -64,7 +60,7 @@ public:
 };
 
 int main() {
-    Solution s;
+    Solution2 s;
     {
         vector<int> stones{0,1,3};
         assert(s.canCross(stones));
