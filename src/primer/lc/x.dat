@@ -30,3 +30,8 @@
 221_maximal_square.cc
 1000_minimum_cost_to_merge_stones.cc
 124_binary_tree_maximum_path_sum.cc
+718_maximum_length_of_repeated_subarray.cc
+712_minimum_ascii_delete_sum_for_two_strings.cc
+583_delete_operation_for_two_strings.cc
+115_distinct_subsequences.cc
+10_regular_expression_matching.cc
