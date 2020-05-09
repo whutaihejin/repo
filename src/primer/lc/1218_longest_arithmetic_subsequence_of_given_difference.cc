@@ -29,21 +29,20 @@ class Solution {
 public:
     int longestSubsequence(vector<int>& arr, int difference) {
         int ans = 0;
-        vector<int> dp(arr.size(), 1);
         unordered_map<int, int> kv{{arr[0], 1}};
         for (int i = 1; i < arr.size(); ++i) {
-            // cal
+            int f = 1;
             if (auto it = kv.find(arr[i] - difference); it != kv.end()) {
-                dp[i] += it->second;
+                f += it->second;
             }
             // put
             if (auto it = kv.find(arr[i]); it != kv.end()) {
-                it->second = max(it->second, dp[i]);
+                it->second = max(it->second, f);
             } else {
-                kv[arr[i]] = dp[i];
+                kv[arr[i]] = f;
             }
             // max answer
-            ans = max(ans, dp[i]);
+            ans = max(ans, f);
         }
         return ans;
     }
