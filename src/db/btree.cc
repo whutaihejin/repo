@@ -75,6 +75,36 @@ void BTreeSplitChild(Node* x, int i) {
     x->k[i] = pivot;
 }
 
+Node* BTreeSearch(Node* root, const std::string& k) {
+    while (root) {
+        int i = 0, limit = root->k.size();
+        while (i < limit && k > root->k[i]) {
+            i++;
+        }
+        if (i < limit && k == root->k[i]) {
+            break; // done
+        } else {
+            root = root->c[i];
+        }
+    }
+    return root;
+}
+
+Node* BTreeSearch2(Node* root, const std::string& k) {
+    if (!root) {
+        return nullptr;
+    }
+    int i = 0, limit = root->k.size();
+    while (i < limit && k > root->k[i]) {
+        i++;
+    }
+    if (i < limit && k == root->k[i]) {
+        return root;
+    } else {
+        return BTreeSearch(root->c[i], k);
+    }
+}
+
 void TestSplit() {
     btree::Node* x = new btree::Node();
     x->k = std::vector<std::string>{"P", "Q", "R", "S", "T", "U", "V"};
@@ -93,6 +123,14 @@ void TestSplit() {
     LevePrint(root);
     BTreeSplitChild(root, 0);
     LevePrint(root);
+
+    std::string k = "U";
+    Node* s = BTreeSearch(root, k);
+    if (s != nullptr) {
+        std::cout << "find " << k << " done => " << (*s) << std::endl;
+    } else {
+        std::cout << "find " << k << " done => null" << std::endl;
+    }
 }
 
 }; // namespace btree
