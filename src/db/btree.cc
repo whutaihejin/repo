@@ -1,120 +1,103 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <deque>
 
 namespace btree {
 
-const static int kBTreeMD = 2; // minimum degree
-
 struct Node {
-    std::vector<std::string> keys;
-    std::vector<Node*> chs;
+    std::vector<std::string> k;
+    std::vector<Node*> c;
     bool leaf;
+    friend std::ostream& operator<<(std::ostream&, Node&);
 };
 
-struct Hit {
-    Node* target;
-    int i;
-};
-
-Hit BTreeSearch(Node* x, const std::string& key) {
-    int i = 0;
-    while (i < x->keys.size() && key > x->keys[i]) {
-        i++;
+std::ostream& operator<<(std::ostream& os, Node& n) {
+    os << "["; std::string sep = "";
+    for (auto it = n.k.begin(); it != n.k.end(); ++it) {
+        os << sep << (*it);
+        sep = ",";
     }
-    if (i < x->keys.size() && key == x->keys[i]) {
-        return Hit{x, i};
-    } else if (x->leaf) {
-        return Hit{NULL, 0};
-    } else {
-        return BTreeSearch(x->chs[i], key);
-    }
+    // for (auto it = n.c.begin(); it != n.c.end(); ++it) {
+    //     os << sep << "c" << (*it);
+    //     sep = ",";
+    // }
+    os << "]";
+    return os;
 }
 
-class BTree {
-public:
-    Node* root;
-};
-
-void BTreeCreate(BTree& t) {
-    Node* x = new Node();
-    x->leaf = true;
-    t.root = x;
+void LevePrint(Node* root) {
+    std::deque<Node*> queue{root};
+    std::cout << "===btree====" << std::endl;
+    while (!queue.empty()) {
+        int limit = queue.size();
+        for (int i = 0; i < limit; ++i) {
+            Node* n = queue.front(); queue.pop_front();
+            std::cout << *n << " ";
+            for (auto it = n->c.begin(); it != n->c.end(); ++it) {
+                if (*it != nullptr) {
+                    queue.push_back(*it);
+                }
+            }
+        }
+        std::cout << std::endl;
+    }
 }
 
 void BTreeSplitChild(Node* x, int i) {
+    // copy y to z with k & c
     Node* z = new Node();
-    Node* y = x->chs[i];
+    Node* y = x->c[i];
     z->leaf = y->leaf;
-    for (int j = 0; j < kBTreeMD; ++j) {
-        z->keys.push_back(y->keys[j + kBTreeMD]);
+    int t = (y->k.size() + 1) / 2;
+    for (int j = 0; j + t < y->k.size(); ++j) {
+        z->k.push_back(y->k[j + t]);
     }
-    if (!y->leaf) {
-        for (int j = 0; j < kBTreeMD; ++j) {
-            z->chs.push_back(y->chs[j + kBTreeMD]);
-        }
+    for (int j = 0; j + t < y->c.size(); ++j) {
+        z->c.push_back(y->c[j + t]);
     }
-    x->keys.resize(x->keys.size() + 1);
-    for (int j = x->keys.size(); j > i + 1; --j) {
-        x->keys[j] = x->keys[j - 1];
-    }
-    x->keys[i] = y->keys[i];
-    y->keys.resize(kBTreeMD);
-}
+    std::string pivot = y->k[t - 1];
+    y->k.resize(t - 1);
+    y->c.resize(t);
 
-void BTreeInsertNonFull(Node* x, const std::string& key) {
-    int i = x->keys.size() - 1;
-    if (x->leaf) {
-        x->keys.resize(i + 2);
-        while (i >= 0 && key < x->keys[i]) {
-            x->keys[i + 1] = x->keys[i];
-            i = i - 1;
-        }
-        x->keys[i + 1] = key;
-    } else {
-        while (i >= 0 && key < x->keys[i]) {
-            i = i - 1;
-        }
-        i = i + 1;
+    // move x from i to limit with k & c
+    int limit = x->k.size();
+    x->k.resize(limit + 1);
+    x->c.resize(limit + 2);
+    for (int j = limit; j > i; --j) {
+        x->k[j] = x->k[j - 1];
     }
-}
-
-void BTreeInsert(BTree& t, const std::string& v) {
-    Node* r = t.root;
-    if (r->keys.size() == 2 * kBTreeMD - 1) {
-        Node* s = new Node();
-        t.root = s;
-        s->leaf = false;
-        s->chs.push_back(r);
-        BTreeSplitChild(s, 0);
-        BTreeInsertNonFull(r, v);
-    } else {
-        BTreeInsertNonFull(r, v);
+    for (int j = limit + 1; j > i; --j) {
+        x->c[j] = x->c[j - 1];
     }
-}
 
-} // namespace btree
+    x->c[i + 1] = z;
+    x->k[i] = pivot;
+}
 
 void TestSplit() {
     btree::Node* x = new btree::Node();
-    x->keys.push_back("P");
-    x->keys.push_back("Q");
-    x->keys.push_back("R");
-    x->keys.push_back("S");
-    x->keys.push_back("T");
-    x->keys.push_back("U");
-    x->keys.push_back("V");
+    x->k = std::vector<std::string>{"P", "Q", "R", "S", "T", "U", "V"};
+    x->c.resize(x->k.size() + 1);
     x->leaf = true;
+
+    btree::Node* y = new btree::Node();
+    y->k = std::vector<std::string>{"X", "Y", "Z"};
+    y->c.resize(y->k.size() + 1);
+    y->leaf = true;
     
     btree::Node* root = new btree::Node();
-    root->keys.push_back("W");
-    root->chs.push_back(x);
-
-    btree::BTreeSplitChild(root, 0);
+    root->k.push_back("W");
+    root->c.push_back(x);
+    root->c.push_back(y);
+    LevePrint(root);
+    BTreeSplitChild(root, 0);
+    LevePrint(root);
 }
 
+}; // namespace btree
+
 int main() {
-    TestSplit();
-    std::cout << "hello world" << std::endl;
+    btree::TestSplit();
     return 0;
 }
