@@ -5,6 +5,8 @@
 
 namespace btree {
 
+const static int kBTreeMinumumDegree = 2;
+
 struct Node {
     std::vector<std::string> k;
     std::vector<Node*> c;
@@ -105,6 +107,45 @@ Node* BTreeSearch2(Node* root, const std::string& k) {
     }
 }
 
+void BTreeInsertNonFull(Node* r, const std::string& k) {
+    if (!r) {
+        return;
+    }
+    if (r->leaf) {
+        int limit = r->k.size(), i = limit - 1;
+        r->k.resize(limit + 1);
+        while (i >= 0 && r->k[i] > k) {
+            r->k[i + 1] = r->k[i];
+            --i;
+        }
+        r->k[i + 1] = k;
+    } else {
+        int i = 0, limit = r->k.size();
+        while (i < limit && k > r->k[i]) {
+            ++i;
+        }
+        if (r->c[i]->k.size() == 2 * kBTreeMinumumDegree - 1) {
+            BTreeSplitChild(r, i);
+            if (r->k[i] < k) {
+                i++;
+            }
+        }
+        BTreeInsertNonFull(r->c[i], k);
+    }
+}
+
+Node* BTreeInsert(Node* r, const std::string& k) {
+    if (r->k.size() == 2 * kBTreeMinumumDegree - 1) { // full node, split it;
+        Node* s = new Node();
+        s->leaf = false;
+        s->c.push_back(r);
+        BTreeSplitChild(s, 0); // split
+        r = s;
+    }
+    BTreeInsertNonFull(r, k);
+    return r;
+}
+
 void TestSplit() {
     btree::Node* x = new btree::Node();
     x->k = std::vector<std::string>{"P", "Q", "R", "S", "T", "U", "V"};
@@ -133,9 +174,20 @@ void TestSplit() {
     }
 }
 
+void TestInsert() {
+    Node* r = new Node();
+    r->leaf = true;
+    std::vector<std::string> vec = {"F", "S", "Q", "K", "C", "L", "H", "T", "V", "W", "M", "R", "N", "P", "A", "B", "X", "Y", "D", "Z", "E"};
+    for (size_t i = 0; i < vec.size(); ++i) {
+        r = BTreeInsert(r, vec[i]);
+        LevePrint(r);
+    }
+}
+
 }; // namespace btree
 
 int main() {
-    btree::TestSplit();
+    // btree::TestSplit();
+    btree::TestInsert();
     return 0;
 }
