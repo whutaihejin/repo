@@ -108,9 +108,6 @@ Node* BTreeSearch2(Node* root, const std::string& k) {
 }
 
 void BTreeInsertNonFull(Node* r, const std::string& k) {
-    if (!r) {
-        return;
-    }
     if (r->leaf) {
         int limit = r->k.size(), i = limit - 1;
         r->k.resize(limit + 1);
@@ -135,6 +132,9 @@ void BTreeInsertNonFull(Node* r, const std::string& k) {
 }
 
 Node* BTreeInsert(Node* r, const std::string& k) {
+    if (!r) {
+        r = new Node();
+    }
     if (r->k.size() == 2 * kBTreeMinumumDegree - 1) { // full node, split it;
         Node* s = new Node();
         s->leaf = false;
