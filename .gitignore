@@ -16,3 +16,10 @@ src/latex/*.xdv
 .DS_Store
 src/latex/*.pdf
 *.dSYM
+src/db/*
+!src/db/*.cc
+!src/db/Makefile
+
+src/primer/lc/*
+!src/primer/lc/Makefile
+!src/primer/lc/*.cc
