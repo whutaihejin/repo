@@ -5,11 +5,10 @@
 void SelectionSort(std::vector<int>& nums) {
     int limit = nums.size();
     for (int i = 0; i < limit; ++i) {
-        int m = i, low = nums[i];
+        int m = i; // only record min index
         for (int j = i + 1; j < limit; ++j) {
-            if (nums[j] < low) {
+            if (nums[j] < nums[m]) {
                 m = j;
-                low = nums[j]; // update low index and value
             }
         }
         std::swap(nums[i], nums[m]);
@@ -19,14 +18,13 @@ void SelectionSort(std::vector<int>& nums) {
 void SelectionSortDesc(std::vector<int>& nums) {
     int limit = nums.size();
     for (int i = 0; i < limit; ++i) {
-        int m = i, high = nums[i];
+        int h = i;
         for (int j = i + 1; j < limit; ++j) {
-            if (nums[j] > high) {
-                m = j;
-                high = nums[j]; // update low index and value
+            if (nums[j] > nums[h]) {
+                h = j;
             }
         }
-        std::swap(nums[i], nums[m]);
+        std::swap(nums[i], nums[h]);
     }
 }
 
