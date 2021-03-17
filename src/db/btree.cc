@@ -146,6 +146,76 @@ Node* BTreeInsert(Node* r, const std::string& k) {
     return r;
 }
 
+void MergeNode(Node* x, int i) {
+    Node* y = x->c[i];
+    Node* z = x->c[i + 1];
+    // copy key & children to y
+    y->k.push_back(x->k[i]);
+    for (auto it = z->k.begin(); it != z->k.end(); ++it) {
+        y->k.push_back(*it);
+    }
+    for (auto it = z->c.begin(); it != z->c.end(); ++it) {
+        y->c.push_back(*it);
+    }
+    // manipulate r
+    int limit = x->k.size();
+    for (int j = i; j < limit - 1; ++j) {
+        x->k[j] = x->k[j + 1];
+    }
+    for (int j = i + 1; j < limit; ++j) {
+        x->c[j] = x->c[j + 1];
+    }
+    x->k.resize(limit - 1);
+    x->c.resize(limit);
+}
+
+Node* BTreeDelete(Node* r, const std::string& k) {
+    if (!r) {
+        return r;
+    }
+    if (r->leaf) { // case 1
+        int l = 0;
+        for (int h = 0; h < r->k.size(); ++h) {
+            if (r->k[h] != k) {
+                r->k[l++] = r->k[h];
+            }
+        }
+        r->k.resize(l);
+    } else {
+        int i = 0, limit = r->k.size();
+        while (i < limit && k > r->k[i]) {
+            i++;
+        }
+        if (i < limit && k == r->k[i]) { // case 2
+            Node* y = r->c[i];
+            Node* z = r->c[i + 1];
+            if (y->k.size() >= kBTreeMinumumDegree) {
+                // sucussor = FindSucessor(r->c[i], k)
+                // r->k[i] = sucessor
+                // BTreeDeleteNotThin(r->c[i], sucessor);
+            } else if (z->k.size() >= kBTreeMinumumDegree) {
+                // sucussor = FindSucessor(r->c[i], k)
+                // r->k[i] = sucessor
+                // BTreeDeleteNotThin(r->c[i], sucessor);
+            } else { // merge k and z into y
+                MergeNode(r, i); 
+                BTreeDelete(y, k);
+            }
+        } else { // case 3
+            Node* y = r->c[i];
+            Node* z = r->c[i + 1];
+            if (y->k.size() >= kBTreeMinumumDegree) {
+                BTreeDelete(y, k);
+            } else if (z->k.size() >= kBTreeMinumumDegree) {
+                BTreeDelete(z, k);
+            } else {
+                MergeNode(r, i);
+            }
+        }
+    }
+    return r;
+}
+
 void TestSplit() {
     btree::Node* x = new btree::Node();
     x->k = std::vector<std::string>{"P", "Q", "R", "S", "T", "U", "V"};
