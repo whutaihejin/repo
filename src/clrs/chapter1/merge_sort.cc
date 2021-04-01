@@ -74,7 +74,8 @@ void MergeSortDesc(std::vector<int>& A) {
 
 
 int main() {
-    std::vector<int> nums{5, 2, 4, 6, 1, 3};
+    // std::vector<int> nums{5, 2, 4, 6, 1, 3};
+    std::vector<int> nums{5, 2, 4};
     std::for_each(nums.begin(), nums.end(), [](const int& x) { std::cout << x << ", "; }); std::cout << std::endl;
     MergeSort(nums);
     std::for_each(nums.begin(), nums.end(), [](const int& x) { std::cout << x << ", "; }); std::cout << std::endl;

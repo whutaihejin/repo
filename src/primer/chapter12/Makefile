@@ -5,7 +5,6 @@ src := $(sort $(wildcard *.cc *.c))
 target := $(patsubst %.cc, %, $(src:.c=))
 
 all: $(target)
-	@echo "target => " $(target)
 
 % : %.cc
 	$(CXX) -std=c++11 -g -O0 $< -o $@
