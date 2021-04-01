@@ -11,7 +11,7 @@ int main() {
 
   std::vector<unsigned> r = bfs(g);
   for (unsigned u = 0; u < r.size(); ++u) {
-    std::cout << u << " ";
+    std::cout << r[u] << " ";
   }
   std::cout << std::endl;
   return 0;
