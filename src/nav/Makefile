@@ -1,3 +1,6 @@
+#
+CFLAGS=-Wall -DNDEBUG -march=native -ffast-math -std=c++11 -O0 -g -fPIC -Ithird_party/RoutingKit/include
+
 # scan all source file with suffix '.cc or .c'
 src := $(sort $(wildcard *.cc *.c))
 
@@ -5,12 +8,13 @@ src := $(sort $(wildcard *.cc *.c))
 target := $(patsubst %.cc, %, $(src:.c=))
 
 all: $(target)
+# @echo "target => " $(target)
 
 % : %.cc
-	$(CXX) -std=c++11 -g -O0 $< -o $@
+	$(CXX) $(CFLAGS) $< -o $@
 
 % : %.c
-	$(CC) -std=c11 -g -O0 $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	rm -rf $(target)
+	rm -rf *.dSYM $(target)
