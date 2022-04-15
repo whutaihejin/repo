@@ -42,3 +42,4 @@ src/primer/chapter*/*
 src/clrs/chapter*/*
 !src/clrs/chapter*/Makefile
 !src/clrs/chapter*/*.cc
+.vscode
